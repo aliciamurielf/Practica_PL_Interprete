@@ -1,0 +1,16 @@
+# Ejecutables
+*.exe
+interpreter
+
+# Archivos de objeto
+*.o
+
+# Archivos generados por Bison y Flex
+interpreter.tab.c
+interpreter.tab.h
+lex.yy.c
+interpreter.output
+
+# Documentación de Doxygen
+html/
+latex/
