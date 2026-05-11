@@ -84,15 +84,21 @@ static struct {
                 		{"end_for", END_FOR},
                 		{"repeat", REPEAT},
                 		{"until", UNTIL},
+						{"mod", MODULO},
+						{"and", AND},
+						{"or", OR},
+						{"not", NOT},
                 		{"read", READ},
                 		{"print", PRINT},
                 		{"read_string", READ_STRING},      
                 		{"clear_screen", CLEAR_SCREEN_CMD}, 
-                		{"place", PLACE_CMD},              
+                		{"place", PLACE_CMD},  
+						{"switch", SWITCH},
+                		{"case", CASE},
+                		{"default", DEFAULT},
+                		{"end_switch", END_SWITCH},           
                 		{"", 0} // Marcador de fin
 	                   };
-
-
 
 // NEW in example 13
 

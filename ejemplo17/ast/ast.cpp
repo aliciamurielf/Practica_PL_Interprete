@@ -277,11 +277,15 @@ int lp::NumericOperatorNode::getType()
 int lp::RelationalOperatorNode::getType()
 {
 	int result = 0;
-		
-	if ( (this->_left->getType() == NUMBER) and (this->_right->getType() == NUMBER))
+	int leftType = this->_left->getType();
+    int rightType = this->_right->getType();
+
+	if ( (leftType == NUMBER) and (rightType == NUMBER))
 		result = BOOL;
-	else if ( (this->_left->getType() == BOOL) and (this->_right->getType() == BOOL))
+	else if ( (leftType == BOOL) and (rightType == BOOL))
 		result = BOOL;
+    else if ( (leftType == STRING) and (rightType == STRING)) // <-- ¡AÑADIDO PARA STRINGS!
+        result = BOOL;
 	else
 		warning("Runtime error: incompatible types for", "Relational Operator");
 
@@ -467,7 +471,9 @@ void lp::DivisionNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
-
+int lp::DivisionNode::getType() {
+    return NUMBER;
+}
 double lp::DivisionNode::evaluateNumber() 
 {
 	double result = 0.0;
@@ -508,6 +514,10 @@ void lp::IntegerDivisionNode::printAST()
 	this->_left->printAST();
 	std::cout << "\t"; 
 	this->_right->printAST();
+}
+
+int lp::IntegerDivisionNode::getType() {
+    return NUMBER;
 }
 
 double lp::IntegerDivisionNode::evaluateNumber() 
@@ -1084,171 +1094,146 @@ void lp::AssignmentStmt::printAST()
 
 void lp::AssignmentStmt::evaluate() 
 {
-	/* Get the identifier in the table of symbols as Variable */
-	/* 
-		a = 2;
-		a = b = 2;
+    /* Get the identifier in the table of symbols as Variable */
+    lp::Variable *firstVar = (lp::Variable *) table.getSymbol(this->_id);
 
-		a: firstVar
-		b: secondVar
-	*/
-	lp::Variable *firstVar = (lp::Variable *) table.getSymbol(this->_id);
+    // Check the expression
+    if (this->_exp != NULL)
+    {
+        // Check the type of the expression of the asgn
+        switch(this->_exp->getType())
+        {
+            case NUMBER:
+            {
+                double value = this->_exp->evaluateNumber();
 
-	// Check the expression
-	if (this->_exp != NULL)
-	{
-		// Check the type of the expression of the asgn
-		switch(this->_exp->getType())
-		{
-			case NUMBER:
-			{
-				double value;
-				// evaluate the expression as NUMBER
-			 	value = this->_exp->evaluateNumber();
+                if (firstVar->getType() == NUMBER)
+                {
+                    lp::NumericVariable *v = (lp::NumericVariable *) table.getSymbol(this->_id);
+                    v->setValue(value);
+                }
+                else
+                {
+                    table.eraseSymbol(this->_id);
+                    lp::NumericVariable *v = new lp::NumericVariable(this->_id, VARIABLE, NUMBER, value);
+                    table.installSymbol(v);
+                }
+            }
+            break;
 
-				// Check the type of the first varible
-				if (firstVar->getType() == NUMBER)
-				{
-				  	// Get the identifier in the table of symbols as NumericVariable
-					lp::NumericVariable *v = (lp::NumericVariable *) table.getSymbol(this->_id);
+            case BOOL:
+            {
+                bool value = this->_exp->evaluateBool();
 
-					// Assignment the value to the identifier in the table of symbols
-					v->setValue(value);
-				}
-				// The type of variable is not NUMBER
-				else
-				{
-					// Delete the variable from the table of symbols 
-					table.eraseSymbol(this->_id);
+                if (firstVar->getType() == BOOL)
+                {
+                    lp::LogicalVariable *v = (lp::LogicalVariable *) table.getSymbol(this->_id);
+                    v->setValue(value);
+                }
+                else
+                {
+                    table.eraseSymbol(this->_id);
+                    lp::LogicalVariable *v = new lp::LogicalVariable(this->_id, VARIABLE, BOOL, value);
+                    table.installSymbol(v);
+                }
+            }
+            break;
 
-					// Insert the variable in the table of symbols as NumericVariable 
-					// with the type NUMBER and the value 
-					lp::NumericVariable *v = new lp::NumericVariable(this->_id,
-											VARIABLE,NUMBER,value);
-					table.installSymbol(v);
-				}
-			}
-			break;
+            case STRING:
+            {
+                std::string value = this->_exp->evaluateString();
 
-			case BOOL:
-			{
-				bool value;
-				// evaluate the expression as BOOL
-			 	value = this->_exp->evaluateBool();
+                if (firstVar->getType() == STRING)
+                {
+                    lp::StringVariable *v = (lp::StringVariable *) table.getSymbol(this->_id);
+                    v->setValue(value);
+                }
+                else
+                {
+                    table.eraseSymbol(this->_id);
+                    lp::StringVariable *v = new lp::StringVariable(this->_id, VARIABLE, STRING, value);
+                    table.installSymbol(v);
+                }
+            }
+            break;
+            // -----------------------------------------------
 
-				if (firstVar->getType() == BOOL)
-				{
-				  	// Get the identifier in the table of symbols as LogicalVariable
-					lp::LogicalVariable *v = (lp::LogicalVariable *) table.getSymbol(this->_id);
+            default:
+                warning("Runtime error: incompatible type of expression for ", "Assigment");
+        }
+    }
 
-					// Assignment the value to the identifier in the table of symbols
-					v->setValue(value);
-				}
-				// The type of variable is not BOOL
-				else
-				{
-					// Delete the variable from the table of symbols 
-					table.eraseSymbol(this->_id);
+    //////////////////////////////////////////////
+    // Allow multiple assigment -> a = b = c = 2;
+    else // this->_asgn is not NULL
+    {
+        // IMPORTANT
+        // evaluate the assigment child
+        this->_asgn->evaluate();
 
-					// Insert the variable in the table of symbols as NumericVariable 
-					// with the type BOOL and the value 
-					lp::LogicalVariable *v = new lp::LogicalVariable(this->_id,
-											VARIABLE,BOOL,value);
-					table.installSymbol(v);
-				}
-			}
-			break;
+        /* Get the identifier of the previous asgn in the table of symbols as Variable */
+        lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_asgn->_id);
 
-			default:
-				warning("Runtime error: incompatible type of expression for ", "Assigment");
-		}
+        // Get the type of the variable of the previous asgn
+        switch(secondVar->getType())
+        {
+            case NUMBER:
+            {
+                lp::NumericVariable *secondVarNum = (lp::NumericVariable *) table.getSymbol(this->_asgn->_id);
+                if (firstVar->getType() == NUMBER)
+                {
+                    lp::NumericVariable *firstVarNum = (lp::NumericVariable *) table.getSymbol(this->_id);
+                    firstVarNum->setValue(secondVarNum->getValue());
+                }
+                else
+                {
+                    table.eraseSymbol(this->_id);
+                    lp::NumericVariable *newFirstVar = new lp::NumericVariable(this->_id, VARIABLE, NUMBER, secondVarNum->getValue());
+                    table.installSymbol(newFirstVar);
+                }
+            }
+            break;
 
-	}
+            case BOOL:
+            {
+                lp::LogicalVariable *secondVarBool = (lp::LogicalVariable *) table.getSymbol(this->_asgn->_id);
+                if (firstVar->getType() == BOOL)
+                {
+                    lp::LogicalVariable *firstVarBool = (lp::LogicalVariable *) table.getSymbol(this->_id);
+                    firstVarBool->setValue(secondVarBool->getValue());
+                }
+                else
+                {
+                    table.eraseSymbol(this->_id);
+                    lp::LogicalVariable *newFirstVar = new lp::LogicalVariable(this->_id, VARIABLE, BOOL, secondVarBool->getValue());
+                    table.installSymbol(newFirstVar);
+                }
+            }
+            break;
 
-	//////////////////////////////////////////////
-	// Allow multiple assigment -> a = b = c = 2;
+            case STRING:
+            {
+                lp::StringVariable *secondVarStr = (lp::StringVariable *) table.getSymbol(this->_asgn->_id);
+                if (firstVar->getType() == STRING)
+                {
+                    lp::StringVariable *firstVarStr = (lp::StringVariable *) table.getSymbol(this->_id);
+                    firstVarStr->setValue(secondVarStr->getValue());
+                }
+                else
+                {
+                    table.eraseSymbol(this->_id);
+                    lp::StringVariable *newFirstVar = new lp::StringVariable(this->_id, VARIABLE, STRING, secondVarStr->getValue());
+                    table.installSymbol(newFirstVar);
+                }
+            }
+            break;
+            // ------------------------------------------------------------
 
-	else // this->_asgn is not NULL
-	{
-		// IMPORTANT
-		//  evaluate the assigment child
-		this->_asgn->evaluate();
-
-
-		/* Get the identifier of the previous asgn in the table of symbols as Variable */
-		lp::Variable *secondVar = (lp::Variable *) table.getSymbol(this->_asgn->_id);
-
-		// Get the type of the variable of the previous asgn
-		switch(secondVar->getType())
-		{
-			case NUMBER:
-			{
-				/* Get the identifier of the previous asgn in the table of symbols as NumericVariable */
-				lp::NumericVariable *secondVar = (lp::NumericVariable *) table.getSymbol(this->_asgn->_id);
-				// Check the type of the first variable
-				if (firstVar->getType() == NUMBER)
-				{
-				/* Get the identifier of the first variable in the table of symbols as NumericVariable */
-				lp::NumericVariable *firstVar = (lp::NumericVariable *) table.getSymbol(this->_id);
-				  	// Get the identifier o f the in the table of symbols as NumericVariable
-//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
-
-					// Assignment the value of the second variable to the first variable
-					firstVar->setValue(secondVar->getValue());
-
-				}
-				// The type of variable is not NUMBER
-				else
-				{
-					// Delete the first variable from the table of symbols 
-					table.eraseSymbol(this->_id);
-
-					// Insert the first variable in the table of symbols as NumericVariable 
-					// with the type NUMBER and the value of the previous variable 
-					lp::NumericVariable *firstVar = new lp::NumericVariable(this->_id,
-											VARIABLE,NUMBER,secondVar->getValue());
-					table.installSymbol(firstVar);
-				}
-			}
-			break;
-
-			case BOOL:
-			{
-				/* Get the identifier of the previous asgn in the table of symbols as LogicalVariable */
-				lp::LogicalVariable *secondVar = (lp::LogicalVariable *) table.getSymbol(this->_asgn->_id);
-				// Check the type of the first variable
-				if (firstVar->getType() == BOOL)
-				{
-				/* Get the identifier of the first variable in the table of symbols as LogicalVariable */
-				lp::LogicalVariable *firstVar = (lp::LogicalVariable *) table.getSymbol(this->_id);
-				  	// Get the identifier o f the in the table of symbols as NumericVariable
-//					lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
-
-					// Assignment the value of the second variable to the first variable
-					firstVar->setValue(secondVar->getValue());
-
-				}
-				// The type of variable is not BOOL
-				else
-				{
-					// Delete the first variable from the table of symbols 
-					table.eraseSymbol(this->_id);
-
-					// Insert the first variable in the table of symbols as NumericVariable 
-					// with the type BOOL and the value of the previous variable 
-					lp::LogicalVariable *firstVar = new lp::LogicalVariable(this->_id,
-											VARIABLE,BOOL,secondVar->getValue());
-					table.installSymbol(firstVar);
-				}
-			}
-			break;
-
-			default:
-				warning("Runtime error: incompatible type of expression for ", "Assigment");
-		}
-	}
+            default:
+                warning("Runtime error: incompatible type of expression for ", "Assigment");
+        }
+    }
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1262,6 +1247,9 @@ void lp::PrintStmt::printAST()
 }
 
 
+/**
+ * @brief Evalúa la sentencia de impresión, manejando números, cadenas y booleanos.
+ */
 void lp::PrintStmt::evaluate() 
 {
 	int type = this->_exp->getType();
@@ -1270,12 +1258,15 @@ void lp::PrintStmt::evaluate()
         std::cout << this->_exp->evaluateNumber() << std::endl;
     } 
     else if (type == STRING) {
-        // En lugar de comparar solo con el token, forzamos la impresión del texto
         std::cout << this->_exp->evaluateString() << std::endl;
     } 
+    else if (type == BOOL) {
+        if (this->_exp->evaluateBool())
+            std::cout << "true" << std::endl;
+        else
+            std::cout << "false" << std::endl;
+    }
     else {
-        // Imprimimos el tipo para saber qué está fallando (depuración)
-        std::cout << "Tipo detectado: " << type << std::endl;
         warning("Runtime error", "incompatible type for print");
     }
 }
@@ -1469,6 +1460,70 @@ void lp::RepeatStmt::evaluate()
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTACIÓN DE SWITCH Y CASE
+
+void lp::CaseStmt::printAST() 
+{
+    std::cout << "CaseStmt: case ";
+    this->_exp->printAST();
+    std::cout << ":" << std::endl;
+    this->_stmt->printAST();
+}
+
+void lp::CaseStmt::evaluate() 
+{
+    this->_stmt->evaluate();
+}
+
+void lp::SwitchStmt::printAST() 
+{
+    std::cout << "SwitchStmt: " << std::endl;
+    this->_cond->printAST();
+    
+    std::list<lp::CaseStmt *>::iterator it;
+    for (it = this->_cases->begin(); it != this->_cases->end(); ++it) {
+        (*it)->printAST();
+    }
+    
+    if (this->_defaultStmt != NULL) {
+        std::cout << "Default branch:" << std::endl;
+        this->_defaultStmt->printAST();
+    }
+}
+
+/**
+ * @brief Ejecuta la semántica del switch: comparación de tipos y detención tras el primer acierto.
+ */
+void lp::SwitchStmt::evaluate() 
+{
+    int switchType = this->_cond->getType();
+    bool matched = false;
+
+    // Recorremos los casos buscando una coincidencia 
+    for (std::list<lp::CaseStmt *>::iterator it = this->_cases->begin(); it != this->_cases->end(); ++it) {
+        
+        bool isEqual = false;
+        
+        if (switchType == NUMBER) {
+            isEqual = (std::abs(this->_cond->evaluateNumber() - (*it)->getExp()->evaluateNumber()) < ERROR_BOUND);
+        } else if (switchType == BOOL) {
+            isEqual = (this->_cond->evaluateBool() == (*it)->getExp()->evaluateBool());
+        } else if (switchType == STRING) {
+            isEqual = (this->_cond->evaluateString() == (*it)->getExp()->evaluateString());
+        }
+
+        if (isEqual) {
+            (*it)->evaluate();
+            matched = true;
+            break; 
+        }
+    }
+    if (!matched && this->_defaultStmt != NULL) {
+        this->_defaultStmt->evaluate();
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
@@ -1503,8 +1558,7 @@ void lp::ClearScreenStmt::printAST() {
 }
 
 void lp::ClearScreenStmt::evaluate() {
-    // Usamos la macro CLEAR de macros.hpp
-    std::cout << CLEAR_SCREEN; 
+    std::cout << CLEAR_SCREEN << std::flush;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1517,12 +1571,10 @@ void lp::PlaceStmt::printAST() {
 }
 
 void lp::PlaceStmt::evaluate() {
-    // Evaluamos las expresiones para obtener los números de fila y columna
-    int f = (int)this->_line->evaluateNumber();
+	int f = (int)this->_line->evaluateNumber();	
     int c = (int)this->_column->evaluateNumber();
     
-    // Usamos la macro PLACE de macros.hpp
-    std::cout << PLACE(f, c);
+    PLACE(f, c);
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // FOR STMT
@@ -1599,6 +1651,14 @@ void lp::ConcatenationNode::printAST()
   this->_right->printAST();
 }
 
+/*! 
+    \brief   Get the type of the concatenation: STRING
+    \return  int
+*/
+int lp::ConcatenationNode::getType() {
+    return STRING;
+}
+
 std::string lp::ConcatenationNode::evaluateString() 
 {
     // Evaluamos ambos lados como cadenas y los unimos
@@ -1637,19 +1697,27 @@ void lp::StringNode::printAST() {
 }
 
 std::string lp::StringNode::evaluateString() {
-    return this->_value;
+    std::string procesada = this->_value;
+    std::string::size_type pos = 0;
+
+    while ((pos = procesada.find("\\n", pos)) != std::string::npos) 
+    {
+        procesada.replace(pos, 2, "\n");
+        // Avanzamos una posición para seguir buscando
+        pos += 1;
+    }
+
+    pos = 0;
+    // Buscar y reemplazar todos los "\t" (secuencia de escape) por una tabulación real
+    while ((pos = procesada.find("\\t", pos)) != std::string::npos) 
+    {
+        procesada.replace(pos, 2, "\t");
+        pos += 1;
+    }
+
+    return procesada;
 }
 
 double lp::StringNode::evaluateNumber() {
     return 0.0;
 }
-
-/*! 
-    \brief   Get the type of the concatenation: STRING
-    \return  int
-*/
-int lp::ConcatenationNode::getType() 
-{ 
-    return STRING; 
-}
-

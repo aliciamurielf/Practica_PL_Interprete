@@ -93,6 +93,11 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_")*
 			return COMMA;
 		}
 
+":"		{
+			/* AÑADIDO PARA LOS CASOS DEL SWITCH */
+			return ':';
+		}
+		
 {NUMBER1}|{NUMBER2}  {
 					  /* MODIFIED in example 4 */
 					  /* Conversion of type and sending of the numerical value to the parser */

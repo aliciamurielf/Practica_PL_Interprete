@@ -795,12 +795,20 @@ class DivisionNode : public NumericOperatorNode
 */
   void printAST();
 
+/*! 
+    \brief   Get the type of the DivisionNode: NUMBER
+    \return  int
+ */
+	int getType();
+
 /*!	
 	\brief   Evaluate the DivisionNode
 	\return  double
 	\sa		   printAST
 */
   double evaluateNumber();
+
+  
 };
 
 /*!	
@@ -812,6 +820,7 @@ class IntegerDivisionNode : public NumericOperatorNode
   public:
   IntegerDivisionNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) {}
   void printAST();
+  int getType();
   double evaluateNumber();
 };
 
@@ -1848,9 +1857,66 @@ class ForStmt : public Statement
   void evaluate();
 };
 
+/**
+ * @class CaseStmt
+ * @brief Nodo para representar un caso individual dentro de un switch.
+ */
+class CaseStmt : public Statement 
+{
+ private:
+   ExpNode *_exp;      //!< Expresión constante del caso (valor a comparar).
+   Statement *_stmt;   //!< Sentencia o bloque de sentencias a ejecutar.
+
+ public:
+  /**
+   * @brief Constructor de CaseStmt.
+   * @param exp Puntero a la expresión del caso.
+   * @param stmt Puntero a la sentencia asociada.
+   */
+  CaseStmt(ExpNode *exp, Statement *stmt) : _exp(exp), _stmt(stmt) {}
+
+  void printAST();
+  void evaluate();
+
+  /**
+   * @brief Obtiene la expresión del caso para su comparación.
+   * @return Puntero al ExpNode del caso.
+   */
+  ExpNode* getExp() { return _exp; }
+};
+
+/**
+ * @class SwitchStmt
+ * @brief Nodo para representar la estructura de control switch.
+ */
+class SwitchStmt : public Statement 
+{
+ private:
+   ExpNode *_cond;                 //!< Expresión de control del switch.
+   std::list<CaseStmt *> *_cases;  //!< Lista de ramas "case".
+   Statement *_defaultStmt;        //!< Rama "default" opcional (puede ser NULL).
+
+ public:
+  /**
+   * @brief Constructor de SwitchStmt.
+   * @param cond Expresión que se evalúa.
+   * @param cases Lista de casos posibles.
+   * @param defaultStmt Sentencia para el caso por defecto.
+   */
+  SwitchStmt(ExpNode *cond, std::list<CaseStmt *> *cases, Statement *defaultStmt = NULL)
+	{
+        this->_cond = cond;
+        this->_cases = cases;
+        this->_defaultStmt = defaultStmt;
+	}
+
+  void printAST();
+  void evaluate();
+};
+
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
-// NEW in example 17
+// Class BlockStmt
 
 /*!	
   \class   BlockStmt

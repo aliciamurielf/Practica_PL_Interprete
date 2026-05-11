@@ -131,7 +131,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 /* ALTERNATIVA a %error-verbose */
 %define parse.error verbose
 
-%define parse.trace
+/* %define parse.trace */
 
 
 /* Initial grammar symbol */
@@ -149,6 +149,8 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
   std::list<lp::Statement *> *stmts; /* NEW in example 16 */
   lp::Statement *st;				 /* NEW in example 16 */
   lp::AST *prog;					 /* NEW in example 16 */
+  std::list<lp::CaseStmt *> *cases;  /* Lista de casos para el switch */
+  lp::CaseStmt *casestmt;            /* Nodo de un caso individual */
 }
 
 /* Type of the non-terminal symbols */
@@ -163,7 +165,9 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 // New in example 17: if, while, block
 %type <st> stmt asgn print read if_stmt while_stmt block repeat_stmt for_stmt read_string_stmt clear_screen_stmt place_stmt
 
-
+%type <cases> case_list
+%type <casestmt> case_stmt
+%type <st> switch_stmt
 
 %type <prog> program
 
@@ -181,7 +185,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token WHILE DO END_WHILE
 %token REPEAT UNTIL
 %token FOR FROM TO STEP END_FOR
-%token CASE DEFAULT END_SWITCH
+%token SWITCH CASE DEFAULT END_SWITCH
 %token CONCATENATION
 
 /* Operadores lógicos (Ahora son palabras) */
@@ -296,6 +300,7 @@ stmt: SEMICOLON { $$ = new lp::EmptyStmt(); }
     | for_stmt { $$ = $1; }    /* Quitamos el SEMICOLON obligatorio */
     | repeat_stmt { $$ = $1; } /* Quitamos el SEMICOLON obligatorio */
     | block { $$ = $1; }
+	| switch_stmt { $$ = $1; }
 ;
 
 /* Regla IF */
@@ -648,6 +653,37 @@ read_string_stmt: READ_STRING LPAREN VARIABLE RPAREN
     {
         $$ = new lp::ReadStringStmt($3);
     }
+;
+
+/* Definición del SWITCH con y sin DEFAULT */
+switch_stmt: SWITCH controlSymbol cond case_list END_SWITCH
+             {
+               $$ = new lp::SwitchStmt($3, $4, NULL);
+               control--;
+             }
+           | SWITCH controlSymbol cond case_list DEFAULT ':' stmtlist END_SWITCH
+             {
+               $$ = new lp::SwitchStmt($3, $4, new lp::BlockStmt($7));
+               control--;
+             }
+;
+
+case_list: case_stmt 
+           { 
+             $$ = new std::list<lp::CaseStmt *>(); 
+             $$->push_back($1); 
+           }
+         | case_list case_stmt 
+           { 
+             $$ = $1; 
+             $$->push_back($2); 
+           }
+;
+
+case_stmt: CASE exp ':' stmtlist 
+           { 
+             $$ = new lp::CaseStmt($2, new lp::BlockStmt($4)); 
+           }
 ;
 %%
 // %precedence ELSE
