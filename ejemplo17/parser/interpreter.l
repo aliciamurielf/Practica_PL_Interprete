@@ -1,6 +1,10 @@
 /*! 
   \file interpreter.l
   \brief Lexical or scanner file
+  \author Alicia Muriel Fernández
+  \author Lucía Cañero Moslero
+  \date 2026-05-24
+  \version 1.0
 */
 %{
 #include <iostream>

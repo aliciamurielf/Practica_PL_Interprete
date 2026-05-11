@@ -1,8 +1,9 @@
 /*!	
 	\file    ast.cpp
 	\brief   Code of funcitons of AST clas
-	\author  
-	\date    2018-12-13
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
 */
 

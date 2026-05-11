@@ -1,8 +1,9 @@
 /*!	
 	\file    builtin.cpp
 	\brief   Code of some functions of Builtin class
-	\author 
-	\date    2017-12-7
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
 */
 

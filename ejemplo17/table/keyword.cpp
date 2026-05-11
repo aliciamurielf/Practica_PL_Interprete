@@ -1,8 +1,9 @@
 /*!	
 	\file    keyword.cpp
 	\brief   Code of some functions of Keyword class
-	\author 
-	\date    2017-10-19
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
 */
 

@@ -1,10 +1,10 @@
 /*! 	
 	\file   symbol.hpp
 	\brief  Declaration of Symbol class
-	\author 
-	\date    2017-12-1
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
-
 */
 
 #ifndef _SYMBOL_HPP_

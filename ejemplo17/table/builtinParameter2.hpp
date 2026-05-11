@@ -1,8 +1,9 @@
 /*!	
 	\file    builtinParameter2.hpp
 	\brief   Declaration of BuiltinParameter2 class
-	\author  
-	\date    2017-12-7
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
 */
 

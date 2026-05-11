@@ -1,8 +1,9 @@
 /*!	
 	\file    ast.hpp
 	\brief   Declaration of AST class
-	\author  
-	\date    2022-10-07
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
 */
 
@@ -652,9 +653,8 @@ class PlusNode : public NumericOperatorNode
 
 /*! 
   \class   ConcatenationNode
-  \brief   Definition of atributes and methods of ConcatenationNode class
-  \note    ConcatenationNode Class publicly inherits from OperatorNode class 
-           and adds its own printAST and evaluateString functions
+  \brief   Definición de atributos y métodos de la clase ConcatenationNode
+  \note    ConcatenationNode hereda públicamente de OperatorNode
 */
 class ConcatenationNode : public OperatorNode 
 {
@@ -813,7 +813,8 @@ class DivisionNode : public NumericOperatorNode
 
 /*!	
   \class   IntegerDivisionNode
-  \brief   Definition of atributes and methods of IntegerDivisionNode class
+  \brief   Definición de atributos y métodos de la clase IntegerDivisionNode
+  \note    IntegerDivisionNode hereda públicamente de NumericOperatorNode
 */
 class IntegerDivisionNode : public NumericOperatorNode 
 {
@@ -1635,6 +1636,11 @@ class ReadStmt : public Statement
   void evaluate();
 };
 
+/*!	
+  \class   ReadStringStmt
+  \brief   Definición de atributos y métodos de la clase ReadStringStmt
+  \note    Hereda públicamente de Statement
+*/
 class ReadStringStmt : public Statement 
 {
   private:
@@ -1857,10 +1863,11 @@ class ForStmt : public Statement
   void evaluate();
 };
 
-/**
- * @class CaseStmt
- * @brief Nodo para representar un caso individual dentro de un switch.
- */
+/*!
+  \class   CaseStmt
+  \brief   Nodo para representar un caso individual dentro de un bloque switch.
+  \note    CaseStmt hereda públicamente de Statement.
+*/
 class CaseStmt : public Statement 
 {
  private:
@@ -1885,10 +1892,11 @@ class CaseStmt : public Statement
   ExpNode* getExp() { return _exp; }
 };
 
-/**
- * @class SwitchStmt
- * @brief Nodo para representar la estructura de control switch.
- */
+/*!
+  \class   SwitchStmt
+  \brief   Nodo para representar la estructura de control de flujo múltiple switch/case/default.
+  \note    SwitchStmt hereda públicamente de Statement.
+*/
 class SwitchStmt : public Statement 
 {
  private:
@@ -1956,6 +1964,11 @@ class BlockStmt : public Statement
   void evaluate();
 };
 
+/*!	
+  \class   ClearScreenStmt
+  \brief   Definición de atributos y métodos de la clase ClearScreenStmt
+  \note    Hereda de Statement. Limpia la pantalla de la consola.
+*/
 class ClearScreenStmt : public Statement 
 {
   public:
@@ -1963,7 +1976,11 @@ class ClearScreenStmt : public Statement
     void evaluate();
 };
 
-// Clase para posicionar el cursor
+/*!	
+  \class   PlaceStmt
+  \brief   Definición de atributos y métodos de la clase PlaceStmt
+  \note    Hereda de Statement. Posiciona el cursor en las coordenadas indicadas.
+*/
 class PlaceStmt : public Statement 
 {
   private:

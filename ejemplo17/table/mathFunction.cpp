@@ -1,6 +1,10 @@
 /*! 
   \file mathFunction.cpp
   \brief Code of mathematical functions 
+  \author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
+	\version 1.0
 */
 
 

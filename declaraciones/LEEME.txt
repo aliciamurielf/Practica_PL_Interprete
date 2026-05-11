@@ -1,4 +1,0 @@
-Analizador léxico y sintáctico que reconoce declaraciones de variables como l as siguientes:
-
-a, b, c: entero;
-x, y: real;

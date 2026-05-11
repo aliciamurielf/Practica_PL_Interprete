@@ -1,6 +1,10 @@
 /*! 
   \file interpreter.y
   \brief Grammar file
+  \author Alicia Muriel Fernández
+  \author Lucía Cañero Moslero
+  \date 2026-05-24
+  \version 1.0
 */
 
 
@@ -214,6 +218,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %left NOT
 /*******************************************************/
+%left CONCATENATION
 
 /* MODIFIED in example 3 */
 %left PLUS MINUS 

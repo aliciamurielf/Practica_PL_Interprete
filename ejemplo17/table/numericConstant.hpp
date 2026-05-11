@@ -1,8 +1,9 @@
 /*!	
 	\file    numericConstant.hpp
 	\brief   Declaration of NumericConstant class
-	\author  
-	\date    2017-12-5
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
 */
 

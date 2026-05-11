@@ -1,3 +1,15 @@
+/*!	
+	\file    stringVariable.cpp
+	\brief   Code of some functions of StringVariable class
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
+	\version 1.0
+*/
+
+
+
+
 #ifndef _STRINGVARIABLE_HPP_
 #define _STRINGVARIABLE_HPP_
 

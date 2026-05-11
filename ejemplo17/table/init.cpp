@@ -1,8 +1,9 @@
 /*!	
 	\file    init.cpp
 	\brief   Code of the function for the initialization of table of symbols
-	\author  
-	\date    2017-12-5
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
 */
 

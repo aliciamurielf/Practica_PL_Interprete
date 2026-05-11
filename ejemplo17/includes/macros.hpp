@@ -1,8 +1,9 @@
 /*!
   \file   macros.hpp
-  \brief  Macros for the screen
-  \author 
-  \date   
+  \author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
+	\version 1.0
   \note  http://isthe.com/chongo/tech/comp/ansi_escapes.html
 */
 

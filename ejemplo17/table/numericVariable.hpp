@@ -1,8 +1,9 @@
 /*!	
 	\file    numericVariable.hpp
 	\brief   Declaration of NumericVariable class
-	\author  
-	\date    2017-12-1
+	\author  Alicia Muriel Fernández
+	\author  Lucía Cañero Moslero
+	\date    2026-05-24
 	\version 1.0
 */
 
