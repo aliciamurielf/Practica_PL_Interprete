@@ -41,11 +41,11 @@ static struct {
           std::string name ;
 	      double value;
 	      } numericConstant[] = {
-	                    {"PI",    3.14159265358979323846},
-	                    {"E",     2.71828182845904523536},
-	                    {"GAMMA", 0.57721566490153286060},
-	                    {"DEG",  57.29577951308232087680},
-	                    {"PHI",   1.61803398874989484820},
+	                    {"pi",    3.14159265358979323846},
+	                    {"e",     2.71828182845904523536},
+	                    {"gamma", 0.57721566490153286060},
+	                    {"deg",  57.29577951308232087680},
+	                    {"phi",   1.61803398874989484820},
 	                    {"",      0}
 	                   };
 
@@ -98,7 +98,7 @@ static struct {
                 		{"case", CASE},
                 		{"default", DEFAULT},
                 		{"end_switch", END_SWITCH},           
-                		{"", 0} // Marcador de fin
+                		{"", 0} 
 	                   };
 
 // NEW in example 13
@@ -138,13 +138,6 @@ static struct {    /* Nombres predefinidos de funciones con 2 argumentos */
 	                   {"atan2",   Atan2},
 		               {"",       0}
 		              };
-
-
-
-
-
-
-
 /*!		
 	\brief   Initialize the table of symbols
 	\return  void 

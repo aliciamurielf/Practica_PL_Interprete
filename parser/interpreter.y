@@ -167,11 +167,11 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %type <stmts> stmtlist
 
 // New in example 17: if, while, block
-%type <st> stmt asgn print read if_stmt while_stmt block repeat_stmt for_stmt read_string_stmt clear_screen_stmt place_stmt
+%type <st> stmt asgn print read if while block repeat for read_string clear_screen place
 
 %type <cases> case_list
-%type <casestmt> case_stmt
-%type <st> switch_stmt
+%type <casestmt> case
+%type <st> switch
 
 %type <prog> program
 
@@ -292,47 +292,51 @@ stmtlist:  /* empty: epsilon rule */
        } 
 ;
  
-/* 1. En la regla stmt: Aquí es donde SE PIDE el punto y coma */
 stmt: SEMICOLON { $$ = new lp::EmptyStmt(); }
     | asgn SEMICOLON { $$ = $1; }
     | print SEMICOLON { $$ = $1; }
     | read SEMICOLON { $$ = $1; }
-    | read_string_stmt SEMICOLON { $$ = $1; }
-    | clear_screen_stmt SEMICOLON { $$ = $1; }
-    | place_stmt SEMICOLON { $$ = $1; }
-    | if_stmt { $$ = $1; }     /* Quitamos el SEMICOLON obligatorio */
-    | while_stmt { $$ = $1; }  /* Quitamos el SEMICOLON obligatorio */
-    | for_stmt { $$ = $1; }    /* Quitamos el SEMICOLON obligatorio */
-    | repeat_stmt { $$ = $1; } /* Quitamos el SEMICOLON obligatorio */
+    | read_string SEMICOLON { $$ = $1; }
+    | clear_screen SEMICOLON { $$ = $1; }
+    | place SEMICOLON { $$ = $1; }
+    | if { $$ = $1; }     
+    | while { $$ = $1; }  
+    | for { $$ = $1; }    
+    | repeat { $$ = $1; } 
     | block { $$ = $1; }
-	| switch_stmt { $$ = $1; }
+	| switch { $$ = $1; }
 ;
 
 /* Regla IF */
-if_stmt: IF controlSymbol cond THEN stmtlist END_IF 
+if: IF controlSymbol cond THEN stmtlist END_IF 
          { 
-           $$ = new lp::IfStmt($3, new lp::BlockStmt($5)); 
-           control--; // Restamos al terminar
+           lp::BlockStmt *aux_1 = new lp::BlockStmt($5);
+           $$ = new lp::IfStmt($3, aux_1); 
+           control--; 
          }
        | IF controlSymbol cond THEN stmtlist ELSE stmtlist END_IF 
          { 
-           $$ = new lp::IfStmt($3, new lp::BlockStmt($5), new lp::BlockStmt($7)); 
-           control--; // Restamos al terminar
+           lp::BlockStmt *aux_1 = new lp::BlockStmt($5);
+           lp::BlockStmt *aux_2 = new lp::BlockStmt($7);
+           
+           $$ = new lp::IfStmt($3, aux_1, aux_2); 
+
+           control--; 
          }
 ;
 
-/* Regla WHILE */
-while_stmt: WHILE controlSymbol cond DO stmtlist END_WHILE 
+/* Regla WHILE*/
+while: WHILE controlSymbol cond DO stmtlist END_WHILE 
             { 
-              $$ = new lp::WhileStmt($3, new lp::BlockStmt($5)); 
+              lp::BlockStmt *aux_1 = new lp::BlockStmt($5);
+              $$ = new lp::WhileStmt($3, aux_1); 
               control--; 
             }
 ;
 
 /* Regla FOR */
-for_stmt: FOR controlSymbol VARIABLE FROM exp TO exp DO stmtlist END_FOR
+for: FOR controlSymbol VARIABLE FROM exp TO exp DO stmtlist END_FOR
           { 
-            // Aquí NO usamos BlockStmt porque tu ForStmt acepta la lista directamente
             $$ = new lp::ForStmt($3, $5, $7, new lp::NumberNode(1), $9); 
             control--;
           }
@@ -343,7 +347,7 @@ for_stmt: FOR controlSymbol VARIABLE FROM exp TO exp DO stmtlist END_FOR
           }
 ;
 
-repeat_stmt: REPEAT controlSymbol stmtlist UNTIL cond
+repeat: REPEAT controlSymbol stmtlist UNTIL cond
     {
         /* ¡IMPORTANTE! Aquí NO debe haber SEMICOLON al final de la regla */
         $$ = new lp::RepeatStmt($3, $5);
@@ -641,27 +645,27 @@ restOfListOfExp:
 			}
 ;
 
-clear_screen_stmt: CLEAR_SCREEN_CMD
+clear_screen: CLEAR_SCREEN_CMD
     { 
         $$ = new lp::ClearScreenStmt(); 
     }
 ;
 
-place_stmt: PLACE_CMD LPAREN exp COMMA exp RPAREN 
+place: PLACE_CMD LPAREN exp COMMA exp RPAREN 
     { 
         $$ = new lp::PlaceStmt($3, $5); 
     }
 ;
 
 
-read_string_stmt: READ_STRING LPAREN VARIABLE RPAREN
+read_string: READ_STRING LPAREN VARIABLE RPAREN
     {
         $$ = new lp::ReadStringStmt($3);
     }
 ;
 
 /* Definición del SWITCH con y sin DEFAULT */
-switch_stmt: SWITCH controlSymbol cond case_list END_SWITCH
+switch: SWITCH controlSymbol cond case_list END_SWITCH
              {
                $$ = new lp::SwitchStmt($3, $4, NULL);
                control--;
@@ -673,19 +677,19 @@ switch_stmt: SWITCH controlSymbol cond case_list END_SWITCH
              }
 ;
 
-case_list: case_stmt 
+case_list: case 
            { 
              $$ = new std::list<lp::CaseStmt *>(); 
              $$->push_back($1); 
            }
-         | case_list case_stmt 
+         | case_list case 
            { 
              $$ = $1; 
              $$->push_back($2); 
            }
 ;
 
-case_stmt: CASE exp ':' stmtlist 
+case: CASE exp ':' stmtlist 
            { 
              $$ = new lp::CaseStmt($2, new lp::BlockStmt($4)); 
            }

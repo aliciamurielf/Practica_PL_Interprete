@@ -65,7 +65,7 @@ NUMBER1 {DIGIT}+\.?
 
 NUMBER2 {DIGIT}*\.{DIGIT}+
 
-IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_")*
+IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_"({LETTER}|{DIGIT}))*
 
 /* NEW in example 3 */
 /* STATE  */
