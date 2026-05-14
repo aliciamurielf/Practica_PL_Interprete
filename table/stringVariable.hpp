@@ -7,50 +7,46 @@
 	\version 1.0
 */
 
-
-
-
 #ifndef _STRINGVARIABLE_HPP_
 #define _STRINGVARIABLE_HPP_
 
 #include <string>
-#include <iostream>
 #include "variable.hpp"
 
 namespace lp {
 
-class StringVariable : public lp::Variable
-{
-    private:
-        std::string _value; 
+    /*! 
+      \class   StringVariable
+      \brief   Definition of atributes and methods of StringVariable class
+      \note    StringVariable Class publicly inherits from Variable class
+    */
+    class StringVariable : public Variable {
+        private:
+            std::string _value; //!< \brief String value of the variable
 
-    public:
-        inline StringVariable(std::string name="", int token = 0, int type = 0, std::string value=""): 
-        Variable(name, token, type)
-        {
-            this->setValue(value);
-        }
+        public:
+            /*! 
+              \brief Constructor of StringVariable
+              \param name: name of the variable
+              \param token: token of the variable
+              \param type: type of the variable (STRING)
+              \param value: string value
+            */
+            StringVariable(std::string name, int token, int type, std::string value);
 
-        inline std::string getValue() const
-        {
-            return this->_value;
-        }
+            /*! 
+              \brief  Get the value of the StringVariable
+              \return std::string
+            */
+            std::string getValue() const;
 
-        inline void setValue(const std::string & value)
-        {
-            this->_value = value;
-        }
-
-        void read() {
-            std::cin >> std::ws;
-            std::getline(std::cin, _value);
-        }
-
-        void write() const {
-            std::cout << _value;
-        }
-};
-
+            /*! 
+              \brief  Set the value of the StringVariable
+              \param  value: new string value
+              \return void
+            */
+            void setValue(std::string value);
+    };
 }
 
 #endif

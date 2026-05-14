@@ -158,7 +158,6 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 }
 
 /* Type of the non-terminal symbols */
-// New in example 17: cond
 %type <expNode> exp cond 
 
 /* New in example 14 */
@@ -167,11 +166,10 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %type <stmts> stmtlist
 
 // New in example 17: if, while, block
-%type <st> stmt asgn print read if while block repeat for read_string clear_screen place
+%type <st> stmt asgn print read if while block repeat for read_string clear_screen place switch
 
 %type <cases> case_list
 %type <casestmt> case
-%type <st> switch
 
 %type <prog> program
 
@@ -183,19 +181,13 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token LETFCURLYBRACKET RIGHTCURLYBRACKET
 %token ASSIGNMENT
 
-/* Palabras reservadas (Tokens sin valor asociado) */
-%token PRINT READ READ_STRING
-%token IF THEN ELSE END_IF
-%token WHILE DO END_WHILE
-%token REPEAT UNTIL
-%token FOR FROM TO STEP END_FOR
-%token SWITCH CASE DEFAULT END_SWITCH
-%token CONCATENATION
+/* Palabras reservadas */
+%token PRINT READ READ_STRING IF THEN ELSE END_IF WHILE DO END_WHILE REPEAT UNTIL FOR FROM TO STEP END_FOR SWITCH CASE DEFAULT END_SWITCH CONCATENATION
 
-/* Operadores lógicos (Ahora son palabras) */
+/* Operadores lógicos */
 %token AND OR NOT
 
-/* Comandos de pantalla (Renombrados para evitar conflicto con macros.hpp)  */
+/* Comandos de pantalla */
 %token CLEAR_SCREEN_CMD PLACE_CMD
 
 /*******************************************/
@@ -255,17 +247,14 @@ program : stmtlist
 
 stmtlist:  /* empty: epsilon rule */
 		  { 
-			// create a empty list of statements
 			$$ = new std::list<lp::Statement *>(); 
 		  }  
 
         | stmtlist stmt 
 		  { 
-			// copy up the list and add the stmt to it
 			$$ = $1;
 			$$->push_back($2);
 
-			// Control the interative mode of execution of the interpreter
 			if (interactiveMode == true && control == 0)
  			{
 				for(std::list<lp::Statement *>::iterator it = $$->begin(); 
@@ -274,20 +263,14 @@ stmtlist:  /* empty: epsilon rule */
 				{
 					// (*it)->printAST();
 					(*it)->evaluate();
-					
 				}
-
-				// Delete the AST code, because it has already run in the interactive mode.
 				$$->clear();
 			}
 		}
 
     | stmtlist error 
       { 
-			 // just copy up the stmtlist when an error occurs
 			 $$ = $1;
-
-			 // The previous look-ahead token ought to be discarded with `yyclearin;'
 			 yyclearin; 
        } 
 ;
@@ -349,7 +332,6 @@ for: FOR controlSymbol VARIABLE FROM exp TO exp DO stmtlist END_FOR
 
 repeat: REPEAT controlSymbol stmtlist UNTIL cond
     {
-        /* ¡IMPORTANTE! Aquí NO debe haber SEMICOLON al final de la regla */
         $$ = new lp::RepeatStmt($3, $5);
         control--;
     }
@@ -357,15 +339,12 @@ repeat: REPEAT controlSymbol stmtlist UNTIL cond
 
 cond: LPAREN exp RPAREN { $$ = $2; } ;
 
-
-
 block: LETFCURLYBRACKET stmtlist RIGHTCURLYBRACKET  
 		{
 			// Create a new block of statements node
 			$$ = new lp::BlockStmt($2); 
 		}
 ;
-
 
 controlSymbol:  /* Epsilon rule*/
 		{
@@ -486,7 +465,6 @@ exp:	NUMBER
 	|	exp MODULO exp 
 		{
 		  // Create a new modulo node	
-
 		  $$ = new lp::ModuloNode($1, $3);
        }
 

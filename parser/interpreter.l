@@ -63,9 +63,11 @@ LETTER [a-zA-Z]
 
 NUMBER1 {DIGIT}+\.?
 
-NUMBER2 {DIGIT}*\.{DIGIT}+
+NUMBER2 {DIGIT}*\.{DIGIT}+(e[+-]?{DIGIT}+)?
 
 IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_"({LETTER}|{DIGIT}))*
+
+cadena      '([^'\\]|\\.)*'
 
 /* NEW in example 3 */
 /* STATE  */
@@ -80,25 +82,19 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_"({LETTER}|{DIGIT}))*
 \n      { 
 			/* Line counter */
            	lineNumber++; 
-	
-			/* MODIFIED in example 3 */
-			/* COMMENTED in example 5 */
-        	/* return NEWLINE; */
         }
 
 ";"		{
-			/* NEW in example 5 */
 			return SEMICOLON;
 		}
 
 
 ","		{
-			/* NEW in example 14 */
 			return COMMA;
 		}
 
 ":"		{
-			/* AÑADIDO PARA LOS CASOS DEL SWITCH */
+			/* PARA LOS CASOS DEL SWITCH */
 			return ':';
 		}
 		
@@ -123,66 +119,61 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_"({LETTER}|{DIGIT}))*
 						// Buscamos en la tabla con el nombre en minúsculas
 						if (table.lookupSymbol(identifier) == false)
 						{
-							// Si no está, es una variable nueva
 							lp::NumericVariable *n = new lp::NumericVariable(identifier, VARIABLE, UNDEFINED, 0.0);
 							table.installSymbol(n);
 							return VARIABLE;
 						}
 						else 
 						{
-							// Si está (es un IF, READ_STRING, etc.), devolvemos su token real
 							return table.getSymbol(identifier)->getToken();
 						}
                      }
 
-"-"		{ return MINUS;  } 			/* NEW in example 3 */
-"+"		{ return PLUS;   } 			/* NEW in example 3 */
+{cadena}            {
+						yytext[yyleng-1] = '\0';
+						yytext++;
+						yyleng--;
+						yylval.string = strdup(yytext);
+						return STRING;
+					}
 
-"*"	    { return MULTIPLICATION; } 	/* NEW in example 3 */
-"/"     { return DIVISION; } 		/* NEW in example 3 */
+"-"		{ return MINUS;  } 			
+"+"		{ return PLUS;   } 			
 
-"("     { return LPAREN; } 			/* NEW in example 3 */
-")"	    { return RPAREN; } 			/* NEW in example 3 */
+"*"	    { return MULTIPLICATION; } 	
+"/"     { return DIVISION; } 		
 
+"("     { return LPAREN; } 			
+")"	    { return RPAREN; } 			
 
+"mod"     { return MODULO; }			
 
-"mod"     { return MODULO; }			/* NEW in example 5 */
+"^"	    { return POWER; }		
 
-"^"	    { return POWER; }			/* NEW in example 5 */
+":=" 	{ return ASSIGNMENT; }		
 
-":=" 	{ return ASSIGNMENT; }		/* NEW in example 7 */
+"="	{ return EQUAL; }			
 
+"<>"	{ return NOT_EQUAL; }		
 
-"="	{ return EQUAL; }			/* NEW in example 15 */
+">="	{ return GREATER_OR_EQUAL; } 
 
-"<>"	{ return NOT_EQUAL; }		/* NEW in example 15 */
+"<="	{ return LESS_OR_EQUAL; }	
 
-">="	{ return GREATER_OR_EQUAL; }/* NEW in example 15 */
+">"		{ return GREATER_THAN; }	
+"<"		{ return LESS_THAN; }		
 
-"<="	{ return LESS_OR_EQUAL; }	/* NEW in example 15 */
+"||"	{ return CONCATENATION; }				
 
-">"		{ return GREATER_THAN; }	/* NEW in example 15 */
+"{"		{ return LETFCURLYBRACKET; } 	
 
-"<"		{ return LESS_THAN; }		/* NEW in example 15 */
+"}"		{ return RIGHTCURLYBRACKET; }	
 
-"||"	{ return CONCATENATION; }				/* NEW in example 15 */
+"//"    { return INTEGER_DIVISION; }  
 
-"{"		{ return LETFCURLYBRACKET; } 	/* NEW in example 17 */
-
-"}"		{ return RIGHTCURLYBRACKET; }	/* NEW in example 17 */
-
-"//"    { return INTEGER_DIVISION; }  /* División entera */
-
-"'"([^'\\\n]|\\.)*"'" {
-    std::string s(yytext);
-    /* Quitamos las comillas exteriores según el enunciado [cite: 2959] */
-    yylval.string = strdup(s.substr(1, s.length()-2).c_str());
-    return STRING;
-}
-
-"(*"    { BEGIN(COMENTARIO_BLOQUE); } /* Entramos al comentario multilínea */
-<COMENTARIO_BLOQUE>"*)" { BEGIN(INITIAL); } /* Salimos del comentario */
-<COMENTARIO_BLOQUE>\n   { lineNumber++; }   /* Contamos las líneas dentro del comentario */
+"(*"    { BEGIN(COMENTARIO_BLOQUE); } 
+<COMENTARIO_BLOQUE>"*)" { BEGIN(INITIAL); }
+<COMENTARIO_BLOQUE>\n   { lineNumber++; }   
 <COMENTARIO_BLOQUE>.    { /* Ignoramos cualquier otro carácter */ }
 
 "#".* { 
@@ -203,9 +194,6 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_"({LETTER}|{DIGIT}))*
 
 
 .								{ 	
-									/* Any other character */
-									/* MODIFIIED in example 3 */
-									/* Change to error state */
 									BEGIN(ERROR); 
 
 									/* 
@@ -215,24 +203,13 @@ IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_"({LETTER}|{DIGIT}))*
 									yymore();  
 								}
 
-<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&]	{ /* MODIFIED in examples 5, 7, 15 */
-								  /* NEW in example 3 */
-								  /* 
-									The current value of yytext 
-									will be concatenated with the next character
-								  */
+<ERROR>[^0-9+\-*/()\^% \t\n\;a-zA-Z=<>!&]	{ 
 									yymore(); 
 								}
 
 <ERROR>(.|\n)                { 
-								/* NEW in example 3 */
-								/* Rewind one position */
 								yyless(yyleng-1); 
-
-								/* Display the error message */
 								warning("Lexical error", yytext);
-
-								/* Restore the initial state */
    								BEGIN(INITIAL);
 							}
 %%
