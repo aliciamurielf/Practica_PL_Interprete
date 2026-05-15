@@ -247,6 +247,13 @@ class NumberNode : public ExpNode
 		\sa		   getType, printAST
 	*/
 	double evaluateNumber();
+
+	/*! 
+    \brief   Evaluate the expression as STRING
+    \return  std::string
+    \sa      getType, printAST, evaluateNumber, evaluateBool
+*/
+	std::string evaluateString();
 };
 
 /*! 
@@ -2036,6 +2043,152 @@ class AST {
   void evaluate();
 };
 
+/*! 
+  \class   FactorialNode
+  \brief   Definition of attributes and methods of FactorialNode class
+  \note    Publicly inherits from ExpNode class
+*/
+class FactorialNode : public ExpNode {
+  private:
+    ExpNode *_exp; //!< Expression to calculate the factorial
+
+  public:
+    /*!     
+        \brief   Constructor of FactorialNode
+        \param   exp: pointer to the expression
+        \post    A new FactorialNode is created
+    */
+    FactorialNode(ExpNode *exp) : _exp(exp) {}
+
+    /*! 
+        \brief   Get the type of the expression
+        \return  int (NUMBER)
+        \sa      printAST, evaluateNumber
+    */
+    int getType();
+
+    /*! 
+        \brief   Print the AST node for the factorial operator
+        \return  void
+        \sa      getType, evaluateNumber
+    */
+    void printAST() {}
+
+    /*! 
+        \brief   Evaluate the factorial of the expression
+        \return  double
+        \sa      getType, printAST
+    */
+    double evaluateNumber();
+
+	/*!
+	 \brief   Evaluate the factorial of the expression as a string
+	 \return  std::string
+	 \sa      getType, printAST
+	*/
+	std::string evaluateString();
+};
+
+/*! 
+  \class   TernaryNode
+  \brief   Definition of attributes and methods of TernaryNode class
+  \note    Publicly inherits from ExpNode class
+*/
+class TernaryNode : public ExpNode {
+  private:
+    ExpNode *_cond; //!< Condition expression
+    ExpNode *_exp1; //!< Expression evaluated if the condition is true
+    ExpNode *_exp2; //!< Expression evaluated if the condition is false
+
+  public:
+    /*!     
+        \brief   Constructor of TernaryNode
+        \param   cond: pointer to the condition expression
+        \param   e1: pointer to the true expression
+        \param   e2: pointer to the false expression
+        \post    A new TernaryNode is created
+    */
+    TernaryNode(ExpNode *cond, ExpNode *e1, ExpNode *e2) : _cond(cond), _exp1(e1), _exp2(e2) {}
+
+    /*! 
+        \brief   Get the type of the ternary expression
+        \return  int (Type of the true expression branch)
+        \sa      printAST, evaluateNumber, evaluateBool, evaluateString
+    */
+    int getType() { return this->_exp1->getType(); }
+
+    /*! 
+        \brief   Print the AST node for the ternary operator
+        \return  void
+        \sa      getType
+    */
+    void printAST() {}
+
+    /*! 
+        \brief   Evaluate the ternary expression as NUMBER
+        \return  double
+        \sa      getType, printAST, evaluateBool, evaluateString
+    */
+    double evaluateNumber() {
+        return this->_cond->evaluateBool() ? this->_exp1->evaluateNumber() : this->_exp2->evaluateNumber();
+    }
+
+    /*! 
+        \brief   Evaluate the ternary expression as BOOL
+        \return  bool
+        \sa      getType, printAST, evaluateNumber, evaluateString
+    */
+    bool evaluateBool() {
+        return this->_cond->evaluateBool() ? this->_exp1->evaluateBool() : this->_exp2->evaluateBool();
+    }
+
+    /*! 
+        \brief   Evaluate the ternary expression as STRING
+        \return  std::string
+        \sa      getType, printAST, evaluateNumber, evaluateBool
+    */
+    std::string evaluateString() {
+        return this->_cond->evaluateBool() ? this->_exp1->evaluateString() : this->_exp2->evaluateString();
+    }
+};
+
+/*! 
+  \class   DoWhileStmt
+  \brief   Definition of attributes and methods of DoWhileStmt class
+  \note    Publicly inherits from Statement class
+*/
+class DoWhileStmt : public Statement {
+  private:
+    Statement *_stmt; //!< Statement block to be executed
+    ExpNode *_cond;   //!< Loop continuation condition
+
+  public:
+    /*!     
+        \brief   Constructor of DoWhileStmt
+        \param   statement: pointer to the Statement block
+        \param   condition: pointer to the loop condition expression
+        \post    A new DoWhileStmt is created
+    */
+    DoWhileStmt(Statement *statement, ExpNode *condition) : _stmt(statement), _cond(condition) {}
+
+    /*! 
+        \brief   Print the AST node for the do-while statement
+        \return  void
+        \sa      evaluate
+    */
+    void printAST() {}
+
+    /*! 
+        \brief   Execute the do-while loop statement block
+        \return  void
+        \sa      printAST
+    */
+    void evaluate() {
+        do {
+            this->_stmt->evaluate();
+        } while (this->_cond->evaluateBool() == true);
+    }
+};
 // End of name space lp
 }
 

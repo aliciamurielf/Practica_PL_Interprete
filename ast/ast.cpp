@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <string>
 #include <list>
+#include <sstream>
 
 // Para usar la funciones pow y std::abs
 #include <cmath>
@@ -96,15 +97,25 @@ double lp::VariableNode::evaluateNumber()
 
 std::string lp::VariableNode::evaluateString() 
 { 
-    if (this->getType() == STRING)
+    int tipo = this->getType();
+    
+    if (tipo == STRING)
     {
-        // Obtenemos la variable de la tabla y la tratamos como StringVariable
         lp::StringVariable *var = (lp::StringVariable *) table.getSymbol(this->_id);
         return var->getValue();
     }
+    else if (tipo == NUMBER)
+    {
+        lp::NumericVariable *var = (lp::NumericVariable *) table.getSymbol(this->_id);
+        
+        // Conversión limpia compatible con C++ clásico (-ansi)
+        std::ostringstream oss;
+        oss << var->getValue(); 
+        return oss.str();
+    }
     else
     {
-        warning("Runtime error en evaluateString(): la variable no es de tipo cadena", this->_id);
+        warning("Runtime error en evaluateString(): la variable no es de tipo cadena ni numerica", this->_id);
         return "";
     }
 }
@@ -217,6 +228,12 @@ double lp::NumberNode::evaluateNumber()
     return this->_number; 
 }
 
+std::string lp::NumberNode::evaluateString() 
+{ 
+    std::ostringstream oss;
+    oss << this->_number;
+    return oss.str(); 
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1721,4 +1738,28 @@ std::string lp::StringNode::evaluateString() {
 
 double lp::StringNode::evaluateNumber() {
     return 0.0;
+}
+
+int lp::FactorialNode::getType() { 
+	return NUMBER; 
+}
+
+double lp::FactorialNode::evaluateNumber() {
+        double val = this->_exp->evaluateNumber();
+        if (val < 0) {
+            warning("Runtime error: Factorial of a negative number", "");
+            return 0.0;
+        }
+        double res = 1.0;
+        for (int i = 2; i <= (int)val; i++) {
+            res *= i;
+        }
+        return res;
+    }
+
+std::string lp::FactorialNode::evaluateString() 
+{ 
+	std::ostringstream oss;
+	oss << this->evaluateNumber();
+	return oss.str(); 
 }

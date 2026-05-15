@@ -99,9 +99,6 @@ extern bool interactiveMode; //!< Control the interactive mode of execution of t
 /* New in example 17 */
 extern int control; //!< External: to control the interactive mode in "if" and "while" sentences 
 
-
-
-
 /***********************************************************/
 /* NEW in example 2 */
 extern std::string progname; //!<  Program name
@@ -166,7 +163,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %type <stmts> stmtlist
 
 // New in example 17: if, while, block
-%type <st> stmt asgn print read if while block repeat for read_string clear_screen place switch
+%type <st> stmt asgn print read if while block repeat for read_string clear_screen place switch do_while
 
 %type <cases> case_list
 %type <casestmt> case
@@ -182,13 +179,19 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 %token ASSIGNMENT
 
 /* Palabras reservadas */
-%token PRINT READ READ_STRING IF THEN ELSE END_IF WHILE DO END_WHILE REPEAT UNTIL FOR FROM TO STEP END_FOR SWITCH CASE DEFAULT END_SWITCH CONCATENATION
+%token PRINT READ READ_STRING IF THEN ELSE END_IF WHILE DO END_WHILE REPEAT UNTIL FOR FROM TO STEP END_FOR SWITCH CASE DEFAULT END_SWITCH CONCATENATION DO_WHILE
 
 /* Operadores lógicos */
 %token AND OR NOT
 
 /* Comandos de pantalla */
 %token CLEAR_SCREEN_CMD PLACE_CMD
+
+/* Nuevos operadores */
+%token INC DEC FACT PLUS_ASSIGN MINUS_ASSIGN MULT_ASSIGN DIV_ASSIGN MOD_ASSIGN QUESTION
+
+/* Nuevas palabras clave */
+%token COLOR_RED COLOR_GREEN COLOR_BLUE COLOR_YELLOW COLOR_MAGENTA COLOR_CYAN COLOR_WHITE COLOR_RESET BOLD_ON BOLD_OFF FACTORIAL_KW
 
 /*******************************************/
 /* Tokens con valor asociado (Tipados) */
@@ -212,15 +215,24 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 /*******************************************************/
 %left CONCATENATION
 
+/* Ternary operator */
+%right QUESTION
+
 /* MODIFIED in example 3 */
 %left PLUS MINUS 
 
 /* MODIFIED in example 5 */
 %left MULTIPLICATION DIVISION MODULO INTEGER_DIVISION
 
+/* Compound assignment operators */
+%right PLUS_ASSIGN MINUS_ASSIGN MULT_ASSIGN DIV_ASSIGN MOD_ASSIGN
+
 %left LPAREN RPAREN
 
 %nonassoc  UNARY
+
+/* Increment and Decrement */
+%left INC DEC FACT
 
 // Maximum precedence 
 /* MODIFIED in example 5 */
@@ -276,18 +288,74 @@ stmtlist:  /* empty: epsilon rule */
 ;
  
 stmt: SEMICOLON { $$ = new lp::EmptyStmt(); }
-    | asgn SEMICOLON { $$ = $1; }
-    | print SEMICOLON { $$ = $1; }
-    | read SEMICOLON { $$ = $1; }
-    | read_string SEMICOLON { $$ = $1; }
-    | clear_screen SEMICOLON { $$ = $1; }
-    | place SEMICOLON { $$ = $1; }
-    | if { $$ = $1; }     
-    | while { $$ = $1; }  
-    | for { $$ = $1; }    
-    | repeat { $$ = $1; } 
-    | block { $$ = $1; }
-	| switch { $$ = $1; }
+    | asgn SEMICOLON 
+		{ 
+			$$ = $1; 
+		}
+    | print SEMICOLON 
+		{ 
+			$$ = $1; 
+		}
+    | read SEMICOLON 
+		{ 
+			$$ = $1; 
+		}
+    | read_string SEMICOLON 
+		{ 
+			$$ = $1; 
+		}
+    | clear_screen SEMICOLON 
+		{ 
+			$$ = $1; 
+		}
+    | place SEMICOLON 
+		{ 
+			$$ = $1; 
+		}
+    | if 
+		{ 
+			$$ = $1; 
+		}     
+    | while 
+		{ 
+			$$ = $1; 
+		}  
+    | for 
+		{ 
+			$$ = $1; 
+		}    
+    | repeat 
+		{ 
+			$$ = $1; 
+		} 
+    | block 
+		{ 
+			$$ = $1; 
+		}
+	| switch 
+		{ 
+			$$ = $1; 
+		}
+	| do_while 
+		{
+			$$ = $1;
+		}
+	| VARIABLE INC SEMICOLON 
+		{ 
+			$$ = new lp::AssignmentStmt($1, new lp::PlusNode(new lp::VariableNode($1), new lp::NumberNode(1))); 
+		}
+    | VARIABLE DEC SEMICOLON 
+		{ 
+			$$ = new lp::AssignmentStmt($1, new lp::MinusNode(new lp::VariableNode($1), new lp::NumberNode(1))); 
+		}
+    | VARIABLE PLUS_ASSIGN exp SEMICOLON 
+		{ 
+			$$ = new lp::AssignmentStmt($1, new lp::PlusNode(new lp::VariableNode($1), $3)); 
+		}
+    | VARIABLE MINUS_ASSIGN exp SEMICOLON 
+		{ 
+			$$ = new lp::AssignmentStmt($1, new lp::MinusNode(new lp::VariableNode($1), $3)); 
+		}
 ;
 
 /* Regla IF */
@@ -335,6 +403,13 @@ repeat: REPEAT controlSymbol stmtlist UNTIL cond
         $$ = new lp::RepeatStmt($3, $5);
         control--;
     }
+;
+
+do_while: DO controlSymbol block WHILE cond SEMICOLON
+          {
+              $$ = new lp::DoWhileStmt($3, $5);
+              control--;
+          }
 ;
 
 cond: LPAREN exp RPAREN { $$ = $2; } ;
@@ -404,9 +479,60 @@ exp:	NUMBER
 		}
 
 	| STRING  
-     {
-       $$ = new lp::StringNode($1);
-     }
+		{
+		$$ = new lp::StringNode($1);
+		}
+	
+	| exp FACT
+		{
+			$$ = new lp::FactorialNode($1);
+		}
+
+	| exp QUESTION exp COMMA exp
+		{
+			$$ = new lp::TernaryNode($1, $3, $5);
+		}
+		
+	| COLOR_RED     
+		{ 
+			$$ = new lp::StringNode("\033[31m"); 
+		}
+    | COLOR_GREEN   
+		{ 
+			$$ = new lp::StringNode("\033[32m"); 
+		}
+    | COLOR_YELLOW  
+		{ 
+			$$ = new lp::StringNode("\033[33m"); 
+		}
+    | COLOR_BLUE    
+		{ 
+			$$ = new lp::StringNode("\033[34m"); 
+		}
+    | COLOR_MAGENTA 
+		{ 
+			$$ = new lp::StringNode("\033[35m"); 
+		}
+    | COLOR_CYAN    
+		{ 
+			$$ = new lp::StringNode("\033[36m"); 
+		}
+    | COLOR_WHITE   
+		{ 
+			$$ = new lp::StringNode("\033[37m"); 
+		}
+    | COLOR_RESET   
+		{ 
+			$$ = new lp::StringNode("\033[0m"); 
+		}
+    | BOLD_ON       
+		{ 
+			$$ = new lp::StringNode("\033[1m"); 
+		}
+    | BOLD_OFF      
+		{ 
+			$$ = new lp::StringNode("\033[22m"); 
+		}
 
 	| 	exp PLUS exp 
 		{ 

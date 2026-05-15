@@ -187,6 +187,24 @@ ERROR_ID_DOBLE {LETTER}({LETTER}|{DIGIT}|_)*__({LETTER}|{DIGIT}|_)*
 
 "//"    { return INTEGER_DIVISION; }  
 
+"++"    { return INC; }
+
+"--"    { return DEC; }
+
+"!"     { return FACT; }
+
+"+="    { return PLUS_ASSIGN; }
+
+"-="    { return MINUS_ASSIGN; }
+
+"*="    { return MULT_ASSIGN; }
+
+"/="    { return DIV_ASSIGN; }
+
+"%="    { return MOD_ASSIGN; }
+
+"?"     { return QUESTION; }
+
 "(*"    { BEGIN(COMENTARIO_BLOQUE); } 
 <COMENTARIO_BLOQUE>"*)" { BEGIN(INITIAL); }
 <COMENTARIO_BLOQUE>\n   { lineNumber++; }   

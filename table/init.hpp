@@ -97,7 +97,17 @@ static struct {
 						{"switch", SWITCH},
                 		{"case", CASE},
                 		{"default", DEFAULT},
-                		{"end_switch", END_SWITCH},           
+                		{"end_switch", END_SWITCH},
+						{"color_red", COLOR_RED},
+						{"color_green", COLOR_GREEN},
+						{"color_blue", COLOR_BLUE},
+						{"color_yellow", COLOR_YELLOW},
+						{"color_magenta", COLOR_MAGENTA},
+						{"color_cyan", COLOR_CYAN},
+						{"color_white", COLOR_WHITE},
+						{"color_reset", COLOR_RESET},
+						{"bold_on", BOLD_ON},
+						{"bold_off", BOLD_OFF},
                 		{"", 0} 
 	                   };
 
