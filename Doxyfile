@@ -66,7 +66,16 @@ ENABLE_PREPROCESSING  = NO
 # The default value is: NO.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-UML_LOOK            = NO
+UML_LOOK            = YES
+
+# Muestra recuadros con los campos y métodos dentro de los gráficos de herencia
+UML_LIMIT_NUM_FIELDS   = 10
+
+# Genera gráficos que muestran qué funciones llaman a cuáles (Call Graphs)
+# Súper útil para ver visualmente cómo evaluate() recorre el árbol sintáctico
+GENERATE_GRAPHVIEW     = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
 
 # If you set the HAVE_DOT tag to YES then doxygen will assume the dot tool is
 # available from the path. This tool is part of Graphviz (see:
@@ -76,6 +85,3 @@ UML_LOOK            = NO
 # The default value is: YES.
 
 HAVE_DOT			= YES
-
-
-GENERATE_TREEVIEW      = YES
