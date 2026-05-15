@@ -67,7 +67,11 @@ NUMBER2 {DIGIT}*\.{DIGIT}+(e[+-]?{DIGIT}+)?
 
 IDENTIFIER  {LETTER}({LETTER}|{DIGIT}|"_"({LETTER}|{DIGIT}))*
 
-cadena      '([^'\\]|\\.)*'
+CADENA      '([^'\\]|\\.)*'
+
+ERROR_NUM   {DIGIT}+\.{DIGIT}+\.{DIGIT}+
+ERROR_ID_FIN   {LETTER}({LETTER}|{DIGIT}|_)*_
+ERROR_ID_DOBLE {LETTER}({LETTER}|{DIGIT}|_)*__({LETTER}|{DIGIT}|_)*
 
 /* NEW in example 3 */
 /* STATE  */
@@ -88,7 +92,6 @@ cadena      '([^'\\]|\\.)*'
 			return SEMICOLON;
 		}
 
-
 ","		{
 			return COMMA;
 		}
@@ -97,6 +100,18 @@ cadena      '([^'\\]|\\.)*'
 			/* PARA LOS CASOS DEL SWITCH */
 			return ':';
 		}
+
+{ERROR_NUM}   {
+					warning("Lexical error: Numero mal formado (demasiados puntos)", yytext);
+                 }
+
+{ERROR_ID_FIN}   {
+					warning("Lexical error: Un identificador no puede terminar en guion bajo", yytext);
+                 }
+
+{ERROR_ID_DOBLE} {
+					warning("Lexical error: Un identificador no puede tener dos guiones bajos seguidos", yytext);
+                 }
 		
 {NUMBER1}|{NUMBER2}  {
 					  /* MODIFIED in example 4 */
@@ -105,6 +120,7 @@ cadena      '([^'\\]|\\.)*'
 
                        return NUMBER; 
                       }
+
 
 
 {IDENTIFIER}   		 {
@@ -129,7 +145,7 @@ cadena      '([^'\\]|\\.)*'
 						}
                      }
 
-{cadena}            {
+{CADENA}            {
 						yytext[yyleng-1] = '\0';
 						yytext++;
 						yyleng--;
