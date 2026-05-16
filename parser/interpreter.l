@@ -10,7 +10,6 @@
 #include <iostream>
 
 /*********************/
-/* NEW in example 4 */
 /* atof */
 #include <stdlib.h>
 /*********************/
@@ -20,7 +19,6 @@
 
 /*********************/
 /* 
-  NEW in example 16 
   AST class
   IMPORTANT: must be written before interpreter.tab.h
 */
@@ -31,13 +29,11 @@
 #include "interpreter.tab.h"
 
 /********************/
-/* NEW in example 3 */
 #include "../error/error.hpp"
 /********************/
 
 
 /*********************************************/
-/* NEW in example 7 */
 /* Table of symbols */
 #include "../table/table.hpp"
 
@@ -55,7 +51,6 @@ extern int lineNumber; //!< External line counter
 %}
 
 %option caseless
-/*! \name REGULAR DEFINITIONS  */
 
 DIGIT  [0-9] 
 
@@ -73,18 +68,13 @@ ERROR_NUM   {DIGIT}+\.{DIGIT}+\.{DIGIT}+
 ERROR_ID_FIN   {LETTER}({LETTER}|{DIGIT}|_)*_
 ERROR_ID_DOBLE {LETTER}({LETTER}|{DIGIT}|_)*__({LETTER}|{DIGIT}|_)*
 
-/* NEW in example 3 */
-/* STATE  */
 %x ERROR COMENTARIO_BLOQUE
 
-
-/*! \name REGULAR EXPRESSIONS  */
 %%
 
-[ \t] 	{ ; }    /* skip white space and tabular */
+[ \t] 	{ ; }   
 
 \n      { 
-			/* Line counter */
            	lineNumber++; 
         }
 
@@ -124,7 +114,6 @@ ERROR_ID_DOBLE {LETTER}({LETTER}|{DIGIT}|_)*__({LETTER}|{DIGIT}|_)*
 
 
 {IDENTIFIER}   		 {
-						 /* NEW in example 7 */
 						 std::string identifier(yytext);
 
 						for(int i = 0; identifier[i]; i++) 
@@ -229,11 +218,6 @@ ERROR_ID_DOBLE {LETTER}({LETTER}|{DIGIT}|_)*__({LETTER}|{DIGIT}|_)*
 
 .								{ 	
 									BEGIN(ERROR); 
-
-									/* 
-										The current value of yytext 
-										will be concatenated with the next character
-									*/
 									yymore();  
 								}
 

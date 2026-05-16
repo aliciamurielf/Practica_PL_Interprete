@@ -79,10 +79,7 @@ double lp::VariableNode::evaluateNumber()
 
 	if (this->getType() == NUMBER)
 	{
-		// Get the identifier in the table of symbols as NumericVariable
 		lp::NumericVariable *var = (lp::NumericVariable *) table.getSymbol(this->_id);
-
-		// Copy the value of the NumericVariable
 		result = var->getValue();
 	}
 	else
@@ -90,8 +87,6 @@ double lp::VariableNode::evaluateNumber()
 		warning("Runtime error in evaluateNumber(): the variable is not numeric", 
 				   this->_id);
 	}
-
-	// Return the value of the NumericVariable
 	return result;
 }
 
@@ -107,8 +102,6 @@ std::string lp::VariableNode::evaluateString()
     else if (tipo == NUMBER)
     {
         lp::NumericVariable *var = (lp::NumericVariable *) table.getSymbol(this->_id);
-        
-        // Conversión limpia compatible con C++ clásico (-ansi)
         std::ostringstream oss;
         oss << var->getValue(); 
         return oss.str();
@@ -127,10 +120,7 @@ bool lp::VariableNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{
-		// Get the identifier in the table of symbols as LogicalVariable
 		lp::LogicalVariable *var = (lp::LogicalVariable *) table.getSymbol(this->_id);
-
-		// Copy the value of the LogicalVariable
 		result = var->getValue();
 	}
 	else
@@ -138,8 +128,6 @@ bool lp::VariableNode::evaluateBool()
 		warning("Runtime error in evaluateBool(): the variable is not boolean",
 				   this->_id);
 	}
-
-	// Return the value of the LogicalVariable
 	return result;
 }
 
@@ -155,10 +143,7 @@ void lp::ConstantNode::printAST()
 
 int lp::ConstantNode::getType() 
 { 
-	// Get the identifier in the table of symbols as Constant
 	lp::Constant *var = (lp::Constant *) table.getSymbol(this->_id);
-
-	// Return the type of the Constant
 	return var->getType();
 }
 
@@ -169,10 +154,7 @@ double lp::ConstantNode::evaluateNumber()
 
 	if (this->getType() == NUMBER)
 	{
-		// Get the identifier in the table of symbols as NumericConstant
 		lp::NumericConstant *constant = (lp::NumericConstant *) table.getSymbol(this->_id);
-
-		// Copy the value of the NumericConstant
 		result = constant->getValue();
 	}
 	else
@@ -180,8 +162,6 @@ double lp::ConstantNode::evaluateNumber()
 		warning("Runtime error in evaluateNumber(): the constant is not numeric", 
 				   this->_id);
 	}
-
-	// Return the value of the NumericVariable
 	return result;
 }
 
@@ -191,10 +171,7 @@ bool lp::ConstantNode::evaluateBool()
 
 	if (this->getType() == BOOL)
 	{
-		// Get the identifier in the table of symbols as LogicalConstant
 		lp::LogicalConstant *constant = (lp::LogicalConstant *) table.getSymbol(this->_id);
-
-		// Copy the value of the LogicalConstant
 		result = constant->getValue();
 	}
 	else
@@ -202,8 +179,6 @@ bool lp::ConstantNode::evaluateBool()
 		warning("Runtime error in evaluateBool(): the constant is not boolean",
 				   this->_id);
 	}
-
-	// Return the value of the LogicalVariable
 	return result;
 }
 
@@ -211,7 +186,6 @@ bool lp::ConstantNode::evaluateBool()
 //////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
  
-
 int lp::NumberNode::getType()
 {
 	return NUMBER;
@@ -374,8 +348,6 @@ void lp::UnaryPlusNode::printAST()
 double lp::UnaryPlusNode::evaluateNumber()
 {
 	double result = 0.0;
-
-	// Ckeck the type of the expression
 	if (this->getType() == NUMBER)
 	{
 		result = this->_exp->evaluateNumber();
@@ -404,8 +376,7 @@ void lp::PlusNode::printAST()
 double lp::PlusNode::evaluateNumber()
 {
 	double result = 0.0;
-
-	// Ckeck the types of the expressions
+	
 	if (this->getType() == NUMBER)
 	{
 		result = this->_left->evaluateNumber() + this->_right->evaluateNumber();
@@ -435,7 +406,6 @@ double lp::MinusNode::evaluateNumber()
 {
 	double result = 0.0;
 
-	// Ckeck the types of the expressions
 	if (this->getType() == NUMBER)
 	{
 		result = this->_left->evaluateNumber() - this->_right->evaluateNumber();
@@ -465,7 +435,6 @@ double lp::MultiplicationNode::evaluateNumber()
 {
 	double result = 0.0;
 
-	// Ckeck the types of the expressions
 	if (this->getType() == NUMBER)
 	{
 		result = this->_left->evaluateNumber() * this->_right->evaluateNumber();
@@ -496,7 +465,7 @@ double lp::DivisionNode::evaluateNumber()
 {
 	double result = 0.0;
 
-	// Ckeck the types of the expressions
+	
 	if (this->getType() == NUMBER)
 	{
 		double leftNumber, rightNumber;
@@ -549,7 +518,7 @@ double lp::IntegerDivisionNode::evaluateNumber()
 	
     	if(std::abs(rightNumber) > ERROR_BOUND)
         {
-            // Convertimos a entero (int) antes de dividir
+            // Convertimos a entero antes de dividir
 			result = (int) leftNumber / (int) rightNumber;
         }
 		else
@@ -582,7 +551,7 @@ double lp::ModuloNode::evaluateNumber()
 {
 	double result = 0.0;
 
-	// Ckeck the types of the expressions
+	
 	if (this->getType() == NUMBER)
 	{
 		double leftNumber, rightNumber;
@@ -603,8 +572,6 @@ double lp::ModuloNode::evaluateNumber()
   return result;
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -621,7 +588,7 @@ double lp::PowerNode::evaluateNumber()
 {
 	double result = 0.0;
 
-	// Ckeck the types of the expressions
+	
 	if (this->getType() == NUMBER)
 	{
 		result = pow(this->_left->evaluateNumber(), this->_right->evaluateNumber());
@@ -651,10 +618,7 @@ void lp::BuiltinFunctionNode_0::printAST()
 
 double lp::BuiltinFunctionNode_0::evaluateNumber() 
 {
-	// Get the identifier in the table of symbols as BuiltinParameter0
 	lp::BuiltinParameter0 *f = (lp::BuiltinParameter0 *) table.getSymbol(this->_id);
-
-	// Apply the function and copy the result
    	return f->getFunction()();
 }
 
@@ -688,13 +652,9 @@ double lp::BuiltinFunctionNode_1::evaluateNumber()
 {
 	double result = 0.0;
 
-	// Ckeck the type of the expression
 	if (this->getType() == NUMBER)
 	{
-		// Get the identifier in the table of symbols as BuiltinParameter1
 		lp::BuiltinParameter1 *f = (lp::BuiltinParameter1 *) table.getSymbol( this->_id);
-
-		// Apply the function to the parameter and copy the result
 		result = f->getFunction()(this->_exp->evaluateNumber());
 	}
 	else
@@ -738,13 +698,10 @@ double lp::BuiltinFunctionNode_2::evaluateNumber()
 {
 	double result = 0.0;
 
-	// Ckeck the types of the expressions
+	
 	if (this->getType() == NUMBER)
 	{
-		// Get the identifier in the table of symbols as BuiltinParameter2
 		lp::BuiltinParameter2 *f = (lp::BuiltinParameter2 *) table.getSymbol(this->_id);
-
-		// Apply the function to the parameters and copy the result
 	  	result = f->getFunction()(this->_exp1->evaluateNumber(),this->_exp2->evaluateNumber());
 	}
 	else
@@ -818,11 +775,8 @@ bool lp::GreaterOrEqualNode::evaluateBool()
 	{
 		warning("Runtime error: incompatible types of parameters for ", "operator Greater or equal than");
 	}
-
 	return result;
 }
-
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -889,8 +843,6 @@ bool lp::LessOrEqualNode::evaluateBool()
 	return result;
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -940,7 +892,6 @@ bool lp::EqualNode::evaluateBool()
 	return result;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -965,7 +916,6 @@ bool lp::NotEqualNode::evaluateBool()
 				leftNumber = this->_left->evaluateNumber();
 				rightNumber = this->_right->evaluateNumber();
 
-				// ERROR_BOUND to control the precision of real numbers
 				result = ( std::abs(leftNumber - rightNumber) >= ERROR_BOUND );
 			break;
 			case BOOL:
@@ -1024,8 +974,6 @@ bool lp::AndNode::evaluateBool()
 	return result;
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1059,8 +1007,6 @@ bool lp::OrNode::evaluateBool()
 	return result;
 }
 
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1086,7 +1032,6 @@ bool lp::NotNode::evaluateBool()
 
 	return result;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1185,8 +1130,6 @@ void lp::AssignmentStmt::evaluate()
     // Allow multiple assigment -> a = b = c = 2;
     else // this->_asgn is not NULL
     {
-        // IMPORTANT
-        // evaluate the assigment child
         this->_asgn->evaluate();
 
         /* Get the identifier of the previous asgn in the table of symbols as Variable */
@@ -1310,10 +1253,8 @@ void lp::ReadStmt::evaluate()
 	std::cout << RESET; 
 	std::cin >> value;
 
-	/* Get the identifier in the table of symbols as Variable */
 	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
 
-	// Check if the type of the variable is NUMBER
 	if (var->getType() == NUMBER)
 	{
 		/* Get the identifier in the table of symbols as NumericVariable */

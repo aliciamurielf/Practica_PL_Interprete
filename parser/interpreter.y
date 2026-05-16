@@ -187,10 +187,8 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 /* Comandos de pantalla */
 %token CLEAR_SCREEN_CMD PLACE_CMD
 
-/* Nuevos operadores */
 %token INC DEC FACT PLUS_ASSIGN MINUS_ASSIGN MULT_ASSIGN DIV_ASSIGN MOD_ASSIGN QUESTION
 
-/* Nuevas palabras clave */
 %token COLOR_RED COLOR_GREEN COLOR_BLUE COLOR_YELLOW COLOR_MAGENTA COLOR_CYAN COLOR_WHITE COLOR_RESET BOLD_ON BOLD_OFF FACTORIAL_KW
 
 /*******************************************/
@@ -241,8 +239,6 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %%
  //! \name Grammar rules
-
-/* MODIFIED  Grammar in example 16 */
 
 program : stmtlist
 		  { 
@@ -416,36 +412,32 @@ cond: LPAREN exp RPAREN { $$ = $2; } ;
 
 block: LETFCURLYBRACKET stmtlist RIGHTCURLYBRACKET  
 		{
-			// Create a new block of statements node
 			$$ = new lp::BlockStmt($2); 
 		}
 ;
 
 controlSymbol:  /* Epsilon rule*/
 		{
-			// To control the interactive mode in "if" and "while" sentences
 			control++;
 		}
 	;
 
 asgn:   VARIABLE ASSIGNMENT exp 
 		{ 
-			// Create a new assignment node
 			$$ = new lp::AssignmentStmt($1, $3);
 		}
 
 	|  VARIABLE ASSIGNMENT asgn 
 		{ 
-			// Create a new assignment node
+			
 			$$ = new lp::AssignmentStmt($1, (lp::AssignmentStmt *) $3);
 		}
-
-	   /* NEW in example 11 */ 
+	  
 	| CONSTANT ASSIGNMENT exp 
 		{   
  			execerror("Semantic error in assignment: it is not allowed to modify a constant ", $1);
 		}
-	   /* NEW in example 11 */ 
+	  
 	| CONSTANT ASSIGNMENT asgn 
 		{   
  			execerror("Semantic error in multiple assignment: it is not allowed to modify a constant ",$1);
@@ -454,18 +446,15 @@ asgn:   VARIABLE ASSIGNMENT exp
 
 print:  PRINT exp 
 		{
-			// Create a new print node
 			 $$ = new lp::PrintStmt($2);
 		}
 ;	
 
 read:  READ LPAREN VARIABLE RPAREN  
 		{
-			// Create a new read node
 			 $$ = new lp::ReadStmt($3);
 		}
 
-  	  /* NEW rule in example 11 */
 	| READ LPAREN CONSTANT RPAREN  
 		{   
  			execerror("Semantic error in \"read statement\": it is not allowed to modify a constant ",$3);
@@ -474,7 +463,6 @@ read:  READ LPAREN VARIABLE RPAREN
 
 exp:	NUMBER 
 		{ 
-			// Create a new number node
 			$$ = new lp::NumberNode($1);
 		}
 
@@ -536,79 +524,66 @@ exp:	NUMBER
 
 	| 	exp PLUS exp 
 		{ 
-			// Create a new plus node
 			 $$ = new lp::PlusNode($1, $3);
 		 }
 
 	| 	exp MINUS exp
       	{
-			// Create a new minus node
 			$$ = new lp::MinusNode($1, $3);
 		}
 
 	| 	exp MULTIPLICATION exp 
 		{ 
-			// Create a new multiplication node
 			$$ = new lp::MultiplicationNode($1, $3);
 		}
 
 	| 	exp DIVISION exp
 		{
-		  // Create a new division node	
 		  $$ = new lp::DivisionNode($1, $3);
 	   }
 
 	|   exp INTEGER_DIVISION exp
      	{
-			// Create a new integer division node 
 			$$ = new lp::IntegerDivisionNode($1, $3);
 		}
 		
 	| exp CONCATENATION exp 
         {
-          // Creamos el nuevo nodo de concatenación
           $$ = new lp::ConcatenationNode($1, $3);
         }
 
 	| 	LPAREN exp RPAREN
        	{ 
-		    // just copy up the expression node 
 			$$ = $2;
 		 }
 
   	| 	PLUS exp %prec UNARY
 		{ 
-		  // Create a new unary plus node	
   		  $$ = new lp::UnaryPlusNode($2);
 		}
 
 	| 	MINUS exp %prec UNARY
 		{ 
-		  // Create a new unary minus node	
   		  $$ = new lp::UnaryMinusNode($2);
 		}
 
 	|	exp MODULO exp 
 		{
-		  // Create a new modulo node	
 		  $$ = new lp::ModuloNode($1, $3);
        }
 
 	|	exp POWER exp 
      	{ 
-		  // Create a new power node	
   		  $$ = new lp::PowerNode($1, $3);
 		}
 
 	 | VARIABLE
 		{
-		  // Create a new variable node	
 		  $$ = new lp::VariableNode($1);
 		}
 
 	 | CONSTANT
 		{
-		  // Create a new constant node	
 		  $$ = new lp::ConstantNode($1);
 
 		}
@@ -662,55 +637,46 @@ exp:	NUMBER
 
 	| exp GREATER_THAN exp
 	 	{
-		  // Create a new "greater than" node	
  			$$ = new lp::GreaterThanNode($1,$3);
 		}
 
 	| exp GREATER_OR_EQUAL exp 
 	 	{
-		  // Create a new "greater or equal" node	
  			$$ = new lp::GreaterOrEqualNode($1,$3);
 		}
 
 	| exp LESS_THAN exp 	
 	 	{
-		  // Create a new "less than" node	
  			$$ = new lp::LessThanNode($1,$3);
 		}
 
 	| exp LESS_OR_EQUAL exp 
 	 	{
-		  // Create a new "less or equal" node	
  			$$ = new lp::LessOrEqualNode($1,$3);
 		}
 
 	| exp EQUAL exp 	
 	 	{
-		  // Create a new "equal" node	
  			$$ = new lp::EqualNode($1,$3);
 		}
 
     | exp NOT_EQUAL exp 	
 	 	{
-		  // Create a new "not equal" node	
  			$$ = new lp::NotEqualNode($1,$3);
 		}
 
     | exp AND exp 
 	 	{
-		  // Create a new "logic and" node	
  			$$ = new lp::AndNode($1,$3);
 		}
 
     | exp OR exp 
 	 	{
-		  // Create a new "logic or" node	
  			$$ = new lp::OrNode($1,$3);
 		}
 
     | NOT exp 
 	 	{
-		  // Create a new "logic negation" node	
  			$$ = new lp::NotNode($2);
 		}
 ;
@@ -719,15 +685,12 @@ exp:	NUMBER
 listOfExp: 
 			/* Empty list of numeric expressions */
 			{
-			    // Create a new list STL
 				$$ = new std::list<lp::ExpNode *>(); 
 			}
 
 	|  exp restOfListOfExp
 			{
 				$$ = $2;
-
-				// Insert the expression in the list of expressions
 				$$->push_front($1);
 			}
 ;
@@ -735,16 +698,12 @@ listOfExp:
 restOfListOfExp:
 			/* Empty list of numeric expressions */
 			{
-			    // Create a new list STL
 				$$ = new std::list<lp::ExpNode *>(); 
 			}
 
 		|	COMMA exp restOfListOfExp
 			{
-				// Get the list of expressions
 				$$ = $3;
-
-				// Insert the expression in the list of expressions
 				$$->push_front($2);
 			}
 ;
