@@ -518,7 +518,6 @@ double lp::IntegerDivisionNode::evaluateNumber()
 	
     	if(std::abs(rightNumber) > ERROR_BOUND)
         {
-            // Convertimos a entero antes de dividir
 			result = (int) leftNumber / (int) rightNumber;
         }
 		else
@@ -533,7 +532,6 @@ double lp::IntegerDivisionNode::evaluateNumber()
 
   return result;
 }
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1398,17 +1396,21 @@ void lp::SwitchStmt::evaluate()
     int switchType = this->_cond->getType();
     bool matched = false;
 
-    // Recorremos los casos buscando una coincidencia 
     for (std::list<lp::CaseStmt *>::iterator it = this->_cases->begin(); it != this->_cases->end(); ++it) {
         
         bool isEqual = false;
         
-        if (switchType == NUMBER) {
-            isEqual = (std::abs(this->_cond->evaluateNumber() - (*it)->getExp()->evaluateNumber()) < ERROR_BOUND);
-        } else if (switchType == BOOL) {
-            isEqual = (this->_cond->evaluateBool() == (*it)->getExp()->evaluateBool());
-        } else if (switchType == STRING) {
-            isEqual = (this->_cond->evaluateString() == (*it)->getExp()->evaluateString());
+        int caseType = (*it)->getExp()->getType();
+        
+        if (switchType == caseType) 
+        {
+            if (switchType == NUMBER) {
+                isEqual = (std::abs(this->_cond->evaluateNumber() - (*it)->getExp()->evaluateNumber()) < ERROR_BOUND);
+            } else if (switchType == BOOL) {
+                isEqual = (this->_cond->evaluateBool() == (*it)->getExp()->evaluateBool());
+            } else if (switchType == STRING) {
+                isEqual = (this->_cond->evaluateString() == (*it)->getExp()->evaluateString());
+            }
         }
 
         if (isEqual) {
@@ -1417,6 +1419,7 @@ void lp::SwitchStmt::evaluate()
             break; 
         }
     }
+    
     if (!matched && this->_defaultStmt != NULL) {
         this->_defaultStmt->evaluate();
     }
@@ -1500,40 +1503,43 @@ void lp::ForStmt::evaluate()
     double stepValue = (this->_step != NULL) ? this->_step->evaluateNumber() : 1.0;
 
     if (std::abs(stepValue) < ERROR_BOUND) {
-		warning("Runtime error: Bucle for con paso cero", this->_id);
-		return;
-	}
+        warning("Runtime error: Bucle for con paso cero", this->_id);
+        return;
+    }
     if ((startValue < endValue && stepValue < 0) || (startValue > endValue && stepValue > 0)) {
         warning("Runtime error: Bucle for mal definido (intervalo infinito o nulo)", this->_id);
         return;
     }
 
     lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
-    if (var != NULL && var->getType() == NUMBER) {
-        ((lp::NumericVariable *)var)->setValue(startValue);
-    } else {
-        table.eraseSymbol(this->_id);
-        lp::NumericVariable *n = new lp::NumericVariable(this->_id, VARIABLE, NUMBER, startValue);
-        table.installSymbol(n);
+    if (var == NULL || var->getType() != NUMBER) {
+        table.eraseSymbol(this->_id); 
+        table.installSymbol(new lp::NumericVariable(this->_id, VARIABLE, NUMBER, startValue));
     }
 
-    double currentValue = startValue;
-    bool keepLooping = true;
-
-    while (keepLooping) {
-        if (stepValue > 0) keepLooping = (currentValue <= endValue);
-        else keepLooping = (currentValue >= endValue);
-
-        if (!keepLooping) break; 
-
-        std::list<Statement *>::iterator it;
-        for (it = this->_body->begin(); it != this->_body->end(); ++it) {
-            (*it)->evaluate();
+    lp::NumericVariable *controlVar = (lp::NumericVariable *)table.getSymbol(this->_id);
+    
+    if (stepValue > 0) 
+    {
+        for (double i = startValue; i <= endValue; i += stepValue) 
+        {
+            controlVar->setValue(i); 
+            std::list<Statement *>::iterator it;
+            for (it = this->_body->begin(); it != this->_body->end(); ++it) {
+                (*it)->evaluate();
+            }
         }
-
-        currentValue += stepValue;
-        
-        ((lp::NumericVariable *)table.getSymbol(this->_id))->setValue(currentValue);
+    } 
+    else 
+    {
+        for (double i = startValue; i >= endValue; i += stepValue) 
+        {
+            controlVar->setValue(i); 
+            std::list<Statement *>::iterator it;
+            for (it = this->_body->begin(); it != this->_body->end(); ++it) {
+                (*it)->evaluate();
+            }
+        }
     }
 }
 
@@ -1546,10 +1552,6 @@ void lp::ConcatenationNode::printAST()
   this->_right->printAST();
 }
 
-/*! 
-    \brief   Get the type of the concatenation: STRING
-    \return  int
-*/
 int lp::ConcatenationNode::getType() {
     return STRING;
 }
@@ -1590,8 +1592,11 @@ void lp::AST::evaluate()
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
 int lp::StringNode::getType() {
-    return STRING; // Aquí sí funcionará porque el .cpp sí conoce los tokens
+    return STRING;
 }
 
 void lp::StringNode::printAST() {
@@ -1605,12 +1610,10 @@ std::string lp::StringNode::evaluateString() {
     while ((pos = procesada.find("\\n", pos)) != std::string::npos) 
     {
         procesada.replace(pos, 2, "\n");
-        // Avanzamos una posición para seguir buscando
         pos += 1;
     }
 
     pos = 0;
-    // Buscar y reemplazar todos los "\t" (secuencia de escape) por una tabulación real
     while ((pos = procesada.find("\\t", pos)) != std::string::npos) 
     {
         procesada.replace(pos, 2, "\t");
@@ -1624,6 +1627,8 @@ double lp::StringNode::evaluateNumber() {
     return 0.0;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 int lp::FactorialNode::getType() { 
 	return NUMBER; 
 }
@@ -1646,4 +1651,29 @@ std::string lp::FactorialNode::evaluateString()
 	std::ostringstream oss;
 	oss << this->evaluateNumber();
 	return oss.str(); 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// DO-WHILE STMT
+
+void lp::DoWhileStmt::printAST() 
+{
+    std::cout << "DoWhileStmt: " << std::endl;
+    
+    std::cout << "\t Body: " << std::endl;
+    std::cout << "\t";
+    this->_stmt->printAST();
+
+    std::cout << "\t While Condition:" << std::endl;
+    std::cout << "\t";
+    this->_cond->printAST();
+
+    std::cout << std::endl;
+}
+
+void lp::DoWhileStmt::evaluate() 
+{
+    do {
+        this->_stmt->evaluate();
+    } while (this->_cond->evaluateBool() == true); 
 }

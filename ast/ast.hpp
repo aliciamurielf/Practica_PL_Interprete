@@ -2176,19 +2176,17 @@ class DoWhileStmt : public Statement {
         \return  void
         \sa      evaluate
     */
-    void printAST() {}
+    void printAST();
 
     /*! 
         \brief   Execute the do-while loop statement block
         \return  void
         \sa      printAST
     */
-    void evaluate() {
-        do {
-            this->_stmt->evaluate();
-        } while (this->_cond->evaluateBool() == true);
-    }
+    void evaluate();
 };
+
+
 // End of name space lp
 }
 
