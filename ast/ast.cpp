@@ -729,20 +729,14 @@ void lp::GreaterThanNode::printAST()
 bool lp::GreaterThanNode::evaluateBool() 
 {
 	bool result = false;
-
-	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
-
-		result = (leftNumber > rightNumber);
-	}
-	else
-	{
+	if (this->getType() == BOOL) {
+        if (this->_left->getType() == NUMBER)
+		    result = (this->_left->evaluateNumber() > this->_right->evaluateNumber());
+        else if (this->_left->getType() == STRING)
+            result = (this->_left->evaluateString() > this->_right->evaluateString());
+	} else {
 		warning("Runtime error: incompatible types of parameters for ", "operator Greater than");
 	}
-
 	return result;
 }
 
@@ -762,17 +756,12 @@ void lp::GreaterOrEqualNode::printAST()
 bool lp::GreaterOrEqualNode::evaluateBool() 
 {
 	bool result = false;
-
-	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
-
-		result = (leftNumber >= rightNumber);
-	}
-	else
-	{
+	if (this->getType() == BOOL) {
+        if (this->_left->getType() == NUMBER)
+		    result = (this->_left->evaluateNumber() >= this->_right->evaluateNumber());
+        else if (this->_left->getType() == STRING)
+            result = (this->_left->evaluateString() >= this->_right->evaluateString());
+	} else {
 		warning("Runtime error: incompatible types of parameters for ", "operator Greater or equal than");
 	}
 	return result;
@@ -793,20 +782,14 @@ void lp::LessThanNode::printAST()
 bool lp::LessThanNode::evaluateBool() 
 {
 	bool result = false;
-
-	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
-
-		result = (leftNumber < rightNumber);
-	}
-	else
-	{
+	if (this->getType() == BOOL) {
+        if (this->_left->getType() == NUMBER)
+		    result = (this->_left->evaluateNumber() < this->_right->evaluateNumber());
+        else if (this->_left->getType() == STRING)
+            result = (this->_left->evaluateString() < this->_right->evaluateString());
+	} else {
 		warning("Runtime error: incompatible types of parameters for ", "operator Less than");
 	}
-
 	return result;
 }
 
@@ -826,20 +809,14 @@ void lp::LessOrEqualNode::printAST()
 bool lp::LessOrEqualNode::evaluateBool() 
 {
 	bool result = false;
-
-	if (this->getType() == BOOL)
-	{
-		double leftNumber, rightNumber;
-		leftNumber = this->_left->evaluateNumber();
-		rightNumber = this->_right->evaluateNumber();
-
-		result = (leftNumber <= rightNumber);
-	}
-	else
-	{
+	if (this->getType() == BOOL) {
+        if (this->_left->getType() == NUMBER)
+		    result = (this->_left->evaluateNumber() <= this->_right->evaluateNumber());
+        else if (this->_left->getType() == STRING)
+            result = (this->_left->evaluateString() <= this->_right->evaluateString());
+	} else {
 		warning("Runtime error: incompatible types of parameters for ", "operator Less or equal than");
 	}
-
 	return result;
 }
 
@@ -863,32 +840,20 @@ bool lp::EqualNode::evaluateBool()
 	{
 		switch(this->_left->getType()){
 			case NUMBER:
-				double leftNumber, rightNumber;
-				leftNumber = this->_left->evaluateNumber();
-				rightNumber = this->_right->evaluateNumber();
-
-				// ERROR_BOUND to control the precision of real numbers
-				result = ( std::abs(leftNumber - rightNumber) < ERROR_BOUND );
+				result = ( std::abs(this->_left->evaluateNumber() - this->_right->evaluateNumber()) < ERROR_BOUND );
 			break;
 			case BOOL:
-				bool leftBoolean, rightBoolean;
-				leftBoolean = this->_left->evaluateBool();
-				rightBoolean = this->_right->evaluateBool();
-
-				// 
-				result = (leftBoolean == rightBoolean);
-				break;
+				result = (this->_left->evaluateBool() == this->_right->evaluateBool());
+			break;
+            case STRING:
+                result = (this->_left->evaluateString() == this->_right->evaluateString());
+            break;
 		  default:
-				warning("Runtime error: incompatible types of parameters for ", 
-								"Equal operator");				
+				warning("Runtime error: incompatible types of parameters for ", "Equal operator");				
 		}
+	} else {
+		warning("Runtime error: incompatible types of parameters for ", "Equal operator");
 	}
-	else
-	{
-		warning("Runtime error: incompatible types of parameters for ", 
-						"Equal operator");
-	}
-
 	return result;
 }
 
@@ -912,30 +877,20 @@ bool lp::NotEqualNode::evaluateBool()
 	{
 		switch(this->_left->getType()){
 			case NUMBER:
-				double leftNumber, rightNumber;
-				leftNumber = this->_left->evaluateNumber();
-				rightNumber = this->_right->evaluateNumber();
-
-				result = ( std::abs(leftNumber - rightNumber) >= ERROR_BOUND );
+				result = ( std::abs(this->_left->evaluateNumber() - this->_right->evaluateNumber()) >= ERROR_BOUND );
 			break;
 			case BOOL:
-				bool leftBoolean, rightBoolean;
-				leftBoolean = this->_left->evaluateBool();
-				rightBoolean = this->_right->evaluateBool();
-
-				// 
-				result = (leftBoolean != rightBoolean);
-				break;
+				result = (this->_left->evaluateBool() != this->_right->evaluateBool());
+			break;
+            case STRING:
+                result = (this->_left->evaluateString() != this->_right->evaluateString());
+            break;
 		  default:
-				warning("Runtime error: incompatible types of parameters for ", 
-								"Not Equal operator");				
+				warning("Runtime error: incompatible types of parameters for ", "Not Equal operator");				
 		}
-	}
-	else
-	{
+	} else {
 		warning("Runtime error: incompatible types of parameters for ", "Not Equal operator");
 	}
-
 	return result;
 }
 
@@ -1119,8 +1074,7 @@ void lp::AssignmentStmt::evaluate()
                 }
             }
             break;
-            // -----------------------------------------------
-
+		
             default:
                 warning("Runtime error: incompatible type of expression for ", "Assigment");
         }
@@ -1248,29 +1202,21 @@ void lp::ReadStmt::printAST()
 void lp::ReadStmt::evaluate() 
 {   
 	double value;
-	std::cout << BIYELLOW; 
-	std::cout << "Insert a numeric value --> " ;
-	std::cout << RESET; 
+	// std::cout << BIYELLOW; 
+	// std::cout << "Insert a numeric value --> " ;
+	// std::cout << RESET; 
 	std::cin >> value;
 
 	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
 
 	if (var->getType() == NUMBER)
 	{
-		/* Get the identifier in the table of symbols as NumericVariable */
 		lp::NumericVariable *n = (lp::NumericVariable *) table.getSymbol(this->_id);
-						
-		/* Assignment the read value to the identifier */
 		n->setValue(value);
 	}
-	// The type of variable is not NUMBER
 	else
 	{
-		// Delete $1 from the table of symbols as Variable
 		table.eraseSymbol(this->_id);
-
-			// Insert $1 in the table of symbols as NumericVariable 
-		// with the type NUMBER and the read value 
 		lp::NumericVariable *n = new lp::NumericVariable(this->_id, 
 									  VARIABLE,NUMBER,value);
 
@@ -1284,13 +1230,11 @@ void lp::ReadStringStmt::printAST() {
 
 void lp::ReadStringStmt::evaluate() {
     std::string value;
-    std::cout << "Introduce una cadena --> ";
+    // std::cout << "Introduce una cadena --> ";
 	std::cin >> std::ws;
-    std::getline(std::cin, value); // Leemos la línea completa
+    std::getline(std::cin, value); 
 
-    // Buscamos si la variable ya existe
     if (table.lookupSymbol(this->_id)) {
-        // La borramos para poder cambiarle el tipo si hace falta (Tipado dinámico)
         table.eraseSymbol(this->_id);
     }
     
@@ -1404,17 +1348,13 @@ void lp::RepeatStmt::printAST()
 
 void lp::RepeatStmt::evaluate() 
 {
-  // In a repeat...until loop, the body runs AT LEAST ONCE, 
-  // and it stops when the condition becomes TRUE.
   do {
-      // Evaluate all statements in the body
       std::list<Statement *>::iterator stmtIter;
       for (stmtIter = this->_stmts->begin(); stmtIter != this->_stmts->end(); stmtIter++) 
       {
         (*stmtIter)->evaluate();
       }
       
-  // Keep looping WHILE the condition is FALSE (stop UNTIL condition is TRUE)
   } while (this->_cond->evaluateBool() == false); 
 }
 
@@ -1555,18 +1495,19 @@ void lp::ForStmt::printAST()
 
 void lp::ForStmt::evaluate() 
 {
-    // Evaluamos los límites
     double startValue = this->_from->evaluateNumber();
     double endValue = this->_to->evaluateNumber();
     double stepValue = (this->_step != NULL) ? this->_step->evaluateNumber() : 1.0;
 
-    // Control de bucle infinito o mal definido (Requisito del PDF)
     if (std::abs(stepValue) < ERROR_BOUND) {
 		warning("Runtime error: Bucle for con paso cero", this->_id);
 		return;
 	}
+    if ((startValue < endValue && stepValue < 0) || (startValue > endValue && stepValue > 0)) {
+        warning("Runtime error: Bucle for mal definido (intervalo infinito o nulo)", this->_id);
+        return;
+    }
 
-    // Instalamos o actualizamos la variable de control en la tabla de símbolos
     lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
     if (var != NULL && var->getType() == NUMBER) {
         ((lp::NumericVariable *)var)->setValue(startValue);
@@ -1579,24 +1520,19 @@ void lp::ForStmt::evaluate()
     double currentValue = startValue;
     bool keepLooping = true;
 
-    // Bucle real
     while (keepLooping) {
-        // Comprobamos la condición de parada según la dirección del step
         if (stepValue > 0) keepLooping = (currentValue <= endValue);
         else keepLooping = (currentValue >= endValue);
 
-        if (!keepLooping) break; // Salimos del bucle si nos hemos pasado
+        if (!keepLooping) break; 
 
-        // Ejecutamos el cuerpo del bucle
         std::list<Statement *>::iterator it;
         for (it = this->_body->begin(); it != this->_body->end(); ++it) {
             (*it)->evaluate();
         }
 
-        // Incrementamos la variable
         currentValue += stepValue;
         
-        // Actualizamos el valor en la tabla de símbolos para la siguiente iteración
         ((lp::NumericVariable *)table.getSymbol(this->_id))->setValue(currentValue);
     }
 }
@@ -1620,8 +1556,15 @@ int lp::ConcatenationNode::getType() {
 
 std::string lp::ConcatenationNode::evaluateString() 
 {
-    // Evaluamos ambos lados como cadenas y los unimos
-    return this->_left->evaluateString() + this->_right->evaluateString();
+    std::string result = "";
+    if (this->_left->getType() == STRING && this->_right->getType() == STRING){
+        result = this->_left->evaluateString() + this->_right->evaluateString();
+    }
+    else{
+        warning("Runtime error: incompatible types of expressions for", "Concatenation (||)");
+    }
+
+    return result;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
