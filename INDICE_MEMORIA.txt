@@ -1,0 +1,229 @@
+================================================================================
+MEMORIA DE PRACTICAS - PROCESADORES DE LENGUAJES (2025-2026)
+================================================================================
+
+INDICE DE CONTENIDOS
+================================================================================
+
+PORTADA Y PRELIMINARES
+  ├─ Titulo: MEMORIA DE PRACTICAS
+  ├─ Autoras: Alicia Muriel Fernandez, Lucia Canero Moslero
+  ├─ Asignatura: Procesadores de Lenguajes
+  ├─ Institucion: Escuela Politecnica Superior de Cordoba
+  ├─ Resumen (Abstract)
+  └─ Tabla de Contenidos
+
+SECCION 1: INTRODUCCION
+  ├─ Objetivos del Proyecto
+  │  ├─ Analizar lexicamente codigo fuente
+  │  ├─ Generar Arbol de Sintaxis Abstracta (AST)
+  │  ├─ Interpretar y ejecutar codigo
+  │  ├─ Manejar tipos dinamicamente
+  │  ├─ Detectar y reportar errores
+  │  └─ Soportar estructuras de control complejas
+  ├─ Competencias Desarrolladas
+  │  ├─ CTEC2: Fundamentos teoricos de lenguajes
+  │  └─ CU1: Dominio de lengua extranjera
+  └─ Estructura de la Memoria
+
+SECCION 2: ARQUITECTURA AST Y TABLA DE SIMBOLOS
+  ├─ Jerarquia de Clases y Polimorfismo
+  │  ├─ Clase base ExpNode (expresiones)
+  │  ├─ Clase base Statement (sentencias)
+  │  ├─ Metodos virtuales puros
+  │  └─ Codigo real: clase ExpNode
+  ├─ Interaccion con la Tabla de Simbolos
+  │  ├─ Recuperacion de valores
+  │  ├─ Verificacion de tipos
+  │  ├─ Polimorfismo en tiempo de ejecucion
+  │  └─ Codigo real: VariableNode::evaluateNumber()
+  └─ Reglas de Bison e Instanciacion de Nodos
+     ├─ Generacion de nodos especializados
+     ├─ PlusNode, MinusNode, MultiplicationNode
+     └─ Codigo real: gramatica Bison
+
+SECCION 3: TIPADO DINAMICO Y PROCESAMIENTO DE CADENAS
+  ├─ Sistema de Tipado Dinamico
+  │  ├─ Cambio de tipo en tiempo de ejecucion
+  │  ├─ Metodo eraseSymbol() y reinstalacion
+  │  ├─ Conversiones NUMBER, BOOL, STRING
+  │  └─ Codigo real: AssignmentStmt::evaluate()
+  └─ Procesamiento de Cadenas
+     ├─ Secuencias de escape (\n, \t)
+     ├─ Busqueda y reemplazo iterativo
+     └─ Codigo real: StringNode::evaluateString()
+
+SECCION 4: ROBUSTEZ Y CONTROL DE ERRORES DINAMICOS
+  ├─ Estrategia General
+  │  ├─ Constante ERROR_BOUND (1.0e-6)
+  │  ├─ Comparaciones tolerables de numeros reales
+  │  └─ Deteccion y reporte en ejecucion
+  └─ Control de Bucles For
+     ├─ Prevension de paso cero (bucle infinito)
+     ├─ Prevension de intervalo infinito/nulo
+     ├─ Validaciones coordinadas
+     └─ Codigo real: ForStmt::evaluate()
+
+SECCION 5: AMPLIACIONES AVANZADAS (100%+ de requisitos)
+  ├─ Blindaje de Tipos en Switch
+  │  ├─ Verificacion de coincidencia de tipos
+  │  ├─ Evita comparaciones erroneo-alfabeticas
+  │  ├─ Manejo de NUMBER, BOOL, STRING
+  │  └─ Codigo real: SwitchStmt::evaluate()
+  ├─ Bucle Do-While
+  │  ├─ Ejecucion garantizada de cuerpo
+  │  ├─ Evaluacion postcondicion
+  │  └─ Codigo real: DoWhileStmt::evaluate()
+  ├─ Comandos ANSI de Color
+  │  ├─ Statement puro (ColorStmt)
+  │  ├─ No satura gramatica Bison
+  │  ├─ Soporta: red, green, blue, yellow, reset
+  │  └─ Codigo real: clase ColorStmt
+  ├─ Operador Factorial
+  │  ├─ Calculo de n!
+  │  ├─ Validacion de negativos
+  │  ├─ Integracion en expresiones
+  │  └─ Codigo real: FactorialNode::evaluateNumber()
+  └─ Operador Ternario
+     ├─ Evaluacion condicional compacta
+     ├─ Sintaxis: cond ? exp1 : exp2
+     ├─ Soporta NUMBER, BOOL, STRING
+     └─ Codigo real: clase TernaryNode
+
+SECCION 6: PRUEBAS Y VALIDACION
+  ├─ Prueba 1: Bucles For
+  │  ├─ Bucle ascendente (1 a 10, paso 1)
+  │  ├─ Bucle descendente (10 a 1, paso -1)
+  │  ├─ Intervalo infinito (1 a 10, paso -1)
+  │  ├─ Paso cero (1 a 10, paso 0)
+  │  └─ Archivo: for.p
+  ├─ Prueba 2: Bucle Do-While
+  │  ├─ Iteracion de 0 a 2
+  │  ├─ Ejecucion con condicion falsa
+  │  └─ Archivo: do_while.p
+  ├─ Prueba 3: Operador Switch
+  │  ├─ Multiples casos
+  │  ├─ Caso default
+  │  ├─ Entrada del usuario
+  │  └─ Archivo: test_switch.p
+  ├─ Prueba 4: Colores ANSI
+  │  ├─ Red_text
+  │  ├─ Blue_text
+  │  ├─ Reset_text
+  │  └─ Archivo: color.p
+  └─ Prueba 5: Tipado Dinamico
+     ├─ Variable NUMBER
+     ├─ Variable STRING
+     ├─ Variable BOOL
+     └─ Archivo: graficos_y_tipado_dinamico.p
+
+SECCION 7: CONCLUSIONES
+  ├─ Requisitos Cumplidos: 100%
+  │  ├─ Analisis lexico con Flex
+  │  ├─ Analisis sintactico con Bison
+  │  ├─ Tabla de simbolos robusta
+  │  ├─ Sentencias de control (if, while, for, switch)
+  │  ├─ Operadores aritmeticos, relacionales, logicos
+  │  ├─ Funciones predefinidas
+  │  ├─ Entrada/Salida
+  │  └─ Manejo de errores
+  ├─ Ampliaciones Implementadas: 100%+
+  │  ├─ Tipado dinamico completo
+  │  ├─ Operador factorial
+  │  ├─ Operador ternario
+  │  ├─ Bucle do-while
+  │  ├─ Comandos ANSI de color
+  │  ├─ Procesamiento de escape
+  │  ├─ Operaciones de bloque
+  │  ├─ Constantes matematicas
+  │  └─ Validacion exhaustiva
+  ├─ Competencias Demostradas
+  │  ├─ Diseno de compiladores
+  │  ├─ Programacion orientada a objetos
+  │  ├─ Herramientas de desarrollo
+  │  ├─ Algoritmos y estructuras de datos
+  │  └─ Manejo robusto de errores
+  └─ Reflexion Final
+
+APENDICE: GUIA DE COMPILACION
+  ├─ Requisitos
+  │  ├─ flex (Lexical analyzer generator)
+  │  ├─ bison (Parser generator)
+  │  ├─ g++ (C++ compiler)
+  │  └─ make (Build automation)
+  ├─ Proceso de Compilacion
+  │  ├─ Comandos de compilacion
+  │  └─ Ubicacion del ejecutable
+  └─ Estructura de Directorios
+     ├─ parser/
+     ├─ ast/
+     ├─ table/
+     ├─ error/
+     ├─ includes/
+     └─ raiz/
+
+================================================================================
+ESTADISTICAS
+================================================================================
+
+Documento LaTeX:
+  - Lineas: 624
+  - Tamaño fuente: 20 KB
+  - Fragmentos de codigo: 15+
+  - Secciones: 7
+  - Subsecciones: 20+
+
+PDF Compilado:
+  - Paginas: ~25
+  - Tamaño: 159 KB
+  - Formato: PDF 1.5
+  - Estado: Completo y listo
+
+Cobertura:
+  - Requisitos minimos: 100%
+  - Ampliaciones: 100%+
+  - Temas cubiertos: 40+
+
+================================================================================
+ARCHIVOS ENTREGABLES
+================================================================================
+
+1. Memoria_Practicas.tex    (20 KB)  - Documento fuente LaTeX
+2. Memoria_Practicas.pdf    (159 KB) - Documento compilado
+3. README_MEMORIA.md        (5 KB)   - Descripcion y guia de uso
+4. compile_memoria.sh       (880 B)  - Script de compilacion
+5. INDICE_MEMORIA.txt       (Este archivo)
+
+================================================================================
+COMO USAR ESTE DOCUMENTO
+================================================================================
+
+Lectura:
+  - Abrir Memoria_Practicas.pdf con visor de PDF
+  - Leer tabla de contenidos para navegar por secciones
+  - Cada seccion incluye codigo real del proyecto
+
+Impresion:
+  - Imprimir PDF en blanco y negro (25 paginas)
+  - Incluir como anexo al trabajo entregado
+
+Edicion (si es necesario):
+  - Modificar Memoria_Practicas.tex
+  - Ejecutar: ./compile_memoria.sh
+  - Verificar Memoria_Practicas.pdf
+
+================================================================================
+NOTAS FINALES
+================================================================================
+
+✓ Documento completamente en espanol con terminos tecnicos en ingles
+✓ Tono formal pero accesible para estudiantes universitarios
+✓ Cada seccion combina teoria con codigo real del proyecto
+✓ Enfasis especial en superar requisitos minimos del tribunal
+✓ Validacion exhaustiva con ejemplos practicos
+✓ Documentacion profesional lista para presentacion
+
+Fecha de generacion: 20 de mayo de 2026
+Estado: COMPLETADO Y VALIDADO
+
+================================================================================
