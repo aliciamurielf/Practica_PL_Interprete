@@ -56,6 +56,13 @@ extern lp::AST *root; //!< Reference to the object at the base of the AST
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Obtiene el tipo declarado de la variable desde la tabla de símbolos.
+ * @return int Identificador de tipo de variable.
+ *
+ */
+
 int lp::VariableNode::getType() 
 { 
 	// Get the identifier in the table of symbols as Variable
@@ -66,12 +73,25 @@ int lp::VariableNode::getType()
 }
 
 
+/**
+ *
+ * @brief Imprime la información del AST para un nodo variable.
+ *
+ */
+
 void lp::VariableNode::printAST() 
 {
   std::cout << "VariableNode: " << this->_id;
   std::cout << " (Type: " << this->getType() << ")" << std::endl;
 }
 
+
+/**
+ *
+ * @brief Evalúa la variable como valor numérico.
+ * @return double Valor numérico de la variable o 0.0 en caso de error de tipo.
+ *
+ */
 
 double lp::VariableNode::evaluateNumber() 
 { 
@@ -89,6 +109,13 @@ double lp::VariableNode::evaluateNumber()
 	}
 	return result;
 }
+
+/**
+ *
+ * @brief Evalúa la variable como valor de cadena.
+ * @return std::string Representación en cadena de la variable.
+ *
+ */
 
 std::string lp::VariableNode::evaluateString() 
 { 
@@ -114,6 +141,13 @@ std::string lp::VariableNode::evaluateString()
 }
 
 
+/**
+ *
+ * @brief Evalúa la variable como valor booleano.
+ * @return bool Valor booleano de la variable o false en caso de error de tipo.
+ *
+ */
+
 bool lp::VariableNode::evaluateBool() 
 { 
 	bool result = false;
@@ -131,9 +165,14 @@ bool lp::VariableNode::evaluateBool()
 	return result;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////
 
-///////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ *
+ * @brief Imprime la información del AST para un nodo constante.
+ *
+ */
 
 void lp::ConstantNode::printAST() 
 {
@@ -141,12 +180,26 @@ void lp::ConstantNode::printAST()
   std::cout << " (Type: " << this->getType() << ")" << std::endl;
 }
 
+/**
+ *
+ * @brief Obtiene el tipo declarado de la constante desde la tabla de símbolos.
+ * @return int Identificador de tipo de constante.
+ *
+ */
+
 int lp::ConstantNode::getType() 
 { 
 	lp::Constant *var = (lp::Constant *) table.getSymbol(this->_id);
 	return var->getType();
 }
 
+
+/**
+ *
+ * @brief Evalúa la constante como valor numérico.
+ * @return double Valor numérico de la constante o 0.0 en caso de error de tipo.
+ *
+ */
 
 double lp::ConstantNode::evaluateNumber() 
 { 
@@ -165,6 +218,13 @@ double lp::ConstantNode::evaluateNumber()
 	return result;
 }
 
+/**
+ *
+ * @brief Evalúa la constante como valor booleano.
+ * @return bool Valor booleano de la constante o false en caso de error de tipo.
+ *
+ */
+
 bool lp::ConstantNode::evaluateBool() 
 { 
 	bool result = false;
@@ -182,25 +242,51 @@ bool lp::ConstantNode::evaluateBool()
 	return result;
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
  
+/**
+ *
+ * @brief Obtiene el tipo de una expresión literal numérica.
+ * @return int NUMBER.
+ *
+ */
+
 int lp::NumberNode::getType()
 {
 	return NUMBER;
 }
 
 
+/**
+ *
+ * @brief Imprime la información del AST para un literal numérico.
+ *
+ */
+
 void lp::NumberNode::printAST()
 {
   std::cout << "NumberNode: " << this->_number << std::endl;
 }
 
+/**
+ *
+ * @brief Evalúa una expresión literal numérica.
+ * @return double El valor literal numérico.
+ *
+ */
+
 double lp::NumberNode::evaluateNumber() 
 { 
     return this->_number; 
 }
+
+/**
+ *
+ * @brief Convierte un literal numérico a su representación en cadena.
+ * @return std::string Representación textual del número.
+ *
+ */
 
 std::string lp::NumberNode::evaluateString() 
 { 
@@ -211,6 +297,13 @@ std::string lp::NumberNode::evaluateString()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ *
+ * @brief Obtiene el tipo de una expresión unaria numérica.
+ * @return int NUMBER si el operando es numérico.
+ *
+ */
+
 int lp::NumericUnaryOperatorNode::getType()
 {
 	int result;
@@ -229,6 +322,13 @@ int lp::NumericUnaryOperatorNode::getType()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ *
+ * @brief Obtiene el tipo de una expresión unaria lógica.
+ * @return int BOOL si el operando es booleano.
+ *
+ */
 
 int lp::LogicalUnaryOperatorNode::getType()
 {
@@ -250,6 +350,13 @@ int lp::LogicalUnaryOperatorNode::getType()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Obtiene el tipo de una expresión binaria numérica.
+ * @return int NUMBER si ambos operandos son numéricos.
+ *
+ */
+
 int lp::NumericOperatorNode::getType()
 {
 	int result = 0;
@@ -265,6 +372,13 @@ int lp::NumericOperatorNode::getType()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+
+/**
+ *
+ * @brief Obtiene el tipo de una expresión relacional.
+ * @return int BOOL si los tipos de operandos son compatibles.
+ *
+ */
 
 int lp::RelationalOperatorNode::getType()
 {
@@ -288,6 +402,13 @@ int lp::RelationalOperatorNode::getType()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Obtiene el tipo de una expresión binaria lógica.
+ * @return int BOOL si ambos operandos son booleanos.
+ *
+ */
+
 int lp::LogicalOperatorNode:: getType()
 {
 	int result = 0;
@@ -308,12 +429,25 @@ int lp::LogicalOperatorNode:: getType()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de negación numérica.
+ *
+ */
+
 void lp::UnaryMinusNode::printAST() 
 {
   std::cout << "UnaryMinusNode: -"  << std::endl;
   std::cout << "\t"; 
   this->_exp->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de negación numérica.
+ * @return double Valor numérico negado.
+ *
+ */
 
 double lp::UnaryMinusNode::evaluateNumber()
 {
@@ -338,12 +472,25 @@ double lp::UnaryMinusNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de signo positivo.
+ *
+ */
+
 void lp::UnaryPlusNode::printAST() 
 {
   std::cout << "UnaryPlusNode: +"  << std::endl;
   std::cout << "\t"; 
   this->_exp->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de signo positivo.
+ * @return double Valor numérico del operando.
+ *
+ */
 
 double lp::UnaryPlusNode::evaluateNumber()
 {
@@ -364,6 +511,12 @@ double lp::UnaryPlusNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de suma.
+ *
+ */
+
 void lp::PlusNode::printAST() 
 {
   std::cout << "PlusNode: +"  << std::endl;
@@ -372,6 +525,13 @@ void lp::PlusNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de suma.
+ * @return double Suma de los operandos izquierdo y derecho.
+ *
+ */
 
 double lp::PlusNode::evaluateNumber()
 {
@@ -393,6 +553,12 @@ double lp::PlusNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de resta.
+ *
+ */
+
 void lp::MinusNode::printAST() 
 {
   std::cout << "MinusNode: -"  << std::endl;
@@ -401,6 +567,13 @@ void lp::MinusNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de resta.
+ * @return double Diferencia de los operandos izquierdo y derecho.
+ *
+ */
 
 double lp::MinusNode::evaluateNumber() 
 {
@@ -422,6 +595,12 @@ double lp::MinusNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de multiplicación.
+ *
+ */
+
 void lp::MultiplicationNode::printAST() 
 {
   std::cout << "MultiplicationNode: *"  << std::endl;
@@ -430,6 +609,13 @@ void lp::MultiplicationNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de multiplicación.
+ * @return double Producto de los operandos izquierdo y derecho.
+ *
+ */
 
 double lp::MultiplicationNode::evaluateNumber() 
 {
@@ -450,6 +636,12 @@ double lp::MultiplicationNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de división.
+ *
+ */
+
 void lp::DivisionNode::printAST()
 {
   std::cout << "DivisionNode: /" << std::endl;
@@ -458,9 +650,23 @@ void lp::DivisionNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+/**
+ *
+ * @brief Obtiene el tipo de resultado de una expresión de división.
+ * @return int NUMBER.
+ *
+ */
+
 int lp::DivisionNode::getType() {
     return NUMBER;
 }
+/**
+ *
+ * @brief Evalúa una expresión de división.
+ * @return double Cociente de los operandos izquierdo y derecho.
+ *
+ */
+
 double lp::DivisionNode::evaluateNumber() 
 {
 	double result = 0.0;
@@ -494,6 +700,12 @@ double lp::DivisionNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // INTEGER DIVISION NODE
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de división entera.
+ *
+ */
+
 void lp::IntegerDivisionNode::printAST()
 {
   std::cout << "IntegerDivisionNode: //" << std::endl;
@@ -503,9 +715,23 @@ void lp::IntegerDivisionNode::printAST()
 	this->_right->printAST();
 }
 
+/**
+ *
+ * @brief Obtiene el tipo de resultado de una expresión de división entera.
+ * @return int NUMBER.
+ *
+ */
+
 int lp::IntegerDivisionNode::getType() {
     return NUMBER;
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de división entera.
+ * @return double Cociente entero de los operandos.
+ *
+ */
 
 double lp::IntegerDivisionNode::evaluateNumber() 
 {
@@ -536,6 +762,12 @@ double lp::IntegerDivisionNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de módulo.
+ *
+ */
+
 void lp::ModuloNode::printAST()
 {
   std::cout << "ModuloNode: %" << std::endl;
@@ -544,6 +776,13 @@ void lp::ModuloNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de módulo.
+ * @return double Resto de una división entera.
+ *
+ */
 
 double lp::ModuloNode::evaluateNumber() 
 {
@@ -573,6 +812,12 @@ double lp::ModuloNode::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de potenciación.
+ *
+ */
+
 void lp::PowerNode::printAST() 
 {
   std::cout << "PowerNode: ^"  << std::endl;
@@ -581,6 +826,13 @@ void lp::PowerNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de potenciación.
+ * @return double Resultado de elevar el operando izquierdo al derecho.
+ *
+ */
 
 double lp::PowerNode::evaluateNumber() 
 {
@@ -601,11 +853,24 @@ double lp::PowerNode::evaluateNumber()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ *
+ * @brief Obtiene el tipo de resultado de una función builtin sin parámetros.
+ * @return int NUMBER.
+ *
+ */
+
 int lp::BuiltinFunctionNode_0::getType()
 {
 	return	NUMBER;
 }
 
+
+/**
+ *
+ * @brief Imprime la información del AST para una función builtin sin parámetros.
+ *
+ */
 
 void lp::BuiltinFunctionNode_0::printAST() 
 {
@@ -613,6 +878,13 @@ void lp::BuiltinFunctionNode_0::printAST()
   std::cout << "\t";
   std::cout << this->_id << std::endl;
 }
+
+/**
+ *
+ * @brief Evalúa una función builtin numérica sin parámetros.
+ * @return double Resultado de la llamada a la función.
+ *
+ */
 
 double lp::BuiltinFunctionNode_0::evaluateNumber() 
 {
@@ -623,6 +895,13 @@ double lp::BuiltinFunctionNode_0::evaluateNumber()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ *
+ * @brief Obtiene el tipo de resultado de una función builtin con un parámetro.
+ * @return int NUMBER if the argument is numeric.
+ *
+ */
 
 int lp::BuiltinFunctionNode_1::getType()
 {
@@ -636,6 +915,12 @@ int lp::BuiltinFunctionNode_1::getType()
 	return	result;
 }
 
+/**
+ *
+ * @brief Imprime la información del AST para una función builtin de un parámetro.
+ *
+ */
+
 void lp::BuiltinFunctionNode_1::printAST() 
 {
   std::cout << "BuiltinFunctionNode_1: "  << std::endl;
@@ -645,6 +930,13 @@ void lp::BuiltinFunctionNode_1::printAST()
 	this->_exp->printAST();
 	std::cout << std::endl;
 }
+
+/**
+ *
+ * @brief Evalúa una función builtin numérica de un parámetro.
+ * @return double Resultado de llamar a la función con el argumento numérico.
+ *
+ */
 
 double lp::BuiltinFunctionNode_1::evaluateNumber() 
 {
@@ -667,6 +959,13 @@ double lp::BuiltinFunctionNode_1::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Obtiene el tipo de resultado de una función builtin con dos parámetros.
+ * @return int Tipo de resultado si ambos argumentos son compatibles.
+ *
+ */
+
 int lp::BuiltinFunctionNode_2::getType()
 {
 	int result = 0;
@@ -680,6 +979,12 @@ int lp::BuiltinFunctionNode_2::getType()
 }
 
 
+/**
+ *
+ * @brief Imprime la información del AST para una función builtin de dos parámetros.
+ *
+ */
+
 void lp::BuiltinFunctionNode_2::printAST() 
 {
   std::cout << "BuiltinFunctionNode_2: " << std::endl;
@@ -691,6 +996,13 @@ void lp::BuiltinFunctionNode_2::printAST()
 	this->_exp2->printAST();
 	std::cout << std::endl;
 }
+
+/**
+ *
+ * @brief Evalúa una función builtin numérica de dos parámetros.
+ * @return double Resultado de llamar a la función con dos argumentos numéricos.
+ *
+ */
 
 double lp::BuiltinFunctionNode_2::evaluateNumber() 
 {
@@ -715,6 +1027,12 @@ double lp::BuiltinFunctionNode_2::evaluateNumber()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una comparación mayor que.
+ *
+ */
+
 void lp::GreaterThanNode::printAST()
 {
   std::cout << "GreaterThanNode: >" << std::endl;
@@ -723,6 +1041,13 @@ void lp::GreaterThanNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa la comparación mayor que.
+ * @return bool true si el operando izquierdo es mayor que el derecho.
+ *
+ */
 
 bool lp::GreaterThanNode::evaluateBool() 
 {
@@ -742,6 +1067,12 @@ bool lp::GreaterThanNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una comparación mayor o igual.
+ *
+ */
+
 void lp::GreaterOrEqualNode::printAST()
 {
   std::cout << "GreaterOrEqualNode: >= " << std::endl;
@@ -750,6 +1081,13 @@ void lp::GreaterOrEqualNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa la comparación mayor o igual.
+ * @return bool true si el operando izquierdo es mayor o igual que el derecho.
+ *
+ */
 
 bool lp::GreaterOrEqualNode::evaluateBool() 
 {
@@ -768,6 +1106,12 @@ bool lp::GreaterOrEqualNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una comparación menor que.
+ *
+ */
+
 void lp::LessThanNode::printAST()
 {
   std::cout << "LessThanNode: <" << std::endl;
@@ -776,6 +1120,13 @@ void lp::LessThanNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa la comparación menor que.
+ * @return bool true si el operando izquierdo es menor que el derecho.
+ *
+ */
 
 bool lp::LessThanNode::evaluateBool() 
 {
@@ -795,6 +1146,12 @@ bool lp::LessThanNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una comparación menor o igual.
+ *
+ */
+
 void lp::LessOrEqualNode::printAST()
 {
   std::cout << "LessOrEqualNode: <=" << std::endl;
@@ -803,6 +1160,13 @@ void lp::LessOrEqualNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa la comparación menor o igual.
+ * @return bool true si el operando izquierdo es menor o igual que el derecho.
+ *
+ */
 
 bool lp::LessOrEqualNode::evaluateBool() 
 {
@@ -821,6 +1185,12 @@ bool lp::LessOrEqualNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una comparación de igualdad.
+ *
+ */
+
 void lp::EqualNode::printAST()
 {
   std::cout << "EqualNode: ==" << std::endl;
@@ -829,6 +1199,13 @@ void lp::EqualNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa la comparación de igualdad.
+ * @return bool true si los operandos son iguales.
+ *
+ */
 
 bool lp::EqualNode::evaluateBool() 
 {
@@ -858,6 +1235,12 @@ bool lp::EqualNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una comparación de desigualdad.
+ *
+ */
+
 void lp::NotEqualNode::printAST()
 {
   std::cout << "NotEqualNode: !=" << std::endl;
@@ -866,6 +1249,13 @@ void lp::NotEqualNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa la comparación de desigualdad.
+ * @return bool true si los operandos difieren.
+ *
+ */
 
 bool lp::NotEqualNode::evaluateBool() 
 {
@@ -897,6 +1287,12 @@ bool lp::NotEqualNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión lógica AND.
+ *
+ */
+
 void lp::AndNode::printAST()
 {
   std::cout << "AndNode: &&" << std::endl;
@@ -905,6 +1301,13 @@ void lp::AndNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión lógica AND.
+ * @return bool Conjunción lógica de ambos operandos.
+ *
+ */
 
 bool lp::AndNode::evaluateBool() 
 {
@@ -930,6 +1333,12 @@ bool lp::AndNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión lógica OR..
+ *
+ */
+
 void lp::OrNode::printAST()
 {
   std::cout << "OrNode: ||" << std::endl;
@@ -938,6 +1347,13 @@ void lp::OrNode::printAST()
 	std::cout << "\t"; 
 	this->_right->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión lógica OR.
+ * @return bool Disyunción lógica de ambos operandos.
+ *
+ */
 
 bool lp::OrNode::evaluateBool() 
 {
@@ -963,12 +1379,25 @@ bool lp::OrNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión lógica NOT.
+ *
+ */
+
 void lp::NotNode::printAST()
 {
   std::cout << "NotNode: !" << std::endl;
   std::cout << "\t";
   this->_exp->printAST();
 }
+
+/**
+ *
+ * @brief Evalúa una expresión lógica NOT.
+ * @return bool Valor booleano negado del operando.
+ *
+ */
 
 bool lp::NotNode::evaluateBool() 
 {
@@ -989,6 +1418,12 @@ bool lp::NotNode::evaluateBool()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia de asignación.
+ *
+ */
+
 void lp::AssignmentStmt::printAST() 
 {
   std::cout << "assignment_node: ="  << std::endl;
@@ -1007,6 +1442,12 @@ void lp::AssignmentStmt::printAST()
     this->_asgn->printAST();
 
 }
+
+/**
+ *
+ * @brief Ejecuta la sentencia de asignación actualizando la tabla de símbolos.
+ *
+ */
 
 void lp::AssignmentStmt::evaluate() 
 {
@@ -1140,7 +1581,6 @@ void lp::AssignmentStmt::evaluate()
                 }
             }
             break;
-            // ------------------------------------------------------------
 
             default:
                 warning("Runtime error: incompatible type of expression for ", "Assigment");
@@ -1150,6 +1590,12 @@ void lp::AssignmentStmt::evaluate()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia de impresión.
+ *
+ */
 
 void lp::PrintStmt::printAST() 
 {
@@ -1161,8 +1607,11 @@ void lp::PrintStmt::printAST()
 
 
 /**
- * @brief Evalúa la sentencia de impresión, manejando números, cadenas y booleanos.
+ *
+ * @brief Ejecuta la sentencia de impresión para valores numéricos, booleanos o cadenas.
+ *
  */
+
 void lp::PrintStmt::evaluate() 
 {
 	int type = this->_exp->getType();
@@ -1188,6 +1637,12 @@ void lp::PrintStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia de lectura numérica.
+ *
+ */
+
 void lp::ReadStmt::printAST() 
 {
   std::cout << "ReadStmt: read"  << std::endl;
@@ -1196,6 +1651,12 @@ void lp::ReadStmt::printAST()
   std::cout << std::endl;
 }
 
+
+/**
+ *
+ * @brief Ejecuta la lectura numérica y almacena el valor en la tabla de símbolos.
+ *
+ */
 
 void lp::ReadStmt::evaluate() 
 {   
@@ -1222,9 +1683,21 @@ void lp::ReadStmt::evaluate()
 	}
 }
 
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia de lectura de cadena.
+ *
+ */
+
 void lp::ReadStringStmt::printAST() {
     std::cout << "ReadStringStmt: " << this->_id << std::endl;
 }
+
+/**
+ *
+ * @brief Ejecuta la lectura de cadena y almacena el valor en la tabla de símbolos..
+ *
+ */
 
 void lp::ReadStringStmt::evaluate() {
     std::string value;
@@ -1243,10 +1716,22 @@ void lp::ReadStringStmt::evaluate() {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia vacía.
+ *
+ */
+
 void lp::EmptyStmt::printAST() 
 {
   std::cout << "EmptyStmt "  << std::endl;
 }
+
+/**
+ *
+ * @brief Ejecuta una sentencia vacía (sin operación).
+ *
+ */
 
 void lp::EmptyStmt::evaluate() 
 {
@@ -1257,6 +1742,12 @@ void lp::EmptyStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
+
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia if.
+ *
+ */
 
 void lp::IfStmt::printAST() 
 {
@@ -1280,6 +1771,12 @@ void lp::IfStmt::printAST()
 }
 
 
+/**
+ *
+ * @brief Ejecuta la sentencia if según la condición.
+ *
+ */
+
 void lp::IfStmt::evaluate() 
 {
    // If the condition is true,
@@ -1296,6 +1793,12 @@ void lp::IfStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia while.
+ *
+ */
+
 void lp::WhileStmt::printAST() 
 {
   std::cout << "WhileStmt: "  << std::endl;
@@ -1311,6 +1814,12 @@ void lp::WhileStmt::printAST()
 }
 
 
+/**
+ *
+ * @brief Ejecuta el bucle while mientras la condición sea verdadera.
+ *
+ */
+
 void lp::WhileStmt::evaluate() 
 {
   // While the condition is true. the body is run 
@@ -1323,6 +1832,12 @@ void lp::WhileStmt::evaluate()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // REPEAT UNTIL STMT
+
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia repeat-until.
+ *
+ */
 
 void lp::RepeatStmt::printAST() 
 {
@@ -1344,6 +1859,12 @@ void lp::RepeatStmt::printAST()
   std::cout << std::endl;
 }
 
+/**
+ *
+ * @brief Ejecuta el bucle repeat-until al menos una vez hasta que la condición sea verdadera.
+ *
+ */
+
 void lp::RepeatStmt::evaluate() 
 {
   do {
@@ -1359,6 +1880,12 @@ void lp::RepeatStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTACIÓN DE SWITCH Y CASE
 
+/**
+ *
+ * @brief Imprime la información del AST para una rama case dentro de un switch.
+ *
+ */
+
 void lp::CaseStmt::printAST() 
 {
     std::cout << "CaseStmt: case ";
@@ -1367,10 +1894,22 @@ void lp::CaseStmt::printAST()
     this->_stmt->printAST();
 }
 
+/**
+ *
+ * @brief Ejecuta la rama case.
+ *
+ */
+
 void lp::CaseStmt::evaluate() 
 {
     this->_stmt->evaluate();
 }
+
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia switch.
+ *
+ */
 
 void lp::SwitchStmt::printAST() 
 {
@@ -1389,8 +1928,11 @@ void lp::SwitchStmt::printAST()
 }
 
 /**
- * @brief Ejecuta la semántica del switch: comparación de tipos y detención tras el primer acierto.
+ *
+ * @brief Ejecuta la sentencia switch y maneja la coincidencia de casos..
+ *
  */
+
 void lp::SwitchStmt::evaluate() 
 {
     int switchType = this->_cond->getType();
@@ -1429,6 +1971,12 @@ void lp::SwitchStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
 
+/**
+ *
+ * @brief Imprime la información del AST para un bloque de sentencias.
+ *
+ */
+
 void lp::BlockStmt::printAST() 
 {
   std::list<Statement *>::iterator stmtIter;
@@ -1441,6 +1989,11 @@ void lp::BlockStmt::printAST()
   }
 }
 
+/**
+ *
+ * @brief Ejecuta un bloque de sentencias en secuencia.
+ *
+ */
 
 void lp::BlockStmt::evaluate() 
 {
@@ -1455,9 +2008,21 @@ void lp::BlockStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // CLEAR_SCREEN
 
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia de limpiar pantalla.
+ *
+ */
+
 void lp::ClearScreenStmt::printAST() {
     std::cout << "ClearScreenStmt" << std::endl;
 }
+
+/**
+ *
+ * @brief Ejecuta la sentencia de limpiar pantalla.
+ *
+ */
 
 void lp::ClearScreenStmt::evaluate() {
     std::cout << CLEAR_SCREEN << std::flush;
@@ -1466,11 +2031,23 @@ void lp::ClearScreenStmt::evaluate() {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // PLACE
 
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia de colocación en pantalla.
+ *
+ */
+
 void lp::PlaceStmt::printAST() {
     std::cout << "PlaceStmt: " << std::endl;
     this->_line->printAST();
     this->_column->printAST();
 }
+
+/**
+ *
+ * @brief Ejecuta la sentencia de colocación moviendo el cursor en pantalla.
+ *
+ */
 
 void lp::PlaceStmt::evaluate() {
 	int f = (int)this->_line->evaluateNumber();	
@@ -1480,6 +2057,12 @@ void lp::PlaceStmt::evaluate() {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // FOR STMT
+
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia for.
+ *
+ */
 
 void lp::ForStmt::printAST() 
 {
@@ -1495,6 +2078,12 @@ void lp::ForStmt::printAST()
       (*it)->printAST();
   }
 }
+
+/**
+ *
+ * @brief Ejecuta el bucle for usando valores de inicio, fin y paso opcional.
+ *
+ */
 
 void lp::ForStmt::evaluate() 
 {
@@ -1543,6 +2132,12 @@ void lp::ForStmt::evaluate()
     }
 }
 
+/**
+ *
+ * @brief Imprime la información del AST para una expresión de concatenación de cadenas.
+ *
+ */
+
 void lp::ConcatenationNode::printAST() 
 {
   std::cout << "ConcatenationNode: ||"  << std::endl;
@@ -1552,9 +2147,23 @@ void lp::ConcatenationNode::printAST()
   this->_right->printAST();
 }
 
+/**
+ *
+ * @brief Obtiene el tipo de una expresión de concatenación de cadenas.
+ * @return int STRING.
+ *
+ */
+
 int lp::ConcatenationNode::getType() {
     return STRING;
 }
+
+/**
+ *
+ * @brief Evalúa una expresión de concatenación de cadenas.
+ * @return std::string Resultado de la concatenación de cadenas.
+ *
+ */
 
 std::string lp::ConcatenationNode::evaluateString() 
 {
@@ -1572,6 +2181,12 @@ std::string lp::ConcatenationNode::evaluateString()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Imprime el AST de todas las sentencias raíz.
+ *
+ */
+
 void lp::AST::printAST() 
 {
   std::list<Statement *>::iterator stmtIter;
@@ -1581,6 +2196,12 @@ void lp::AST::printAST()
      (*stmtIter)->printAST();
   }
 }
+
+/**
+ *
+ * @brief Evalúa todas las sentencias en la raíz del AST.
+ *
+ */
 
 void lp::AST::evaluate() 
 {
@@ -1595,13 +2216,33 @@ void lp::AST::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
+/**
+ *
+ * @brief Obtiene el tipo de una expresión literal de cadena.
+ * @return int STRING.
+ *
+ */
+
 int lp::StringNode::getType() {
     return STRING;
 }
 
+/**
+ *
+ * @brief Imprime la información del AST para un literal de cadena.
+ *
+ */
+
 void lp::StringNode::printAST() {
     std::cout << "StringNode: " << this->_value << std::endl;
 }
+
+/**
+ *
+ * @brief Evalúa un literal de cadena, resolviendo caracteres escapados.
+ * @return std::string Valor de cadena procesado.
+ *
+ */
 
 std::string lp::StringNode::evaluateString() {
     std::string procesada = this->_value;
@@ -1623,15 +2264,36 @@ std::string lp::StringNode::evaluateString() {
     return procesada;
 }
 
+/**
+ *
+ * @brief Evalúa un literal de cadena como número.
+ * @return double Resultado de conversión numérica o 0.0.
+ *
+ */
+
 double lp::StringNode::evaluateNumber() {
     return 0.0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+/**
+ *
+ * @brief Obtiene el tipo de una expresión factorial.
+ * @return int NUMBER.
+ *
+ */
+
 int lp::FactorialNode::getType() { 
 	return NUMBER; 
 }
+
+/**
+ *
+ * @brief Evalúa una expresión factorial.
+ * @return double Factorial del operando.
+ *
+ */
 
 double lp::FactorialNode::evaluateNumber() {
         double val = this->_exp->evaluateNumber();
@@ -1646,6 +2308,13 @@ double lp::FactorialNode::evaluateNumber() {
         return res;
     }
 
+/**
+ *
+ * @brief Convierte el resultado factorial a una cadena.
+ * @return std::string Representación en cadena del factorial.
+ *
+ */
+
 std::string lp::FactorialNode::evaluateString() 
 { 
 	std::ostringstream oss;
@@ -1655,6 +2324,12 @@ std::string lp::FactorialNode::evaluateString()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // DO-WHILE STMT
+
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia do-while.
+ *
+ */
 
 void lp::DoWhileStmt::printAST() 
 {
@@ -1671,6 +2346,12 @@ void lp::DoWhileStmt::printAST()
     std::cout << std::endl;
 }
 
+/**
+ *
+ * @brief Ejecuta el cuerpo del bucle do-while al menos una vez.
+ *
+ */
+
 void lp::DoWhileStmt::evaluate() 
 {
     do {
@@ -1681,9 +2362,21 @@ void lp::DoWhileStmt::evaluate()
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // COLOR
 
+/**
+ *
+ * @brief Imprime la información del AST para una sentencia de color.
+ *
+ */
+
 void lp::ColorStmt::printAST() { 
     std::cout << "ColorStmt: " << this->_ansiCode << std::endl; 
 }
+
+/**
+ *
+ * @brief Ejecuta la sentencia de color emitiendo códigos ANSI.
+ *
+ */
 
 void lp::ColorStmt::evaluate(){
     std::cout << this->_ansiCode << std::flush;

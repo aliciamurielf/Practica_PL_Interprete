@@ -1,6 +1,6 @@
 /*!	
 	\file    ast.hpp
-	\brief   Declaration of AST class
+	\brief   Declaración de la clase AST
 	\author  Alicia Muriel Fernández
 	\author  Lucía Cañero Moslero
 	\date    2026-05-24
@@ -16,7 +16,7 @@
 #include <list>
 
 
-#define ERROR_BOUND 1.0e-6  //!< Error bound for the comparison of real numbers.
+#define ERROR_BOUND 1.0e-6  //!< Margen de error para la comparación de números reales.
 
 namespace lp
 {
@@ -24,15 +24,15 @@ namespace lp
 ///////////////////////////////////////////////////////////////////////////////////////////////
 /*!	
   \class   ExpNode
-  \brief   Definition of atributes and methods of ExpNode class
-  \warning Abstract class
+  \brief   Definición de atributos y métodos de la clase ExpNode
+  \warning Clase abstracta
 */
  class ExpNode 
 {
   public:
 	/*!	
-		\brief   Type of the expression
-		\warning Pure virtual function: must be redefined in the heir classes
+		\brief   Tipo de la expresión
+		\warning Función virtual pura: debe redefinirse en las clases derivadas
 		\return  int
 		\sa		   printAST, evaluateNumber, evaluateBool
 	*/
@@ -40,16 +40,16 @@ namespace lp
 
 
 	/*!	
-		\brief   Print the AST for expression
-		\warning Pure virtual function: must be redefined in the heir classes
+		\brief   Imprime el AST de la expresión
+		\warning Función virtual pura: debe redefinirse en las clases derivadas
 		\return  void
 		\sa		   getType, evaluateNumber, evaluateBool
 	*/
     virtual void printAST() = 0;
 
 	/*!	
-		\brief   Evaluate the expression as NUMBER
-		\warning Virtual function: could be redefined in the heir classes
+		\brief   Evalúa la expresión como NUMBER
+		\warning Función virtual: puede redefinirse en las clases derivadas
 		\return  double
 		\sa		   getType, printAST, evaluateBool
 	*/
@@ -59,8 +59,8 @@ namespace lp
 	}		
 
 	/*!	
-		\brief   Evaluate the expression as BOOL
-		\warning Virtual function: could be redefined in the heir classes
+		\brief   Evalúa la expresión como BOOL
+		\warning Función virtual: puede redefinirse en las clases derivadas
 		\return  bool
 		\sa		   getType, printAST, evaluateNumber
 	*/
@@ -70,8 +70,8 @@ namespace lp
 	}
 
 	/*! 
-        \brief   Evaluate the expression as STRING
-        \warning Virtual function: could be redefined in the heir classes
+        \brief   Evalúa la expresión como STRING
+        \warning Función virtual: puede redefinirse en las clases derivadas
         \return  std::string
         \sa      evaluateNumber, evaluateBool
     */
@@ -85,21 +85,21 @@ namespace lp
 
 /*!	
   \class VariableNode
-  \brief Definition of atributes and methods of VariableNode class
-  \note  VariableNode Class publicly inherits from ExpNode class
+  \brief Definición de atributos y métodos de la clase VariableNode
+  \note  La clase VariableNode hereda públicamente de ExpNode
 */
 class VariableNode : public ExpNode 
 {
 	private:
-	  std::string _id; //!< Name of the VariableNode
+	  std::string _id; //!< Nombre del VariableNode
 
 	public:
 
 	/*!		
-		\brief Constructor of VariableNode
-		\param value: double
-		\post  A new NumericVariableNode is created with the name of the parameter
-		\note  Inline function
+		\brief Constructor de VariableNode
+		\param value Valor numérico del parámetro
+		\post  Se crea un nuevo NumericVariableNode con el nombre del parámetro
+		\note Función en línea
 	*/
 	  VariableNode(std::string const & value)
 		{
@@ -107,35 +107,35 @@ class VariableNode : public ExpNode
 		}
 
 	/*!	
-		\brief   Type of the Variable
+		\brief   Tipo de la variable
 		\return  int
 		\sa		   printAST
 	*/
 	 int getType();
 
 	/*!
-		\brief   Print the AST for Variable
+		\brief   Imprime el AST de la variable
 		\return  void
 		\sa		   getType, evaluateNumber, evaluateBool
 	*/
 	  void printAST();
 
 	/*!	
-		\brief   Evaluate the Variable as NUMBER
+		\brief   Evalúa la variable como NUMBER
 		\return  double
 		\sa		   printAST
 	*/
 	  double evaluateNumber();
 
 	/*!	
-		\brief   Evaluate the Variable as BOOL
+		\brief   Evalúa la variable como BOOL
 		\return  bool
 		\sa		   getType, printAST, evaluateNumber
 	*/
 	  bool evaluateBool();
 
 	  /*! 
-        \brief   Evaluate the Variable as STRING
+        \brief   Evalúa la variable como STRING
         \return  std::string
         \sa      getType, printAST, evaluateNumber, evaluateBool
     */
@@ -148,20 +148,20 @@ class VariableNode : public ExpNode
 
 /*!	
   \class ConstantNode
-  \brief Definition of atributes and methods of ConstantNode class
-  \note  ConstantNode Class publicly inherits from ExpNode class
+  \brief Definición de atributos y métodos de la clase ConstantNode
+  \note  La clase ConstantNode hereda públicamente de ExpNode
 */
 class ConstantNode : public ExpNode 
 {
 	private:
-	  std::string _id; //!< Name of the ConstantNode
+	  std::string _id; //!< Nombre del ConstantNode
 
 	public:
 
 	/*!		
-		\brief Constructor of ConstantNode
-		\param value: double
-		\post  A new ConstantNode is created with the name of the parameter
+		\brief Constructor de ConstantNode
+		\param value Valor numérico del parámetro
+		\post  Se crea un nuevo ConstantNode con el valor del parámetro
 	*/
 	  ConstantNode(std::string value)
 		{
@@ -169,28 +169,28 @@ class ConstantNode : public ExpNode
 		}
 
 	/*!	
-		\brief   Type of the Constant
+		\brief   Tipo de la constante
 		\return  int
 		\sa		   printAST, evaluateNumber, evaluateBool
 	*/
 	 int getType();
 
 	/*!
-		\brief   Print the AST for Constant
+		\brief   Imprime el AST de la constante
 		\return  void
 		\sa		   getType, evaluateNumber, evaluateBool
 	*/
 	  void printAST();
 
 	/*!	
-		\brief   Evaluate the Constant as NUMBER
+		\brief   Evalúa la constante como NUMBER
 		\return  double
 		\sa		   getType, printAST, 
 	*/
 	  double evaluateNumber();
 
 	/*!	
-		\brief   Evaluate the Constant as BOOL
+		\brief   Evalúa la constante como BOOL
 		\return  bool
 		\sa		   getType, printAST, evaluateNumber, evaluateBool
 	*/
@@ -206,21 +206,21 @@ class ConstantNode : public ExpNode
 
 /*!	
   \class NumberNode
-  \brief Definition of atributes and methods of NumberNode class
-  \note  NumberNode Class publicly inherits from ExpNode class
+  \brief Definición de atributos y métodos de la clase NumberNode
+  \note  La clase NumberNode hereda públicamente de ExpNode
 */
 class NumberNode : public ExpNode 
 {
  private: 	
-   double _number; //!< \brief number of the NumberNode
+   double _number; //!< \brief número del NumberNode
  
  public:
 
 /*!		
-	\brief Constructor of NumberNode
-	\param value: double
-	\post  A new NumberNode is created with the value of the parameter
-	\note  Inline function
+	\brief Constructor de NumberNode
+	\param value Valor numérico del parámetro
+	\post  Se crea un nuevo NumberNode con el valor del parámetro
+	\note Función en línea
 */
   NumberNode(double value)
 	{
@@ -228,28 +228,28 @@ class NumberNode : public ExpNode
 	}
 
 	/*!	
-	\brief   Get the type of the expression: NUMBER
+	\brief   Obtiene el tipo de la expresión: NUMBER
 	\return  int
 	\sa		   printAST, evaluateNumber
 	*/
 	int getType();
 
 	/*!
-		\brief   Print the AST for expression
+		\brief   Imprime el AST de la expresión
 		\return  void
 		\sa		   getType, evaluateNumber
 	*/
 	void printAST();
 
 	/*!	
-		\brief   Evaluate the expression
+		\brief   Evalúa la expresión
 		\return  double
 		\sa		   getType, printAST
 	*/
 	double evaluateNumber();
 
 	/*! 
-    \brief   Evaluate the expression as STRING
+    \brief   Evalúa la expresión como STRING
     \return  std::string
     \sa      getType, printAST, evaluateNumber, evaluateBool
 */
@@ -258,42 +258,42 @@ class NumberNode : public ExpNode
 
 /*! 
   \class   StringNode
-  \brief   Definition of atributes and methods of StringNode class
-  \note    StringNode Class publicly inherits from ExpNode class
+  \brief   Definición de atributos y métodos de la clase StringNode
+  \note    La clase StringNode hereda públicamente de ExpNode
 */
 class StringNode : public ExpNode 
 {
   private:
-    std::string _value; //!< \brief value of the StringNode
+    std::string _value; //!< \brief valor del StringNode
 
   public:
     /*!     
-        \brief Constructor of StringNode
-        \param value: std::string
-        \post  A new StringNode is created with the value of the parameter
+        \brief Constructor de StringNode
+        \param value Cadena de texto
+        \post  Se crea un nuevo StringNode con el valor del parámetro
     */
     StringNode(std::string value) { this->_value = value; }
 
     /*! 
-        \brief   Get the type of the expression: STRING
+        \brief Obtiene el tipo de la expresión: STRING
         \return  int
     */
     int getType();
 
     /*!
-        \brief   Print the AST for StringNode
+        \brief Imprime el AST de StringNode
         \return  void
     */
     void printAST();
 
     /*! 
-        \brief   Evaluate the expression as STRING
+        \brief   Evalúa la expresión como STRING
         \return  std::string
     */
     std::string evaluateString();
 
     /*! 
-        \brief   Evaluate the expression as NUMBER (returns 0.0)
+        \brief   Evalúa la expresión como NUMBER (returns 0.0)
         \return  double
     */
     double evaluateNumber();
@@ -306,23 +306,23 @@ class StringNode : public ExpNode
 
 /*!	
   \class   UnaryOperatorNode
-  \brief   Definition of atributes and methods of UnaryOperatorNode class
-  \note    UnaryOperatorNode Class publicly inherits from ExpNode class
-  \warning Abstract class, because it does not redefine the printAST method of ExpNode
+  \brief   Definición de atributos y métodos de la clase UnaryOperatorNode
+  \note    La clase UnaryOperatorNode hereda públicamente de ExpNode
+  \warning Clase abstracta, porque no redefine el método printAST de ExpNode
 */
 class UnaryOperatorNode : public ExpNode 
 {
  protected:
-  ExpNode *_exp;  //!< Child expression
+  ExpNode *_exp;  //!< Expresión hija
 
  public:
 
 /*!		
-	\brief Constructor of UnaryOperatorNode links the node to it child,
+	\brief El constructor de UnaryOperatorNode enlaza el nodo con su hijo,
            and stores the character representation of the operator.
-	\param expression: pointer to ExpNode
-	\post  A new OperatorNode is created with the parameters
-	\note  Inline function
+	\param expression Puntero a ExpNode
+	\post  Se crea un nuevo OperatorNode con los parámetros
+	\note Función en línea
 */
   UnaryOperatorNode(ExpNode *expression)
 	{
@@ -330,7 +330,7 @@ class UnaryOperatorNode : public ExpNode
 	}
 
 	/*!	
-	\brief   Get the type of the child expression
+	\brief   Obtiene el tipo de la expresión hija
 	\return  int
 	\sa		   printAST
 	*/
@@ -346,19 +346,19 @@ class UnaryOperatorNode : public ExpNode
 
 /*!	
   \class   NumericUnaryOperatorNode
-  \brief   Definition of atributes and methods of UnaryOperatorNode class
-  \note    UnaryOperatorNode Class publicly inherits from UnaryOperatorNode class
-  \warning Abstract class, because it does not redefine the printAST method of ExpNode
+  \brief   Definición de atributos y métodos de la clase UnaryOperatorNode
+  \note La clase UnaryOperatorNode hereda públicamente de UnaryOperatorNode
+  \warning Clase abstracta, porque no redefine el método printAST de ExpNode
 */
 class NumericUnaryOperatorNode : public UnaryOperatorNode 
 {
  public:
 
 /*!		
-	\brief Constructor of NumericUnaryOperatorNode uses UnaryOperatorNode's constructor as member initializer
-	\param expression: pointer to ExpNode
-	\post  A new NumericUnaryOperatorNode is created with the parameters
-	\note  Inline function
+	\brief El constructor de NumericUnaryOperatorNode usa el constructor de UnaryOperatorNode como inicializador de miembro
+	\param expression Puntero a ExpNode
+	\post Se crea un nuevo NumericUnaryOperatorNode con parámetros
+	\note Función en línea
 */
   NumericUnaryOperatorNode(ExpNode *expression): UnaryOperatorNode(expression)
 	{
@@ -366,7 +366,7 @@ class NumericUnaryOperatorNode : public UnaryOperatorNode
 	}
 
 	/*!	
-	\brief   Get the type of the child expression
+	\brief   Obtiene el tipo de la expresión hija
 	\return  int
 	\sa		   printAST
 	*/
@@ -380,19 +380,19 @@ class NumericUnaryOperatorNode : public UnaryOperatorNode
 
 /*!	
   \class   LogicalUnaryOperatorNode
-  \brief   Definition of atributes and methods of UnaryOperatorNode class
-  \note    UnaryOperatorNode Class publicly inherits from UnaryOperatorNode class
-  \warning Abstract class, because it does not redefine the printAST method of ExpNode
+  \brief   Definición de atributos y métodos de la clase UnaryOperatorNode
+  \note La clase UnaryOperatorNode hereda públicamente de UnaryOperatorNode
+  \warning Clase abstracta, porque no redefine el método printAST de ExpNode
 */
 class LogicalUnaryOperatorNode : public UnaryOperatorNode 
 {
  public:
 
 /*!		
-	\brief Constructor of LogicalUnaryOperatorNode uses UnaryOperatorNode's constructor as member initializer
-	\param expression: pointer to ExpNode
-	\post  A new NumericUnaryOperatorNode is created with the parameters
-	\note  Inline function
+	\brief El constructor de LogicalUnaryOperatorNode usa el constructor de UnaryOperatorNode como inicializador de miembro
+	\param expression Puntero a ExpNode
+	\post Se crea un nuevo NumericUnaryOperatorNode con parámetros
+	\note Función en línea
 */
   LogicalUnaryOperatorNode(ExpNode *expression): UnaryOperatorNode(expression)
 	{
@@ -400,7 +400,7 @@ class LogicalUnaryOperatorNode : public UnaryOperatorNode
 	}
 
 	/*!	
-	\brief   Get the type of the child expression
+	\brief   Obtiene el tipo de la expresión hija
 	\return  int
 	\sa		   printAST
 	*/
@@ -415,8 +415,8 @@ class LogicalUnaryOperatorNode : public UnaryOperatorNode
 
 /*!	
   \class   UnaryMinusNode
-  \brief   Definition of atributes and methods of UnaryMinusNode class
-  \note    UnaryMinusNode Class publicly inherits from NumericUnaryOperatorNode class
+  \brief   Definición de atributos y métodos de la clase UnaryMinusNode
+  \note    La clase UnaryMinusNode hereda públicamente de NumericUnaryOperatorNode
 */
 class UnaryMinusNode : public NumericUnaryOperatorNode 
 {
@@ -424,10 +424,10 @@ class UnaryMinusNode : public NumericUnaryOperatorNode
  public:
 
 /*!		
-	\brief Constructor of UnaryMinusNode uses NumericUnaryOperatorNode's constructor as member initializer.
-	\param expression: pointer to ExpNode
-	\post  A new UnaryMinusNode is created with the parameter
-	\note  Inline function: the NumericUnaryOperatorNode's constructor is used ad member initializer
+	\brief El constructor de UnaryMinusNode usa el constructor de NumericUnaryOperatorNode como inicializador de miembro.
+	\param expression Puntero a ExpNode
+	\post  Se crea un nuevo UnaryMinusNode con el parámetro
+	\Nota: función en línea; el constructor de NumericUnaryOperatorNode se usa como inicializador de miembro
 */
   UnaryMinusNode(ExpNode *expression): NumericUnaryOperatorNode(expression) 
 	{
@@ -435,14 +435,14 @@ class UnaryMinusNode : public NumericUnaryOperatorNode
 	} 
 
 /*!
-	\brief   Print the AST for expression
+	\brief   Imprime el AST de la expresión
 	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the expression
+	\brief   Evalúa la expresión
 	\return  double
 	\sa		   printAST
 */
@@ -454,8 +454,8 @@ class UnaryMinusNode : public NumericUnaryOperatorNode
 
 /*!	
   \class   UnaryPlusNode
-  \brief   Definition of atributes and methods of UnaryPlusNode class
-  \note    UnaryPlusNode Class publicly inherits from NumericUnaryOperatorNode class
+  \brief   Definición de atributos y métodos de la clase UnaryPlusNode
+  \note    La clase UnaryPlusNode hereda públicamente de NumericUnaryOperatorNode
 */
 class UnaryPlusNode : public NumericUnaryOperatorNode 
 {
@@ -463,9 +463,9 @@ class UnaryPlusNode : public NumericUnaryOperatorNode
  public:
 
 /*!		
-	\brief Constructor of UnaryPlusNode uses NumericUnaryOperatorNode's constructor as member initializer
-	\param expression: pointer to ExpNode
-	\post  A new UnaryPlusNode is created with the parameter
+	\brief El constructor de UnaryPlusNode usa el constructor de NumericUnaryOperatorNode como inicializador de miembro
+	\param expression Puntero a ExpNode
+	\post  Se crea un nuevo UnaryPlusNode con el parámetro
 */
   UnaryPlusNode(ExpNode *expression): NumericUnaryOperatorNode(expression) 
 	{
@@ -473,14 +473,14 @@ class UnaryPlusNode : public NumericUnaryOperatorNode
 	} 
 
 /*!
-	\brief   Print the AST for expression
+	\brief   Imprime el AST de la expresión
 	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the expression
+	\brief   Evalúa la expresión
 	\return  double
 	\sa		   printAST
 */
@@ -495,22 +495,22 @@ class UnaryPlusNode : public NumericUnaryOperatorNode
 
 /*!	
   \class   OperatorNode
-  \brief   Definition of atributes and methods of OperatorNode class
-  \note    OperatorNode Class publicly inherits from ExpNode class
-  \warning Abstract class, because it does not redefine the printAST and getType methods of ExpNode
+  \brief   Definición de atributos y métodos de la clase OperatorNode
+  \note    La clase OperatorNode hereda públicamente de ExpNode
+  \warning Clase abstracta, porque no redefine los métodos printAST y getType de ExpNode
 */
 class OperatorNode : public ExpNode 
 {
 	protected:
-		ExpNode *_left;    //!< Left expression
-		ExpNode *_right;   //!< Right expression
+		ExpNode *_left;    //!< Expresión izquierda
+		ExpNode *_right;   //!< Expresión derecha
 
 	public:
 	/*!		
-		\brief Constructor of OperatorNode links the node to its children,
-		\param L: pointer to ExpNode
-		\param R: pointer to ExpNode
-		\post  A new OperatorNode is created with the parameters
+		\brief El constructor de OperatorNode enlaza el nodo con sus hijos,
+		\param L Puntero a ExpNode
+		\param R Puntero a ExpNode
+		\post  Se crea un nuevo OperatorNode con los parámetros
 	*/
     OperatorNode(ExpNode *L, ExpNode *R)
 	{
@@ -527,19 +527,19 @@ class OperatorNode : public ExpNode
 
 /*!	
   \class   NumericOperatorNode
-  \brief   Definition of atributes and methods of NumericOperatorNode class
-  \note    NumericOperatorNode Class publicly inherits from OperatorNode class
-  \warning Abstract class, because it does not redefine the printAST method of ExpNode
+  \brief   Definición de atributos y métodos de la clase NumericOperatorNode
+  \note La clase NumericOperatorNode hereda públicamente de OperatorNode
+  \warning Clase abstracta, porque no redefine el método printAST de ExpNode
 */
 class NumericOperatorNode : public OperatorNode 
 {
 	public:
 
 	/*!		
-		\brief Constructor of NumericOperatorNode uses OperatorNode's constructor as members initializer
-		\param L: pointer to ExpNode
-		\param R: pointer to ExpNode
-		\post  A new NumericOperatorNode is created with the parameters
+		\brief El constructor de NumericOperatorNode usa el constructor de OperatorNode como inicializador de miembro
+		\param L Puntero a ExpNode
+		\param R Puntero a ExpNode
+		\post Se crea un nuevo NumericOperatorNode con parámetros
 	*/
     NumericOperatorNode(ExpNode *L, ExpNode *R): OperatorNode(L,R) 
 	{
@@ -547,7 +547,7 @@ class NumericOperatorNode : public OperatorNode
 	}
 
 	/*!	
-	\brief   Get the type of the children expressions
+	\brief Obtiene el tipo de las expresiones hijas
 	\return  int
 	*/
 	int getType();
@@ -560,18 +560,18 @@ class NumericOperatorNode : public OperatorNode
 
 /*!	
   \class   RelationalOperatorNode
-  \brief   Definition of atributes and methods of RelationalOperatorNode class
-  \note    RelationalOperatorNode Class publicly inherits from OperatorNode class
-  \warning Abstract class, because it does not redefine the printAST method of ExpNode
+  \brief   Definición de atributos y métodos de la clase RelationalOperatorNode
+  \note La clase RelationalOperatorNode hereda públicamente de OperatorNode
+  \warning Clase abstracta, porque no redefine el método printAST de ExpNode
 */
 class RelationalOperatorNode : public OperatorNode 
 {
 public:
 /*!		
-	\brief Constructor of RelationalOperatorNode uses OperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new RelationalOperatorNode is created with the parameters
+	\brief El constructor de RelationalOperatorNode usa el constructor de OperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo RelationalOperatorNode con parámetros
 */
     RelationalOperatorNode(ExpNode *L, ExpNode *R): OperatorNode(L,R) 
 	{
@@ -579,7 +579,7 @@ public:
 	}
 
 	/*!	
-	\brief   Get the type of the children expressions
+	\brief Obtiene el tipo de las expresiones hijas
 	\return  int
 	*/
 	int getType();
@@ -592,19 +592,19 @@ public:
 
 /*!	
   \class   LogicalOperatorNode
-  \brief   Definition of atributes and methods of LogicalOperatorNode class
-  \note    NumericOperatorNode Class publicly inherits from OperatorNode class
-  \warning Abstract class, because it does not redefine the printAST method of ExpNode
+  \brief   Definición de atributos y métodos de la clase LogicalOperatorNode
+  \note La clase NumericOperatorNode hereda públicamente de OperatorNode
+  \warning Clase abstracta, porque no redefine el método printAST de ExpNode
 */
 class LogicalOperatorNode : public OperatorNode 
 {
 	public:
 
 	/*!		
-		\brief Constructor of LogicalOperatorNode uses OperatorNode's constructor as members initializer
-		\param L: pointer to ExpNode
-		\param R: pointer to ExpNode
-		\post  A new NumericOperatorNode is created with the parameters
+		\brief El constructor de LogicalOperatorNode usa el constructor de OperatorNode como inicializador de miembro
+		\param L Puntero a ExpNode
+		\param R Puntero a ExpNode
+		\post Se crea un nuevo NumericOperatorNode con parámetros
 	*/
     LogicalOperatorNode(ExpNode *L, ExpNode *R): OperatorNode(L,R) 
 	{
@@ -612,7 +612,7 @@ class LogicalOperatorNode : public OperatorNode
 	}
 
 	/*!	
-	\brief   Get the type of the children expressions
+	\brief Obtiene el tipo de las expresiones hijas
 	\return  int
 	*/
 	int getType();
@@ -625,18 +625,18 @@ class LogicalOperatorNode : public OperatorNode
 
 /*!	
   \class   PlusNode
-  \brief   Definition of atributes and methods of PlusNode class
-  \note    PlusNode Class publicly inherits from NumericOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase PlusNode
+  \note La clase PlusNode hereda públicamente de NumericOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class PlusNode : public NumericOperatorNode 
 {
   public:
 /*!		
-	\brief Constructor of PlusNode uses NumericOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new PlusNode is created with the parameter
+	\brief El constructor de PlusNode usa el constructor de NumericOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo PlusNode con el parámetro
 */
   PlusNode(ExpNode *L, ExpNode *R) : NumericOperatorNode(L,R) 
   {
@@ -644,14 +644,14 @@ class PlusNode : public NumericOperatorNode
   }
 
 /*!
-	\brief   Print the AST for PlusNode
+	\brief Imprime el AST de PlusNode
 	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the PlusNode
+	\brief   Evalúa PlusNode
 	\return  double
 	\sa		   printAST
 */
@@ -667,27 +667,27 @@ class ConcatenationNode : public OperatorNode
 {
   public:
     /*!     
-        \brief Constructor of ConcatenationNode uses OperatorNode's constructor as members initializer
-        \param L: pointer to ExpNode
-        \param R: pointer to ExpNode
-        \post  A new ConcatenationNode is created with the parameters
+        \brief El constructor de ConcatenationNode usa el constructor de OperatorNode como inicializador de miembro
+        \param L Puntero a ExpNode
+        \param R Puntero a ExpNode
+        \post Se crea un nuevo ConcatenationNode con parámetros
     */
     ConcatenationNode(ExpNode *L, ExpNode *R) : OperatorNode(L,R) {}
 
     /*! 
-        \brief   Get the type of the concatenation: STRING
+        \brief   Obtiene el tipo de la concatenación: STRING
         \return  int
     */
     int getType();
 
     /*!
-        \brief   Print the AST for ConcatenationNode
+        \brief Imprime el AST de ConcatenationNode
         \return  void
     */
     void printAST();
 
     /*! 
-        \brief   Evaluate the ConcatenationNode as STRING
+        \brief   Evalúa ConcatenationNode as STRING
         \return  std::string
     */
     std::string evaluateString();
@@ -699,33 +699,33 @@ class ConcatenationNode : public OperatorNode
 
 /*!	
   \class   MinusNode
-  \brief   Definition of atributes and methods of MinusNode class
-  \note    MinusNode Class publicly inherits from NumericOperatorNode class 
-		       and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase MinusNode
+  \note La clase MinusNode hereda públicamente de NumericOperatorNode 
+		       y añade sus propios métodos printAST y evaluate
 */
 class MinusNode : public NumericOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of MinusNode uses NumericOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new MinusNode is created with the parameter
+	\brief El constructor de MinusNode usa el constructor de NumericOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo MinusNode con el parámetro
 */
   MinusNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
   {
 		// Empty
   }
 /*!
-	\brief   printAST the MinusNode
+	\brief   Imprime el AST de MinusNode
 	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the MinusNode
+	\brief   Evalúa MinusNode
 	\return  double
 	\sa		   printAST
 */
@@ -740,33 +740,33 @@ class MinusNode : public NumericOperatorNode
 
 /*!	
   \class   MultiplicationNode
-  \brief   Definition of atributes and methods of MultiplicationNode class
-  \note    MultiplicationNode Class publicly inherits from NumericOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase MultiplicationNode
+  \note La clase MultiplicationNode hereda públicamente de NumericOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class MultiplicationNode : public NumericOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of MultiplicationNode uses NumericOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new MultiplicationNode is created with the parameter
+	\brief El constructor de MultiplicationNode usa el constructor de NumericOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo MultiplicationNode con el parámetro
 */
   MultiplicationNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
   {
 		// Empty
   }
 /*!
-	\brief   printAST the MultiplicationNode
+	\brief   Imprime el AST de MultiplicationNode
 	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the MultiplicationNode
+	\brief   Evalúa MultiplicationNode
 	\return  double
 	\sa		   printAST
 */
@@ -778,38 +778,38 @@ class MultiplicationNode : public NumericOperatorNode
 
 /*!	
   \class   DivisionNode
-  \brief   Definition of atributes and methods of DivisionNode class
-  \note    DivisionNode Class publicly inherits from NumericOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase DivisionNode
+  \note La clase DivisionNode hereda públicamente de NumericOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class DivisionNode : public NumericOperatorNode 
 {
   public:
 /*!		
-	\brief Constructor of DivisionNode uses NumericOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new DivisionNode is created with the parameter
+	\brief El constructor de DivisionNode usa el constructor de NumericOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo DivisionNode con el parámetro
 */
   DivisionNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
   {
 		// Empty
   }
 /*!
-	\brief   printAST the DivisionNode
+	\brief   Imprime el AST de DivisionNode
 	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
 
 /*! 
-    \brief   Get the type of the DivisionNode: NUMBER
+    \brief   Obtiene el tipo del DivisionNode: NUMBER
     \return  int
  */
 	int getType();
 
 /*!	
-	\brief   Evaluate the DivisionNode
+	\brief   Evalúa DivisionNode
 	\return  double
 	\sa		   printAST
 */
@@ -838,32 +838,32 @@ class IntegerDivisionNode : public NumericOperatorNode
 
 /*!	
   \class   ModuloNode
-  \brief   Definition of atributes and methods of ModuloNode class
-  \note    ModuloNode Class publicly inherits from NumericOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase ModuloNode
+  \note La clase ModuloNode hereda públicamente de NumericOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class ModuloNode : public NumericOperatorNode 
 {
   public:
 /*!		
-	\brief Constructor of ModuloNode uses NumericOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new ModuloNode is created with the parameter
+	\brief El constructor de ModuloNode usa el constructor de NumericOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo ModuloNode con el parámetro
 */
   ModuloNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
   {
 		// Empty
   }
 /*!
-	\brief   printAST the ModuloNode
+	\brief   Imprime el AST de ModuloNode
 	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the ModuloNode
+	\brief   Evalúa ModuloNode
 	\return  double
 	\sa		   printAST
 */
@@ -876,18 +876,18 @@ class ModuloNode : public NumericOperatorNode
 
 /*!	
   \class   PowerNode
-  \brief   Definition of atributes and methods of PowerNode class
-  \note    PowerNode Class publicly inherits from NumericOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase PowerNode
+  \note La clase PowerNode hereda públicamente de NumericOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class PowerNode : public NumericOperatorNode 
 {
   public:
 /*!		
-	\brief Constructor of PowerNode uses NumericOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new PowerNode is created with the parameter
+	\brief El constructor de PowerNode usa el constructor de NumericOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo PowerNode con el parámetro
 */
   PowerNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) 
   {
@@ -895,14 +895,14 @@ class PowerNode : public NumericOperatorNode
   }
 
 /*!
-	\brief   Print the AST for PowerNode
+	\brief Imprime el AST de PowerNode
 	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the PowerNode
+	\brief   Evalúa PowerNode
 	\return  double
 	\sa		   printAST
 */
@@ -915,19 +915,19 @@ class PowerNode : public NumericOperatorNode
 
 /*!	
   \class   BuiltinFunctionNode
-  \brief   Definition of atributes and methods of BuiltinFunctionNode class
-  \note    BuiltinFunctionNode Class publicly inherits from ExpNode class 
+  \brief   Definición de atributos y métodos de la clase BuiltinFunctionNode
+  \note La clase BuiltinFunctionNode hereda públicamente de ExpNode 
 */
 class BuiltinFunctionNode : public ExpNode 
 {
   protected: 
-	std::string _id; //!< Name of the BuiltinFunctionNode
+	std::string _id; //!< Nombre del BuiltinFunctionNode
 	
   public:
 /*!		
-	\brief Constructor of BuiltinFunctionNode
-	\param id: string, name of the BuiltinFunction
-	\post  A new BuiltinFunctionNode is created with the parameter
+	\brief Constructor de BuiltinFunctionNode
+	\param id Cadena con el nombre de la función builtin
+	\post Se crea un nuevo BuiltinFunctionNode con el parámetro
 */
   BuiltinFunctionNode(std::string id)
 	{
@@ -945,17 +945,17 @@ class BuiltinFunctionNode : public ExpNode
 
 /*!	
   \class   BuiltinFunctionNode_0
-  \brief   Definition of atributes and methods of BuiltinFunctionNode_0 class
-  \note    BuiltinFunctionNode_0 Class publicly inherits from BuiltinFunctionNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase BuiltinFunctionNode_0
+  \note La clase BuiltinFunctionNode_0 hereda públicamente de BuiltinFunctionNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class BuiltinFunctionNode_0 : public BuiltinFunctionNode 
 {
   public:
 /*!		
-	\brief Constructor of BuiltinFunctionNode_0 uses BuiltinFunctionNode's constructor as member initializer
-	\param id: string, name of the BuiltinFunction
-	\post  A new BuiltinFunctionNode_2 is created with the parameter
+	\brief El constructor de BuiltinFunctionNode_0 usa el constructor de BuiltinFunctionNode como inicializador de miembro
+	\param id Cadena con el nombre de la función builtin
+	\post Se crea un nuevo BuiltinFunctionNode_2 con el parámetro
 */
   BuiltinFunctionNode_0(std::string id): BuiltinFunctionNode(id)
 	{
@@ -963,7 +963,7 @@ class BuiltinFunctionNode_0 : public BuiltinFunctionNode
 	}
 
 	/*!	
-		\brief   Get the type of the child expression:
+		\brief   Obtiene el tipo de la expresión hija:
 		\return  int
 		\sa		   printAST, evaluateNumber
 	*/
@@ -972,14 +972,14 @@ class BuiltinFunctionNode_0 : public BuiltinFunctionNode
 
 
 	/*!
-		\brief   Print the AST for BuiltinFunctionNode_0
+		\brief Imprime el AST de BuiltinFunctionNode_0
 		\return  void
 		\sa		   getType, evaluateNumber
 	*/
 	  void printAST();
 
 	/*!	
-		\brief   Evaluate the BuiltinFunctionNode_0
+		\brief   Evalúa BuiltinFunctionNode_0
 		\return  double
 		\sa		   getType, printAST
 	*/
@@ -994,21 +994,21 @@ class BuiltinFunctionNode_0 : public BuiltinFunctionNode
 
 /*!	
   \class   BuiltinFunctionNode_1
-  \brief   Definition of atributes and methods of BuiltinFunctionNode_1 class
-  \note    BuiltinFunctionNode_1 Class publicly inherits from BuiltinFunctionNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase BuiltinFunctionNode_1
+  \note La clase BuiltinFunctionNode_1 hereda públicamente de BuiltinFunctionNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class BuiltinFunctionNode_1: public BuiltinFunctionNode 
 {
   private:
-	ExpNode *_exp;  //!< Argument of the BuiltinFunctionNode_1
+	ExpNode *_exp;  //!< Argumento de BuiltinFunctionNode_1
 
   public:
 /*!		
-	\brief Constructor of BuiltinFunctionNode_1 uses BuiltinFunctionNode's constructor as member initializer
-	\param id: string, name of the BuiltinFunction
-	\param expression: pointer to ExpNode, argument of the BuiltinFunctionNode_1
-	\post  A new BuiltinFunctionNode_1 is created with the parameters
+	\brief El constructor de BuiltinFunctionNode_1 usa el constructor de BuiltinFunctionNode como inicializador de miembro
+	\param id Cadena con el nombre de la función builtin
+	\param expression Puntero a ExpNode, argumento de BuiltinFunctionNode_1
+	\post Se crea un nuevo BuiltinFunctionNode_1 con parámetros
 */
   BuiltinFunctionNode_1(std::string id, ExpNode *expression): BuiltinFunctionNode(id)
 	{
@@ -1016,21 +1016,21 @@ class BuiltinFunctionNode_1: public BuiltinFunctionNode
 	}
 
 	/*!	
-		\brief   Get the type of the child expression:
+		\brief   Obtiene el tipo de la expresión hija:
 		\return  int
 		\sa		   printAST, evaluateNumber
 	*/
 	int getType();
 
 	/*!
-		\brief   Print the AST for BuiltinFunctionNode_1
+		\brief Imprime el AST de BuiltinFunctionNode_1
 		\return  void
 		\sa		   getType, evaluateNumber
 	*/
 	  void printAST();
 
 	/*!	
-		\brief   Evaluate the BuiltinFunctionNode_1
+		\brief   Evalúa BuiltinFunctionNode_1
 		\return  double
 		\sa		   getType, printAST
 	*/
@@ -1045,23 +1045,23 @@ class BuiltinFunctionNode_1: public BuiltinFunctionNode
 
 /*!	
   \class   BuiltinFunctionNode_2
-  \brief   Definition of atributes and methods of BuiltinFunctionNode_2 class 
-  \note    BuiltinFunctionNode_2 Class publicly inherits from BuiltinFunctionNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase BuiltinFunctionNode_2 
+  \note La clase BuiltinFunctionNode_2 hereda públicamente de BuiltinFunctionNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class BuiltinFunctionNode_2 : public BuiltinFunctionNode 
 {
 	private:
-		ExpNode *_exp1; //!< First argument of the BuiltinFunction_2
-		ExpNode *_exp2; //!< Second argument of the BuiltinFunction_2
+		ExpNode *_exp1; //!< Primer argumento de BuiltinFunction_2
+		ExpNode *_exp2; //!< Segundo argumento de BuiltinFunction_2
 
 	public:
 	/*!		
-		\brief Constructor of BuiltinFunctionNode_2 uses BuiltinFunctionNode's constructor as member initializer
-		\param id: string, name of the BuiltinFunction_2
-		\param expression1: pointer to ExpNode, first argument of the BuiltinFunctionNode
-		\param expression2: pointer to ExpNode, second argument of the BuiltinFunctionNode
-		\post  A new BuiltinFunctionNode_2 is created with the parameters
+		\brief El constructor de BuiltinFunctionNode_2 usa el constructor de BuiltinFunctionNode como inicializador de miembro
+		\param id Cadena con el nombre de la función builtin_2
+		\param expression1 Puntero a ExpNode, primer argumento de BuiltinFunctionNode_2
+		\param expression2 Puntero a ExpNode, segundo argumento de BuiltinFunctionNode_2
+		\post Se crea un nuevo BuiltinFunctionNode_2 con parámetros
 	*/
 	  BuiltinFunctionNode_2(std::string id,ExpNode *expression1,ExpNode *expression2): BuiltinFunctionNode(id)
 	{
@@ -1070,7 +1070,7 @@ class BuiltinFunctionNode_2 : public BuiltinFunctionNode
 	}
 
 	/*!	
-	\brief   Get the type of the children expressions
+	\brief Obtiene el tipo de las expresiones hijas
 	\return  int
 	\sa		   printAST. evaluateNumber
 	*/
@@ -1079,14 +1079,14 @@ class BuiltinFunctionNode_2 : public BuiltinFunctionNode
 
 
 	/*!
-		\brief   Print the AST for BuiltinFunctionNode_2
+		\brief Imprime el AST de BuiltinFunctionNode_2
 		\return  void
 		\sa		   getType, evaluateNumber
 	*/
 	  void printAST();
 
 	/*!	
-		\brief   Evaluate the BuiltinFunctionNode_2
+		\brief   Evalúa BuiltinFunctionNode_2
 		\return  double
 		\sa		   getType, printAST
 	*/
@@ -1100,19 +1100,19 @@ class BuiltinFunctionNode_2 : public BuiltinFunctionNode
 
 /*!	
   \class   GreaterThanNode
-  \brief   Definition of atributes and methods of GreaterThanNode class
-  \note    GreaterThanNode Class publicly inherits from RelationalOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase GreaterThanNode
+  \note La clase GreaterThanNode hereda públicamente de RelationalOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class GreaterThanNode : public RelationalOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of GreaterThanNode uses RelationalOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new GreaterThanNode is created with the parameter
+	\brief El constructor de GreaterThanNode usa el constructor de RelationalOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo GreaterThanNode con el parámetro
 */
   GreaterThanNode(ExpNode *L, ExpNode *R): RelationalOperatorNode(L,R) 
   {
@@ -1121,14 +1121,14 @@ class GreaterThanNode : public RelationalOperatorNode
 
 
 /*!
-	\brief   Print the AST for GreaterThanNode
+	\brief Imprime el AST de GreaterThanNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the GreaterThanNode
+	\brief   Evalúa GreaterThanNode
 	\return  bool
 	\sa		   printAST
 */
@@ -1143,33 +1143,33 @@ class GreaterThanNode : public RelationalOperatorNode
 
 /*!	
   \class   GreaterOrEqualNode
-  \brief   Definition of atributes and methods of GreaterOrEqualNode class
-  \note    GreaterOrEqualNode Class publicly inherits from RelationalOperatorNode class 
-		       and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase GreaterOrEqualNode
+  \note La clase GreaterOrEqualNode hereda públicamente de RelationalOperatorNode 
+		       y añade sus propios métodos printAST y evaluate
 */
 class GreaterOrEqualNode : public RelationalOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of GreaterOrEqualNode uses RelationalOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new GreaterOrEqualNode is created with the parameter
+	\brief El constructor de GreaterOrEqualNode usa el constructor de RelationalOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo GreaterOrEqualNode con el parámetro
 */
   GreaterOrEqualNode(ExpNode *L, ExpNode *R): RelationalOperatorNode(L,R) 
   {
 		// Empty
   }
 /*!
-	\brief   Print the AST for GreaterOrEqualNode
+	\brief Imprime el AST de GreaterOrEqualNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the GreaterOrEqualNode
+	\brief   Evalúa GreaterOrEqualNode
 	\return  bool
 	\sa		   printAST
 */
@@ -1184,33 +1184,33 @@ class GreaterOrEqualNode : public RelationalOperatorNode
 
 /*!	
   \class   LessThanNode
-  \brief   Definition of atributes and methods of LessThanNode class
-  \note    LessThanNode Class publicly inherits from RelationalOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase LessThanNode
+  \note La clase LessThanNode hereda públicamente de RelationalOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class LessThanNode : public RelationalOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of LessThanNode uses RelationalOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new LessThanNode is created with the parameter
+	\brief El constructor de LessThanNode usa el constructor de RelationalOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo LessThanNode con el parámetro
 */
   LessThanNode(ExpNode *L, ExpNode *R): RelationalOperatorNode(L,R) 
   {
 		// Empty
   }
 /*!
-	\brief   Print the AST for LessThanNode
+	\brief Imprime el AST de LessThanNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the LessThanNode
+	\brief   Evalúa LessThanNode
 	\return  bool
 	\sa		   printAST
 */
@@ -1225,19 +1225,19 @@ class LessThanNode : public RelationalOperatorNode
 
 /*!	
   \class   LessOrEqualNode
-  \brief   Definition of atributes and methods of LessOrEqualNode class
-  \note    LessThanNode Class publicly inherits from RelationalOperatorNode class 
-		       and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase LessOrEqualNode
+  \note La clase LessThanNode hereda públicamente de RelationalOperatorNode 
+		       y añade sus propios métodos printAST y evaluate
 */
 class LessOrEqualNode : public RelationalOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of LessOrEqualNode uses RelationalOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new LessOrEqualNode is created with the parameter
+	\brief El constructor de LessOrEqualNode usa el constructor de RelationalOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo LessOrEqualNode con el parámetro
 */
   LessOrEqualNode(ExpNode *L, ExpNode *R): RelationalOperatorNode(L,R) 
   {
@@ -1245,14 +1245,14 @@ class LessOrEqualNode : public RelationalOperatorNode
   }
 
 /*!
-	\brief   Print the AST for LessOrEqualNode
+	\brief Imprime el AST de LessOrEqualNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the LessOrEqualNode
+	\brief   Evalúa LessOrEqualNode
 	\return  bool
 	\sa		   printAST
 */
@@ -1266,19 +1266,19 @@ class LessOrEqualNode : public RelationalOperatorNode
 
 /*!	
   \class   EqualNode
-  \brief   Definition of atributes and methods of EqualNode class
-  \note    EqualNode Class publicly inherits from RelationalOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase EqualNode
+  \note La clase EqualNode hereda públicamente de RelationalOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class EqualNode : public RelationalOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of EqualNode uses RelationalOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new EqualNode is created with the parameter
+	\brief El constructor de EqualNode usa el constructor de RelationalOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo EqualNode con el parámetro
 */
   EqualNode(ExpNode *L, ExpNode *R): RelationalOperatorNode(L,R) 
   {
@@ -1286,14 +1286,14 @@ class EqualNode : public RelationalOperatorNode
   }
 
 /*!
-	\brief   Print the AST for EqualNode
+	\brief Imprime el AST de EqualNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the EqualNode
+	\brief   Evalúa EqualNode
 	\return  bool
 	\sa		  printAST
 */
@@ -1307,19 +1307,19 @@ class EqualNode : public RelationalOperatorNode
 
 /*!	
   \class   NotEqualNode
-  \brief   Definition of atributes and methods of NotEqualNode class
-  \note    NotEqualNode Class publicly inherits from RelationalOperatorNode class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase NotEqualNode
+  \note La clase NotEqualNode hereda públicamente de RelationalOperatorNode 
+		   y añade sus propios métodos printAST y evaluate
 */
 class NotEqualNode : public RelationalOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of NotEqualNode uses RelationalOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new NotEqualNode is created with the parameter
+	\brief El constructor de NotEqualNode usa el constructor de RelationalOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo NotEqualNode con el parámetro
 */
   NotEqualNode(ExpNode *L, ExpNode *R): RelationalOperatorNode(L,R) 
   {
@@ -1327,14 +1327,14 @@ class NotEqualNode : public RelationalOperatorNode
   }
 
 /*!
-	\brief   Print the AST for NotEqualNode
+	\brief Imprime el AST de NotEqualNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the NotEqualNode
+	\brief   Evalúa NotEqualNode
 	\return  bool
 	\sa		   printAST
 */
@@ -1349,19 +1349,19 @@ class NotEqualNode : public RelationalOperatorNode
 
 /*!	
   \class   AndNode
-  \brief   Definition of atributes and methods of AndNode class
-  \note    AndNode Class publicly inherits from LogicalOperatorNode class 
-		       and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase AndNode
+  \note La clase AndNode hereda públicamente de LogicalOperatorNode 
+		       y añade sus propios métodos printAST y evaluate
 */
 class AndNode : public LogicalOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of AndNode uses LogicalOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new AndNode is created with the parameter
+	\brief El constructor de AndNode usa el constructor de LogicalOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo AndNode con el parámetro
 */
   AndNode(ExpNode *L, ExpNode *R): LogicalOperatorNode(L,R) 
   {
@@ -1369,14 +1369,14 @@ class AndNode : public LogicalOperatorNode
   }
 
 /*!
-	\brief   Print the AST for AndNode
+	\brief Imprime el AST de AndNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the AndNode
+	\brief   Evalúa AndNode
 	\return  bool
 	\sa		   printAST
 */
@@ -1392,19 +1392,19 @@ class AndNode : public LogicalOperatorNode
 
 /*!	
   \class   OrNode
-  \brief   Definition of atributes and methods of OrNode class
-  \note    OrNode Class publicly inherits from LogicalOperatorNode class 
-		       and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase OrNode
+  \note La clase OrNode hereda públicamente de LogicalOperatorNode 
+		       y añade sus propios métodos printAST y evaluate
 */
 class OrNode : public LogicalOperatorNode 
 {
   public:
 
 /*!		
-	\brief Constructor of AndNode uses LogicalOperatorNode's constructor as members initializer
-	\param L: pointer to ExpNode
-	\param R: pointer to ExpNode
-	\post  A new AndNode is created with the parameter
+	\brief El constructor de AndNode usa el constructor de LogicalOperatorNode como inicializador de miembro
+	\param L Puntero a ExpNode
+	\param R Puntero a ExpNode
+	\post Se crea un nuevo AndNode con el parámetro
 */
   OrNode(ExpNode *L, ExpNode *R): LogicalOperatorNode(L,R) 
   {
@@ -1412,14 +1412,14 @@ class OrNode : public LogicalOperatorNode
   }
 
 /*!
-	\brief   Print the AST for OrNode
+	\brief Imprime el AST de OrNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the OrNode
+	\brief   Evalúa OrNode
 	\return  bool
 	\sa		 printAST()
 */
@@ -1433,8 +1433,8 @@ class OrNode : public LogicalOperatorNode
 
 /*!	
   \class   NotNode
-  \brief   Definition of atributes and methods of UnaryPlusNode class
-  \note    NotNode Class publicly inherits from LogicalUnaryOperatorNode class
+  \brief   Definición de atributos y métodos de la clase UnaryPlusNode
+  \note La clase NotNode hereda públicamente de LogicalUnaryOperatorNode
 */
 class NotNode : public LogicalUnaryOperatorNode 
 {
@@ -1442,9 +1442,9 @@ class NotNode : public LogicalUnaryOperatorNode
  public:
 
 /*!		
-	\brief Constructor of NotNode uses LogicalUnaryOperatorNode's constructor as member initializer
-	\param expression: pointer to ExpNode
-	\post  A new NotNode is created with the parameter
+	\brief El constructor de NotNode usa el constructor de LogicalUnaryOperatorNode como inicializador de miembro
+	\param expression Puntero a ExpNode
+	\post Se crea un nuevo NotNode con el parámetro
 */
   NotNode(ExpNode *expression): LogicalUnaryOperatorNode(expression) 
 	{
@@ -1452,14 +1452,14 @@ class NotNode : public LogicalUnaryOperatorNode
 	} 
 
 /*!
-	\brief   Print the AST for NotNode
+	\brief Imprime el AST de NotNode
 	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the NotNode
+	\brief   Evalúa NotNode
 	\return  bool
 	\sa		   printAST
 */
@@ -1472,15 +1472,15 @@ class NotNode : public LogicalUnaryOperatorNode
 
 /*!	
   \class   Statement
-  \brief   Definition of atributes and methods of Statement class
-  \warning Abstract class
+  \brief   Definición de atributos y métodos de la clase Statement
+  \warning Clase abstracta
 */
 
 class Statement {
  public:
 
 /*!	
-	\brief   Print the AST for Statement
+	\brief Imprime el AST de Statement
 	\note    Virtual function: can be redefined in the heir classes
 	\return  double
 	\sa		   evaluate
@@ -1489,8 +1489,8 @@ class Statement {
   virtual void printAST() {}
 
 /*!	
-	\brief   Evaluate the Statement
-	\warning Pure virtual function: must be redefined in the heir classes
+	\brief   Evalúa Statement
+	\warning Función virtual pura: debe redefinirse en las clases derivadas
 	\return  double
 	\sa		   printAST
 */
@@ -1504,25 +1504,25 @@ class Statement {
 
 /*!	
   \class   AssignmentStmt
-  \brief   Definition of atributes and methods of AssignmentStmt class
-  \note    AssignmentStmt Class publicly inherits from Statement class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase AssignmentStmt
+  \note La clase AssignmentStmt hereda públicamente de Statement 
+		   y añade sus propios métodos printAST y evaluate
 */
 class AssignmentStmt : public Statement 
 {
  private:
-  std::string _id; //!< Name of the variable of the assignment statement
-  ExpNode *_exp; 	 //!< Expresssion the assignment statement
+  std::string _id; //!< Nombre de la variable de la sentencia de asignación
+  ExpNode *_exp; 	 //!< Expresión de la sentencia de asignación
 
-  AssignmentStmt *_asgn;  //!< Allow multiple assigment -> a = b = 2 
+  AssignmentStmt *_asgn;  //!< Permite asignaciones múltiples -> a = b = 2 
 
  public:
 
 /*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param expression: pointer to ExpNode
-	\post  A new AssignmentStmt is created with the parameters
+	\brief Constructor de AssignmentStmt 
+	\param id Cadena con el nombre de la variable de AssignmentStmt
+	\param expression Puntero a ExpNode
+	\post Se crea un nuevo AssignmentStmt con parámetros
 */
   AssignmentStmt(std::string id, ExpNode *expression): _id(id), _exp(expression)
 	{
@@ -1530,10 +1530,10 @@ class AssignmentStmt : public Statement
 	}
 
 /*!		
-	\brief Constructor of AssignmentStmt 
-	\param id: string, variable of the AssignmentStmt
-	\param asgn: pointer to AssignmentStmt
-	\post  A new AssignmentStmt is created with the parameters
+	\brief Constructor de AssignmentStmt 
+	\param id Cadena con el nombre de la variable de AssignmentStmt
+	\param asgn Puntero a AssignmentStmt
+	\post Se crea un nuevo AssignmentStmt con parámetros
 	\note  Allow multiple assigment -> a = b = 2 
 */
 
@@ -1544,14 +1544,14 @@ class AssignmentStmt : public Statement
 
 
 /*!
-	\brief   Print the AST for AssignmentStmt
+	\brief Imprime el AST de AssignmentStmt
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the AssignmentStmt
+	\brief   Evalúa AssignmentStmt
 	\return  void
 	\sa		   printAST
 */
@@ -1564,21 +1564,21 @@ class AssignmentStmt : public Statement
 
 /*!	
   \class   PrintStmt
-  \brief   Definition of atributes and methods of PrintStmt class
-  \note    PrintStmt Class publicly inherits from Statement class 
-		   and adds its own print and evaluate functions
-  \warning  In this class, printAST and evaluate functions have the same meaning.
+  \brief   Definición de atributos y métodos de la clase PrintStmt
+  \note La clase PrintStmt hereda públicamente de Statement 
+		   y añade sus propios métodos print y evaluate
+  \warning  En esta clase, printAST y evaluate tienen el mismo significado.
 */
 class PrintStmt: public Statement 
 {
  private:
-  ExpNode *_exp; //!< Expresssion the print statement
+  ExpNode *_exp; //!< Expresión de la sentencia print
 
  public:
 /*!		
-	\brief Constructor of PrintStmt 
-	\param expression: pointer to ExpNode
-	\post  A new PrintStmt is created with the parameter
+	\brief Constructor de PrintStmt 
+	\param expression Puntero a ExpNode
+	\post Se crea un nuevo PrintStmt con el parámetro
 */
   PrintStmt(ExpNode *expression)
 	{
@@ -1586,14 +1586,14 @@ class PrintStmt: public Statement
 	}
 
 /*!
-	\brief   Print the AST for PrintStmt
+	\brief Imprime el AST de PrintStmt
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the PrintStmt
+	\brief   Evalúa PrintStmt
 	\return  double
 	\sa		   printAST
 */
@@ -1607,21 +1607,21 @@ class PrintStmt: public Statement
 
 /*!	
   \class   ReadStmt
-  \brief   Definition of atributes and methods of ReadStmt class
-  \note    ReadStmt Class publicly inherits from Statement class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase ReadStmt
+  \note La clase ReadStmt hereda públicamente de Statement 
+		   y añade sus propios métodos printAST y evaluate
 */
 class ReadStmt : public Statement 
 {
   private:
-	std::string _id; //!< Name of the ReadStmt
+	std::string _id; //!< Nombre del ReadStmt
 	
 
   public:
 /*!		
-	\brief Constructor of ReadStmt
-	\param id: string, name of the variable of the ReadStmt
-	\post  A new ReadStmt is created with the parameter
+	\brief Constructor de ReadStmt
+	\param id Cadena con el nombre de la variable de ReadStmt
+	\post Se crea un nuevo ReadStmt con el parámetro
 */
   ReadStmt(std::string id)
 	{
@@ -1629,14 +1629,14 @@ class ReadStmt : public Statement
 	}
 
 /*!
-	\brief   Print the AST for ReadStmt
+	\brief Imprime el AST de ReadStmt
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the ReadStmt
+	\brief   Evalúa ReadStmt
 	\return  void
 	\sa		   printAST
 */
@@ -1667,9 +1667,9 @@ class ReadStringStmt : public Statement
 
 /*!	
   \class   EmptyStmt
-  \brief   Definition of atributes and methods of EmptyStmt class
-  \note    EmptyStmt Class publicly inherits from Statement class 
-		   and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase EmptyStmt
+  \note La clase EmptyStmt hereda públicamente de Statement 
+		   y añade sus propios métodos printAST y evaluate
 */
 class EmptyStmt : public Statement 
 {
@@ -1677,7 +1677,7 @@ class EmptyStmt : public Statement
 
   public:
 /*!		
-	\brief Constructor of  WhileStmt
+	\brief Constructor de WhileStmt
 	\post  A new EmptyStmt is created 
 */
   EmptyStmt()
@@ -1687,14 +1687,14 @@ class EmptyStmt : public Statement
 
 
 /*!
-	\brief   Print the AST for EmptyStmt
+	\brief Imprime el AST de EmptyStmt
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the EmptyStmt
+	\brief   Evalúa EmptyStmt
 	\return  void
 	\sa		   printAST
 */
@@ -1709,23 +1709,23 @@ class EmptyStmt : public Statement
 
 /*!	
   \class   IfStmt
-  \brief   Definition of atributes and methods of IfStmt class
-  \note    IfStmt Class publicly inherits from Statement class 
-		       and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase IfStmt
+  \note La clase IfStmt hereda públicamente de Statement 
+		       y añade sus propios métodos printAST y evaluate
 */
 class IfStmt : public Statement 
 {
  private:
-  ExpNode *_cond;    //!< Condicion of the if statement
-  Statement *_stmt1; //!< Statement of the consequent
-  Statement *_stmt2; //!< Statement of the alternative
+  ExpNode *_cond;    //!< Condición de la sentencia if
+  Statement *_stmt1; //!< Sentencia del consecuente
+  Statement *_stmt2; //!< Sentencia de la alternativa
 
   public:
 /*!		
-	\brief Constructor of Single IfStmt (without alternative)
-	\param condition: ExpNode of the condition
-	\param statement1: Statement of the consequent
-	\post  A new IfStmt is created with the parameters
+	\brief Constructor de Single IfStmt (without alternative)
+	\param condition ExpNode de la condición
+	\param statement1 Sentencia del consecuente
+	\post Se crea un nuevo IfStmt con parámetros
 */
   IfStmt(ExpNode *condition, Statement *statement1)
 	{
@@ -1736,11 +1736,11 @@ class IfStmt : public Statement
 
 
 /*!		
-	\brief Constructor of Compound IfStmt (with alternative)
-	\param condition: ExpNode of the condition
-	\param statement1: Statement of the consequent
-	\param statement2: Statement of the alternative
-	\post  A new IfStmt is created with the parameters
+	\brief Constructor de Compound IfStmt (with alternative)
+	\param condition ExpNode de la condición
+	\param statement1 Sentencia del consecuente
+	\param statement2 Sentencia de la alternativa
+	\post Se crea un nuevo IfStmt con parámetros
 */
   IfStmt(ExpNode *condition, Statement *statement1, Statement *statement2)
 	{
@@ -1751,14 +1751,14 @@ class IfStmt : public Statement
 
 
 /*!
-	\brief   Print the AST for IfStmt
+	\brief Imprime el AST de IfStmt
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the IfStmt
+	\brief   Evalúa IfStmt
 	\return  void
 	\sa	   	 printAST
 */
@@ -1771,22 +1771,22 @@ class IfStmt : public Statement
 
 /*!	
   \class   WhileStmt
-  \brief   Definition of atributes and methods of WhileStmt class
-  \note    WhileStmt Class publicly inherits from Statement class 
-		       and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase WhileStmt
+  \note La clase WhileStmt hereda públicamente de Statement 
+		       y añade sus propios métodos printAST y evaluate
 */
 class WhileStmt : public Statement 
 {
  private:
-  ExpNode *_cond; //!< Condicion of the while statement
-  Statement *_stmt; //!< Statement of the body of the while loop
+  ExpNode *_cond; //!< Condición de la sentencia while
+  Statement *_stmt; //!< Sentencia del cuerpo del bucle while
 
   public:
 /*!		
-	\brief Constructor of  WhileStmt
-	\param condition: ExpNode of the condition
-	\param statement: Statement of the body of the loop 
-	\post  A new WhileStmt is created with the parameters
+	\brief Constructor de WhileStmt
+	\param condition ExpNode de la condición
+	\param statement Sentencia del cuerpo del bucle
+	\post Se crea un nuevo WhileStmt con parámetros
 */
   WhileStmt(ExpNode *condition, Statement *statement)
 	{
@@ -1795,14 +1795,14 @@ class WhileStmt : public Statement
 	}
 
 /*!
-	\brief   Print the AST for WhileStmt
+	\brief Imprime el AST de WhileStmt
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the WhileStmt
+	\brief   Evalúa WhileStmt
 	\return  void
 	\sa	   	 printAST
 */
@@ -1815,14 +1815,14 @@ class WhileStmt : public Statement
 
 /*!	
   \class   RepeatStmt
-  \brief   Definition of atributes and methods of RepeatStmt class
-  \note    RepeatStmt Class publicly inherits from Statement class 
+  \brief   Definición de atributos y métodos de la clase RepeatStmt
+  \note La clase RepeatStmt hereda públicamente de Statement 
 */
 class RepeatStmt : public Statement 
 {
  private:
-   std::list<Statement *> *_stmts; //!< Statements of the body of the repeat loop
-   ExpNode *_cond; //!< Condition of the repeat statement
+   std::list<Statement *> *_stmts; //!< Sentencias del cuerpo del bucle repeat
+   ExpNode *_cond; //!< Condición de la sentencia repeat
 
   public:
   RepeatStmt(std::list<Statement *> *stmtList, ExpNode *condition)
@@ -1840,16 +1840,16 @@ class RepeatStmt : public Statement
 
 /*!	
   \class   ForStmt
-  \brief   Definition of atributes and methods of ForStmt class
+  \brief   Definición de atributos y métodos de la clase ForStmt
 */
 class ForStmt : public Statement 
 {
  private:
-   std::string _id;                 //!< Name of the control variable
-   ExpNode *_from;                  //!< Starting value
-   ExpNode *_to;                    //!< Ending value
-   ExpNode *_step;                  //!< Step value (can be NULL)
-   std::list<Statement *> *_body;   //!< Body of the loop
+   std::string _id;                 //!< Nombre de la variable de control
+   ExpNode *_from;                  //!< Valor inicial
+   ExpNode *_to;                    //!< Valor final
+   ExpNode *_step;                  //!< Valor de paso (puede ser NULL)
+   std::list<Statement *> *_body;   //!< Cuerpo del bucle
 
   public:
   ForStmt(std::string id, ExpNode *from, ExpNode *to, ExpNode *step, std::list<Statement *> *body)
@@ -1930,20 +1930,20 @@ class SwitchStmt : public Statement
 
 /*!	
   \class   BlockStmt
-  \brief   Definition of atributes and methods of BlockStmt class
-  \note    BlockStmt Class publicly inherits from Statement class 
-		       and adds its own printAST and evaluate functions
+  \brief   Definición de atributos y métodos de la clase BlockStmt
+  \note La clase BlockStmt hereda públicamente de Statement 
+		       y añade sus propios métodos printAST y evaluate
 */
 class BlockStmt : public Statement 
 {
  private:
-   std::list<Statement *> *_stmts;  //!< List of statements
+   std::list<Statement *> *_stmts;  //!< Lista de sentencias
 
   public:
 /*!		
-	\brief Constructor of  WhileStmt
-	\param stmtList: list of Statement
-	\post  A new BlockStmt is created with the parameters
+	\brief Constructor de WhileStmt
+	\param stmtList Lista de Statement
+	\post Se crea un nuevo BlockStmt con parámetros
 */
   BlockStmt(std::list<Statement *> *stmtList): _stmts(stmtList)
 	{
@@ -1952,14 +1952,14 @@ class BlockStmt : public Statement
 
 
 /*!
-	\brief   Print the AST for BlockStmt
+	\brief Imprime el AST de BlockStmt
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evaluate the BlockStmt
+	\brief   Evalúa BlockStmt
 	\return  void
 	\sa	   	 printAST
 */
@@ -2005,18 +2005,18 @@ class PlaceStmt : public Statement
 
 /*!	
   \class   AST
-  \brief   Definition of atributes and methods of AST class
+  \brief   Definición de atributos y métodos de la clase AST
 */
 class AST {
  private:
-  std::list<Statement *> *stmts;  //!< List of statements
+  std::list<Statement *> *stmts;  //!< Lista de sentencias
 
  public:
 
 /*!		
-	\brief Constructor of PrintStmt 
-	\param stmtList: pointer to a list of pointers to Statement
-	\post  A new PrintStmt is created with the parameter
+	\brief Constructor de PrintStmt 
+	\param stmtList Puntero a lista de punteros a Statement
+	\post Se crea un nuevo PrintStmt con el parámetro
 */
   AST(std::list<Statement *> *stmtList): stmts(stmtList)
 	{
@@ -2024,14 +2024,14 @@ class AST {
 	}
 
 /*!
-	\brief   print the AST
+	\brief Imprime el AST
 	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   evaluate the AST
+	\brief Evalúa el AST
 	\return  double
 	\sa	   	 printAST
 */
@@ -2040,44 +2040,44 @@ class AST {
 
 /*! 
   \class   FactorialNode
-  \brief   Definition of attributes and methods of FactorialNode class
+  \brief   Definición de atributos y métodos de la clase FactorialNode
   \note    Publicly inherits from ExpNode class
 */
 class FactorialNode : public ExpNode {
   private:
-    ExpNode *_exp; //!< Expression to calculate the factorial
+    ExpNode *_exp; //!< Expresión para calcular el factorial
 
   public:
     /*!     
-        \brief   Constructor of FactorialNode
-        \param   exp: pointer to the expression
+        \brief Constructor de FactorialNode
+        \param   exp Puntero a la expresión
         \post    A new FactorialNode is created
     */
     FactorialNode(ExpNode *exp) : _exp(exp) {}
 
     /*! 
-        \brief   Get the type of the expression
+        \brief   Obtiene el tipo de la expresión
         \return  int (NUMBER)
         \sa      printAST, evaluateNumber
     */
     int getType();
 
     /*! 
-        \brief   Print the AST node for the factorial operator
+        \brief Imprime el AST node for the factorial operator
         \return  void
         \sa      getType, evaluateNumber
     */
     void printAST() {}
 
     /*! 
-        \brief   Evaluate the factorial of the expression
+        \brief   Evalúa el factorial de la expresión
         \return  double
         \sa      getType, printAST
     */
     double evaluateNumber();
 
 	/*!
-	 \brief   Evaluate the factorial of the expression as a string
+	 \brief   Evalúa el factorial de la expresión as a string
 	 \return  std::string
 	 \sa      getType, printAST
 	*/
@@ -2086,41 +2086,41 @@ class FactorialNode : public ExpNode {
 
 /*! 
   \class   TernaryNode
-  \brief   Definition of attributes and methods of TernaryNode class
+  \brief   Definición de atributos y métodos de la clase TernaryNode
   \note    Publicly inherits from ExpNode class
 */
 class TernaryNode : public ExpNode {
   private:
-    ExpNode *_cond; //!< Condition expression
-    ExpNode *_exp1; //!< Expression evaluated if the condition is true
-    ExpNode *_exp2; //!< Expression evaluated if the condition is false
+    ExpNode *_cond; //!< Expresión de condición
+    ExpNode *_exp1; //!< Expresión evaluada si la condición es verdadera
+    ExpNode *_exp2; //!< Expresión evaluada si la condición es falsa
 
   public:
     /*!     
-        \brief   Constructor of TernaryNode
-        \param   cond: pointer to the condition expression
-        \param   e1: pointer to the true expression
-        \param   e2: pointer to the false expression
+        \brief Constructor de TernaryNode
+        \param   cond Puntero a la expresión de condición
+        \param   e1 Puntero a la expresión verdadera
+        \param   e2 Puntero a la expresión falsa
         \post    A new TernaryNode is created
     */
     TernaryNode(ExpNode *cond, ExpNode *e1, ExpNode *e2) : _cond(cond), _exp1(e1), _exp2(e2) {}
 
     /*! 
-        \brief   Get the type of the ternary expression
+        \brief   Obtiene el tipo de la expresión ternaria
         \return  int (Type of the true expression branch)
         \sa      printAST, evaluateNumber, evaluateBool, evaluateString
     */
     int getType() { return this->_exp1->getType(); }
 
     /*! 
-        \brief   Print the AST node for the ternary operator
+        \brief Imprime el AST node for the ternary operator
         \return  void
         \sa      getType
     */
     void printAST() {}
 
     /*! 
-        \brief   Evaluate the ternary expression as NUMBER
+        \brief   Evalúa la expresión ternaria como NUMBER
         \return  double
         \sa      getType, printAST, evaluateBool, evaluateString
     */
@@ -2129,7 +2129,7 @@ class TernaryNode : public ExpNode {
     }
 
     /*! 
-        \brief   Evaluate the ternary expression as BOOL
+        \brief   Evalúa la expresión ternaria como BOOL
         \return  bool
         \sa      getType, printAST, evaluateNumber, evaluateString
     */
@@ -2138,7 +2138,7 @@ class TernaryNode : public ExpNode {
     }
 
     /*! 
-        \brief   Evaluate the ternary expression as STRING
+        \brief   Evalúa la expresión ternaria como STRING
         \return  std::string
         \sa      getType, printAST, evaluateNumber, evaluateBool
     */
@@ -2149,32 +2149,32 @@ class TernaryNode : public ExpNode {
 
 /*! 
   \class   DoWhileStmt
-  \brief   Definition of attributes and methods of DoWhileStmt class
+  \brief   Definición de atributos y métodos de la clase DoWhileStmt
   \note    Publicly inherits from Statement class
 */
 class DoWhileStmt : public Statement {
   private:
-    Statement *_stmt; //!< Statement block to be executed
-    ExpNode *_cond;   //!< Loop continuation condition
+    Statement *_stmt; //!< Bloque de sentencia a ejecutar
+    ExpNode *_cond;   //!< Condición de continuación del bucle
 
   public:
     /*!     
-        \brief   Constructor of DoWhileStmt
-        \param   statement: pointer to the Statement block
-        \param   condition: pointer to the loop condition expression
+        \brief Constructor de DoWhileStmt
+        \param   statement Puntero al bloque de la sentencia
+        \param   condition Puntero a la expresión de condición del bucle
         \post    A new DoWhileStmt is created
     */
     DoWhileStmt(Statement *statement, ExpNode *condition) : _stmt(statement), _cond(condition) {}
 
     /*! 
-        \brief   Print the AST node for the do-while statement
+        \brief Imprime el AST node for the do-while statement
         \return  void
-        \sa      evaluate
+        \sa      evaluatea
     */
     void printAST();
 
     /*! 
-        \brief   Execute the do-while loop statement block
+        \brief   Ejecuta el bloque de la sentencia do-while
         \return  void
         \sa      printAST
     */
