@@ -42,7 +42,6 @@ namespace lp
 	/*!	
 		\brief   Imprime el AST de la expresión
 		\warning Función virtual pura: debe redefinirse en las clases derivadas
-		\return  void
 		\sa		   getType, evaluateNumber, evaluateBool
 	*/
     virtual void printAST() = 0;
@@ -115,7 +114,6 @@ class VariableNode : public ExpNode
 
 	/*!
 		\brief   Imprime el AST de la variable
-		\return  void
 		\sa		   getType, evaluateNumber, evaluateBool
 	*/
 	  void printAST();
@@ -177,7 +175,6 @@ class ConstantNode : public ExpNode
 
 	/*!
 		\brief   Imprime el AST de la constante
-		\return  void
 		\sa		   getType, evaluateNumber, evaluateBool
 	*/
 	  void printAST();
@@ -236,7 +233,6 @@ class NumberNode : public ExpNode
 
 	/*!
 		\brief   Imprime el AST de la expresión
-		\return  void
 		\sa		   getType, evaluateNumber
 	*/
 	void printAST();
@@ -281,8 +277,7 @@ class StringNode : public ExpNode
     int getType();
 
     /*!
-        \brief Imprime el AST de StringNode
-        \return  void
+        \brief Imprime el AST de StringNode    
     */
     void printAST();
 
@@ -427,7 +422,7 @@ class UnaryMinusNode : public NumericUnaryOperatorNode
 	\brief El constructor de UnaryMinusNode usa el constructor de NumericUnaryOperatorNode como inicializador de miembro.
 	\param expression Puntero a ExpNode
 	\post  Se crea un nuevo UnaryMinusNode con el parámetro
-	\Nota: función en línea; el constructor de NumericUnaryOperatorNode se usa como inicializador de miembro
+	\note: función en línea; el constructor de NumericUnaryOperatorNode se usa como inicializador de miembro
 */
   UnaryMinusNode(ExpNode *expression): NumericUnaryOperatorNode(expression) 
 	{
@@ -435,8 +430,7 @@ class UnaryMinusNode : public NumericUnaryOperatorNode
 	} 
 
 /*!
-	\brief   Imprime el AST de la expresión
-	\return  void
+	\brief   Imprime el AST de la expresión	
 	\sa		   evaluateNumber
 */
   void printAST();
@@ -474,7 +468,6 @@ class UnaryPlusNode : public NumericUnaryOperatorNode
 
 /*!
 	\brief   Imprime el AST de la expresión
-	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
@@ -644,8 +637,7 @@ class PlusNode : public NumericOperatorNode
   }
 
 /*!
-	\brief Imprime el AST de PlusNode
-	\return  void
+	\brief Imprime el AST de PlusNode	
 	\sa		   evaluateNumber
 */
   void printAST();
@@ -681,8 +673,7 @@ class ConcatenationNode : public OperatorNode
     int getType();
 
     /*!
-        \brief Imprime el AST de ConcatenationNode
-        \return  void
+        \brief Imprime el AST de ConcatenationNode     
     */
     void printAST();
 
@@ -719,7 +710,6 @@ class MinusNode : public NumericOperatorNode
   }
 /*!
 	\brief   Imprime el AST de MinusNode
-	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
@@ -760,7 +750,6 @@ class MultiplicationNode : public NumericOperatorNode
   }
 /*!
 	\brief   Imprime el AST de MultiplicationNode
-	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
@@ -797,7 +786,6 @@ class DivisionNode : public NumericOperatorNode
   }
 /*!
 	\brief   Imprime el AST de DivisionNode
-	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
@@ -826,9 +814,18 @@ class DivisionNode : public NumericOperatorNode
 class IntegerDivisionNode : public NumericOperatorNode 
 {
   public:
+  /*! 
+      \brief Constructor de IntegerDivisionNode 
+      \param L Expresión izquierda
+      \param R Expresión derecha
+  */
   IntegerDivisionNode(ExpNode *L, ExpNode *R): NumericOperatorNode(L,R) {}
+  
+  /*! \brief Imprime el AST de la división entera */
   void printAST();
+  /*! \brief Obtiene el tipo de resultado */
   int getType();
+  /*! \brief Evalúa la división entera */
   double evaluateNumber();
 };
 
@@ -856,8 +853,7 @@ class ModuloNode : public NumericOperatorNode
 		// Empty
   }
 /*!
-	\brief   Imprime el AST de ModuloNode
-	\return  void
+	\brief   Imprime el AST de ModuloNode	
 	\sa		   evaluateNumber
 */
   void printAST();
@@ -896,7 +892,6 @@ class PowerNode : public NumericOperatorNode
 
 /*!
 	\brief Imprime el AST de PowerNode
-	\return  void
 	\sa		   evaluateNumber
 */
   void printAST();
@@ -972,8 +967,7 @@ class BuiltinFunctionNode_0 : public BuiltinFunctionNode
 
 
 	/*!
-		\brief Imprime el AST de BuiltinFunctionNode_0
-		\return  void
+		\brief Imprime el AST de BuiltinFunctionNode_0		
 		\sa		   getType, evaluateNumber
 	*/
 	  void printAST();
@@ -1024,7 +1018,6 @@ class BuiltinFunctionNode_1: public BuiltinFunctionNode
 
 	/*!
 		\brief Imprime el AST de BuiltinFunctionNode_1
-		\return  void
 		\sa		   getType, evaluateNumber
 	*/
 	  void printAST();
@@ -1079,8 +1072,7 @@ class BuiltinFunctionNode_2 : public BuiltinFunctionNode
 
 
 	/*!
-		\brief Imprime el AST de BuiltinFunctionNode_2
-		\return  void
+		\brief Imprime el AST de BuiltinFunctionNode_2	
 		\sa		   getType, evaluateNumber
 	*/
 	  void printAST();
@@ -1121,8 +1113,7 @@ class GreaterThanNode : public RelationalOperatorNode
 
 
 /*!
-	\brief Imprime el AST de GreaterThanNode
-	\return  void
+	\brief Imprime el AST de GreaterThanNode	
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1162,8 +1153,7 @@ class GreaterOrEqualNode : public RelationalOperatorNode
 		// Empty
   }
 /*!
-	\brief Imprime el AST de GreaterOrEqualNode
-	\return  void
+	\brief Imprime el AST de GreaterOrEqualNode	
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1204,7 +1194,6 @@ class LessThanNode : public RelationalOperatorNode
   }
 /*!
 	\brief Imprime el AST de LessThanNode
-	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1245,8 +1234,7 @@ class LessOrEqualNode : public RelationalOperatorNode
   }
 
 /*!
-	\brief Imprime el AST de LessOrEqualNode
-	\return  void
+	\brief Imprime el AST de LessOrEqualNode	
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1287,7 +1275,6 @@ class EqualNode : public RelationalOperatorNode
 
 /*!
 	\brief Imprime el AST de EqualNode
-	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1328,7 +1315,6 @@ class NotEqualNode : public RelationalOperatorNode
 
 /*!
 	\brief Imprime el AST de NotEqualNode
-	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1370,7 +1356,6 @@ class AndNode : public LogicalOperatorNode
 
 /*!
 	\brief Imprime el AST de AndNode
-	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1412,8 +1397,7 @@ class OrNode : public LogicalOperatorNode
   }
 
 /*!
-	\brief Imprime el AST de OrNode
-	\return  void
+	\brief Imprime el AST de OrNode	
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1453,7 +1437,6 @@ class NotNode : public LogicalUnaryOperatorNode
 
 /*!
 	\brief Imprime el AST de NotNode
-	\return  void
 	\sa		   evaluateBool
 */
   void printAST();
@@ -1545,14 +1528,12 @@ class AssignmentStmt : public Statement
 
 /*!
 	\brief Imprime el AST de AssignmentStmt
-	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
 	\brief   Evalúa AssignmentStmt
-	\return  void
 	\sa		   printAST
 */
     void evaluate();
@@ -1587,7 +1568,6 @@ class PrintStmt: public Statement
 
 /*!
 	\brief Imprime el AST de PrintStmt
-	\return  void
 	\sa		   evaluate
 */
   void printAST();
@@ -1630,14 +1610,12 @@ class ReadStmt : public Statement
 
 /*!
 	\brief Imprime el AST de ReadStmt
-	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
 	\brief   Evalúa ReadStmt
-	\return  void
 	\sa		   printAST
 */
   void evaluate();
@@ -1651,15 +1629,20 @@ class ReadStmt : public Statement
 class ReadStringStmt : public Statement 
 {
   private:
-    std::string _id;  
+    std::string _id;  /*!< Nombre de la variable donde se lee la cadena */
 
   public:
+    /*! 
+        \brief Constructor de ReadStringStmt
+        \param id Nombre de la variable
+    */
     ReadStringStmt(std::string id) { this->_id = id; }
 
+    /*! \brief Imprime el AST de lectura de cadena */
     void printAST();
+    /*! \brief Ejecuta la lectura por teclado de la cadena */
     void evaluate();
 };
-
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1688,14 +1671,13 @@ class EmptyStmt : public Statement
 
 /*!
 	\brief Imprime el AST de EmptyStmt
-	\return  void
+	
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evalúa EmptyStmt
-	\return  void
+	\brief   Evalúa EmptyStmt	
 	\sa		   printAST
 */
   void evaluate();
@@ -1752,14 +1734,12 @@ class IfStmt : public Statement
 
 /*!
 	\brief Imprime el AST de IfStmt
-	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
 	\brief   Evalúa IfStmt
-	\return  void
 	\sa	   	 printAST
 */
   void evaluate();
@@ -1796,14 +1776,12 @@ class WhileStmt : public Statement
 
 /*!
 	\brief Imprime el AST de WhileStmt
-	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
-	\brief   Evalúa WhileStmt
-	\return  void
+	\brief   Evalúa WhileStmt	
 	\sa	   	 printAST
 */
   void evaluate();
@@ -1821,17 +1799,24 @@ class WhileStmt : public Statement
 class RepeatStmt : public Statement 
 {
  private:
-   std::list<Statement *> *_stmts; //!< Sentencias del cuerpo del bucle repeat
-   ExpNode *_cond; //!< Condición de la sentencia repeat
+   std::list<Statement *> *_stmts; /*!< Sentencias del cuerpo del bucle repeat */
+   ExpNode *_cond;                 /*!< Condición de la sentencia repeat */
 
   public:
+  /*! 
+      \brief Constructor de RepeatStmt
+      \param stmtList Lista de sentencias
+      \param condition Condición de parada
+  */
   RepeatStmt(std::list<Statement *> *stmtList, ExpNode *condition)
 	{
 		this->_stmts = stmtList;
         this->_cond = condition;
 	}
 
+  /*! \brief Imprime el AST del bucle repeat */
   void printAST();
+  /*! \brief Ejecuta el bucle repeat-until */
   void evaluate();
 };
 
@@ -1845,13 +1830,21 @@ class RepeatStmt : public Statement
 class ForStmt : public Statement 
 {
  private:
-   std::string _id;                 //!< Nombre de la variable de control
-   ExpNode *_from;                  //!< Valor inicial
-   ExpNode *_to;                    //!< Valor final
-   ExpNode *_step;                  //!< Valor de paso (puede ser NULL)
-   std::list<Statement *> *_body;   //!< Cuerpo del bucle
+   std::string _id;                 /*!< Nombre de la variable de control */
+   ExpNode *_from;                  /*!< Valor inicial */
+   ExpNode *_to;                    /*!< Valor final */
+   ExpNode *_step;                  /*!< Valor de paso */
+   std::list<Statement *> *_body;   /*!< Cuerpo del bucle */
 
   public:
+  /*! 
+      \brief Constructor de ForStmt
+      \param id Variable de control
+      \param from Expresión inicial
+      \param to Expresión final
+      \param step Expresión del paso
+      \param body Sentencias del bucle
+  */
   ForStmt(std::string id, ExpNode *from, ExpNode *to, ExpNode *step, std::list<Statement *> *body)
 	{
         this->_id = id;
@@ -1861,7 +1854,9 @@ class ForStmt : public Statement
         this->_body = body;
 	}
 
+  /*! \brief Imprime el AST del bucle for */
   void printAST();
+  /*! \brief Ejecuta el bucle for */
   void evaluate();
 };
 
@@ -1953,14 +1948,12 @@ class BlockStmt : public Statement
 
 /*!
 	\brief Imprime el AST de BlockStmt
-	\return  void
 	\sa		   evaluate
 */
   void printAST();
 
 /*!	
 	\brief   Evalúa BlockStmt
-	\return  void
 	\sa	   	 printAST
 */
   void evaluate();
@@ -1974,7 +1967,9 @@ class BlockStmt : public Statement
 class ClearScreenStmt : public Statement 
 {
   public:
+    /*! \brief Imprime el AST de la limpieza de pantalla */
     void printAST();
+    /*! \brief Ejecuta el comando clear_screen */
     void evaluate();
 };
 
@@ -1986,17 +1981,24 @@ class ClearScreenStmt : public Statement
 class PlaceStmt : public Statement 
 {
   private:
-    ExpNode *_line;   //!< Línea
-    ExpNode *_column; //!< Columna
+    ExpNode *_line;   /*!< Línea de la consola */
+    ExpNode *_column; /*!< Columna de la consola */
 
   public:
+    /*! 
+        \brief Constructor de PlaceStmt
+        \param line Expresión de la línea
+        \param column Expresión de la columna
+    */
     PlaceStmt(ExpNode *line, ExpNode *column)
     {
         this->_line = line;
         this->_column = column;
     }
 
+    /*! \brief Imprime el AST del comando place */
     void printAST();
+    /*! \brief Ejecuta el reposicionamiento del cursor */
     void evaluate();
 };
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -2025,7 +2027,6 @@ class AST {
 
 /*!
 	\brief Imprime el AST
-	\return  void
 	\sa		   evaluate
 */
   void printAST();
@@ -2064,7 +2065,7 @@ class FactorialNode : public ExpNode {
 
     /*! 
         \brief Imprime el AST node for the factorial operator
-        \return  void
+        
         \sa      getType, evaluateNumber
     */
     void printAST() {}
@@ -2114,7 +2115,7 @@ class TernaryNode : public ExpNode {
 
     /*! 
         \brief Imprime el AST node for the ternary operator
-        \return  void
+        
         \sa      getType
     */
     void printAST() {}
@@ -2167,15 +2168,13 @@ class DoWhileStmt : public Statement {
     DoWhileStmt(Statement *statement, ExpNode *condition) : _stmt(statement), _cond(condition) {}
 
     /*! 
-        \brief Imprime el AST node for the do-while statement
-        \return  void
+        \brief Imprime el AST node for the do-while statement   
         \sa      evaluatea
     */
     void printAST();
 
     /*! 
         \brief   Ejecuta el bloque de la sentencia do-while
-        \return  void
         \sa      printAST
     */
     void evaluate();
@@ -2188,12 +2187,20 @@ class DoWhileStmt : public Statement {
 */
 class ColorStmt : public Statement {
   private:
-    std::string _ansiCode; 
+    std::string _ansiCode; /*!< Codigo ANSI del color correspondiente */
 
   public:
+    /*!     
+        \brief Constructor de ColorStmt
+        \param ansiCode Codigo en formato std::string
+        \post Se crea un nuevo ColorStmt con el color indicado
+    */
     ColorStmt(std::string ansiCode) : _ansiCode(ansiCode) {}
 
+    /*! \brief Imprime el AST de ColorStmt */
     void printAST();
+    
+    /*! \brief Ejecuta el cambio de color en terminal */
     void evaluate(); 
 };
 

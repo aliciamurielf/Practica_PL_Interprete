@@ -4,13 +4,14 @@
 */
 
 /*!
- \mainpage Flex and Bison: example 17
- \author   
- \date     2018 - 4 - 26
- \version  1.0
+ \mainpage Flex and Bison: a simple interpreter for a calculator language
+ \author  Alicia Muriel Fernández
+ \author  Lucía Cañero Moslero
+ \date    2026-05-24
+ \version 1.0
  \note Novelties
-	+ AST: intermidiate code
-	+ New statements: if, while, block
+  + AST: intermidiate code  
+  + New statements: if, while, block
 */
 
 
