@@ -189,7 +189,7 @@ extern lp::AST *root; //!< External root of the abstract syntax tree AST
 
 %token INC DEC FACT PLUS_ASSIGN MINUS_ASSIGN MULT_ASSIGN DIV_ASSIGN MOD_ASSIGN QUESTION
 
-%token COLOR_RED COLOR_GREEN COLOR_BLUE COLOR_YELLOW COLOR_MAGENTA COLOR_CYAN COLOR_WHITE COLOR_RESET BOLD_ON BOLD_OFF FACTORIAL_KW
+%token RED_TEXT GREEN_TEXT BLUE_TEXT YELLOW_TEXT RESET_TEXT FACTORIAL_KW
 
 /*******************************************/
 /* Tokens con valor asociado (Tipados) */
@@ -352,6 +352,26 @@ stmt: SEMICOLON { $$ = new lp::EmptyStmt(); }
 		{ 
 			$$ = new lp::AssignmentStmt($1, new lp::MinusNode(new lp::VariableNode($1), $3)); 
 		}
+	| RED_TEXT SEMICOLON    
+		{ 
+			$$ = new lp::ColorStmt("\033[31m"); 
+		}
+    |  BLUE_TEXT SEMICOLON  
+		{ 
+			$$ = new lp::ColorStmt("\033[32m"); 
+		}
+    | GREEN_TEXT SEMICOLON   
+		{ 
+			$$ = new lp::ColorStmt("\033[34m"); 
+		}
+    | YELLOW_TEXT SEMICOLON 
+		{ 
+			$$ = new lp::ColorStmt("\033[33m"); 
+		}
+    | RESET_TEXT SEMICOLON  
+		{ 
+			$$ = new lp::ColorStmt("\033[0m"); 
+		}
 ;
 
 /* Regla IF */
@@ -481,47 +501,6 @@ exp:	NUMBER
 			$$ = new lp::TernaryNode($1, $3, $5);
 		}
 		
-	| COLOR_RED     
-		{ 
-			$$ = new lp::StringNode("\033[31m"); 
-		}
-    | COLOR_GREEN   
-		{ 
-			$$ = new lp::StringNode("\033[32m"); 
-		}
-    | COLOR_YELLOW  
-		{ 
-			$$ = new lp::StringNode("\033[33m"); 
-		}
-    | COLOR_BLUE    
-		{ 
-			$$ = new lp::StringNode("\033[34m"); 
-		}
-    | COLOR_MAGENTA 
-		{ 
-			$$ = new lp::StringNode("\033[35m"); 
-		}
-    | COLOR_CYAN    
-		{ 
-			$$ = new lp::StringNode("\033[36m"); 
-		}
-    | COLOR_WHITE   
-		{ 
-			$$ = new lp::StringNode("\033[37m"); 
-		}
-    | COLOR_RESET   
-		{ 
-			$$ = new lp::StringNode("\033[0m"); 
-		}
-    | BOLD_ON       
-		{ 
-			$$ = new lp::StringNode("\033[1m"); 
-		}
-    | BOLD_OFF      
-		{ 
-			$$ = new lp::StringNode("\033[22m"); 
-		}
-
 	| 	exp PLUS exp 
 		{ 
 			 $$ = new lp::PlusNode($1, $3);

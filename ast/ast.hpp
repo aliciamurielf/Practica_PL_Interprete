@@ -1765,10 +1765,6 @@ class IfStmt : public Statement
   void evaluate();
 };
 
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // NEW in example 17
@@ -1797,7 +1793,6 @@ class WhileStmt : public Statement
 		this->_cond = condition;
 		this->_stmt = statement;
 	}
-
 
 /*!
 	\brief   Print the AST for WhileStmt
@@ -2184,6 +2179,22 @@ class DoWhileStmt : public Statement {
         \sa      printAST
     */
     void evaluate();
+};
+
+/*! 
+  \class   ColorStmt
+  \brief   Sentencia para cambiar el color del texto de la terminal
+  \note    Hereda de Statement porque es una accion pura (void)
+*/
+class ColorStmt : public Statement {
+  private:
+    std::string _ansiCode; 
+
+  public:
+    ColorStmt(std::string ansiCode) : _ansiCode(ansiCode) {}
+
+    void printAST();
+    void evaluate(); 
 };
 
 

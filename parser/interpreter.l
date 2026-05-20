@@ -90,6 +90,11 @@ ERROR_ID_DOBLE {LETTER}({LETTER}|{DIGIT}|_)*__({LETTER}|{DIGIT}|_)*
 			/* PARA LOS CASOS DEL SWITCH */
 			return ':';
 		}
+"red_text"     { return RED_TEXT; }
+"green_text"   { return GREEN_TEXT; }
+"blue_text"    { return BLUE_TEXT; }
+"yellow_text"  { return YELLOW_TEXT; }
+"reset_text"   { return RESET_TEXT; }
 
 {ERROR_NUM}   {
 					warning("Lexical error: Numero mal formado (demasiados puntos)", yytext);

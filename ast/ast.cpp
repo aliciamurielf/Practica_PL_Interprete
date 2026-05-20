@@ -1677,3 +1677,14 @@ void lp::DoWhileStmt::evaluate()
         this->_stmt->evaluate();
     } while (this->_cond->evaluateBool() == true); 
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+// COLOR
+
+void lp::ColorStmt::printAST() { 
+    std::cout << "ColorStmt: " << this->_ansiCode << std::endl; 
+}
+
+void lp::ColorStmt::evaluate(){
+    std::cout << this->_ansiCode << std::flush;
+}
