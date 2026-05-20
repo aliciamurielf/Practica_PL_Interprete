@@ -46,7 +46,9 @@ extern FILE * yyin; //!< Standard input device for yylex()
 std::string progname; //!<  Program name
 //
 
-// Declaración de yydebug para evitar errores de compilación
+/*! \var yydebug 
+    \brief Variable externa para activar la depuracion de Bison 
+*/
 extern int yydebug;
 
 //////////////////////////////////////////////

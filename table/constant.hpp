@@ -107,7 +107,6 @@ class Constant:public lp::Symbol
 	\param   type: new type of the Constant
 	\pre     None
 	\post    The type of the Constant is equal to the parameter 
-	\return  void
 	\sa 	 setName, setToken
 */
 	inline void setType(int type) 

@@ -82,7 +82,6 @@ class TableInterface{
 	\param  s: new Symbol
 	\pre    The Symbol "s" must not be in the Table 
 	\post   The Symbol "s" must be in the Table 
-	\return void
 	\sa     lookupSymbol
 */
 	virtual  void installSymbol(Symbol * s) = 0;

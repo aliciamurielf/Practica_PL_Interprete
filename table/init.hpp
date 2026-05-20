@@ -52,7 +52,6 @@ static struct {
 /*!
   \ brief Predefined logical constants
 */
-// NEW in example 16
 static struct {
           std::string name ;
 	      bool value;
@@ -63,7 +62,6 @@ static struct {
 	                   };
 
 
-// NEW in example 12 
 /*!
   \ brief Predefined keywords
 */
@@ -107,8 +105,9 @@ static struct {
                 		{"", 0} 
 	                   };
 
-// NEW in example 13
-
+/*! \var function_1 
+	\brief Predefined functions with 1 parameter 
+*/
 static struct {    /* Predefined functions names */ 
                 std::string name ;
 				lp::TypePointerDoubleFunction_1 function;
@@ -125,7 +124,9 @@ static struct {    /* Predefined functions names */
 		               {"",       0}
 		              };
 
-// NEW in example 14
+/*! \var function_0 
+	\brief Predefined functions with 0 parameters 
+*/
 static struct {   
                 std::string name ;
 				lp::TypePointerDoubleFunction_0 function;
@@ -135,8 +136,9 @@ static struct {
 		              };
 
 
-// NEW in example 14
-
+/*! \var function_2 
+	\brief Predefined functions with 2 parameters
+*/
 static struct {    /* Nombres predefinidos de funciones con 2 argumentos */ 
                 std::string name ;
 				lp::TypePointerDoubleFunction_2 function;
@@ -146,9 +148,8 @@ static struct {    /* Nombres predefinidos de funciones con 2 argumentos */
 		              };
 /*!		
 	\brief   Initialize the table of symbols
-	\return  void 
+	\param   t: Reference to the table of symbols
 */
-
 void init(lp::Table &t);
 
 // End of _INIT_HPP_

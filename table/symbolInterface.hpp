@@ -68,7 +68,6 @@ class SymbolInterface{
 	\param   name: new name of the Symbol
 	\pre     None
 	\post    The name of the Symbol is equal to the parameter 
-	\return  void
 	\sa 	 setValue, setToken
 */
 	virtual void setName(const std::string & name) = 0;
@@ -79,7 +78,6 @@ class SymbolInterface{
 	\param   token: new value of the Symbol
 	\pre     None
 	\post    The token of the Symbol is equal to the parameter 
-	\return  void
 	\sa 	 setName, setValue
 */
 	virtual void setToken(int token) = 0;

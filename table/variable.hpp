@@ -107,7 +107,6 @@ class Variable:public lp::Symbol
 	\param   type: new type of the Variable
 	\pre     None
 	\post    The type of the Variable is equal to the parameter 
-	\return  void
 	\sa 	 setName, setToken
 */
 	inline void setType(int type) 

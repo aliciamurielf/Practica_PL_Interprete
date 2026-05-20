@@ -107,7 +107,6 @@ class Builtin:public lp::Symbol
 	\param   nParameters: new nParameters of the Builtin
 	\pre     None
 	\post    The nParameters of the Builtin is equal to the parameter 
-	\return  void
 	\sa 	 setName, setToken
 */
 	inline void setNParameters(int nParameters) 

@@ -119,7 +119,6 @@ class Symbol:public lp::SymbolInterface
 	\param   name: new name of the Symbol
 	\pre     None
 	\post    The name of the Symbol is equal to the parameter 
-	\return  void
 	\sa 	 setToken
 */
 	inline void setName(const std::string & name)
@@ -134,7 +133,6 @@ class Symbol:public lp::SymbolInterface
 	\param   token: new value of the Variable
 	\pre     None
 	\post    The token of the Symbol is equal to the parameter 
-	\return  void
 	\sa 	 setName
 */
 	inline void setToken(int token) 

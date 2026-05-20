@@ -1,12 +1,11 @@
 /*!	
-	\file    stringVariable.cpp
-	\brief   Code of some functions of StringVariable class
+	\file    stringVariable.hpp
+	\brief   Declaration of StringVariable class
 	\author  Alicia Muriel Fernández
 	\author  Lucía Cañero Moslero
 	\date    2026-05-24
 	\version 1.0
 */
-
 #ifndef _STRINGVARIABLE_HPP_
 #define _STRINGVARIABLE_HPP_
 
@@ -43,7 +42,6 @@ namespace lp {
             /*! 
               \brief  Set the value of the StringVariable
               \param  value: new string value
-              \return void
             */
             void setValue(std::string value);
     };

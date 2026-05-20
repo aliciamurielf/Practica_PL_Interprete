@@ -111,7 +111,6 @@ class NumericConstant:public lp::Constant
 	\param   value: new value of the NumericConstant
 	\pre     None
 	\post    The value of the NumericConstant is equal to the parameter 
-	\return  void
 	\sa 	 setValue
 */
 	inline void setValue(const double & value)

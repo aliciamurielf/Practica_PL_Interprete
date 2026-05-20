@@ -111,7 +111,6 @@ class LogicalConstant:public lp::Constant
 	\param   value: new value of the LogicalConstant
 	\pre     None
 	\post    The value of the LogicalConstant is equal to the parameter 
-	\return  void
 	\sa 	 setValue
 */
 	inline void setValue(const bool & value)

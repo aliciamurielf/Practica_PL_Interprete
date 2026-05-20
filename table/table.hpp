@@ -133,7 +133,6 @@ class Table: public lp::TableInterface
 	\param  s: new pointer to Symbol
 	\pre    The Symbol "s" must not be in the Table 
 	\post   The Symbol "s" must be in the Table 
-	\return void
 	\sa     lookupSymbol(), eraseSymbol()
 */
 	void installSymbol(Symbol * s);
@@ -144,7 +143,6 @@ class Table: public lp::TableInterface
 	\param  name:  name of the Symbol to be deleted
 	\pre    The Symbol "name" must be in the Table
 	\post   The Symbol "name" must not be in the Table
-	\return void
 	\sa     lookupSymbol(),installSymbol()
 */
 	void eraseSymbol(const std::string & name);
@@ -156,7 +154,6 @@ class Table: public lp::TableInterface
 
 /*!		
 	\brief  Print the Table
-	\return void
 */
 	void printTable();
 

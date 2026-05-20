@@ -119,8 +119,7 @@ class BuiltinParameter2:public lp::Builtin
 	\note    Inline function
 	\param   function: new function of the BuiltinParameter2
 	\pre     None
-	\post    The function of the BuiltinParameter2 is equal to the parameter 
-	\return  void
+	\post    The function of the BuiltinParameter2 is equal to the parameter 	
 	\sa 	 setFunction
 */
 	inline void setFunction(const lp::TypePointerDoubleFunction_2 & function)

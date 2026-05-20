@@ -111,7 +111,6 @@ class LogicalVariable:public lp::Variable
 	\param   value: new value of the LogicalVariable
 	\pre     None
 	\post    The value of the LogicalVariable is equal to the parameter 
-	\return  void
 	\sa 	 setValue
 */
 	inline void setValue(bool value)

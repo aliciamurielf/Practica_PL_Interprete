@@ -111,7 +111,6 @@ class NumericVariable:public lp::Variable
 	\param   value: new value of the NumericVariable
 	\pre     None
 	\post    The value of the NumericVariable is equal to the parameter 
-	\return  void
 	\sa 	 setValue
 */
 	inline void setValue(const double & value)

@@ -1465,7 +1465,6 @@ class Statement {
 /*!	
 	\brief Imprime el AST de Statement
 	\note    Virtual function: can be redefined in the heir classes
-	\return  double
 	\sa		   evaluate
 */
 
@@ -1474,7 +1473,6 @@ class Statement {
 /*!	
 	\brief   Evalúa Statement
 	\warning Función virtual pura: debe redefinirse en las clases derivadas
-	\return  double
 	\sa		   printAST
 */
   virtual void evaluate() = 0;
@@ -1574,7 +1572,6 @@ class PrintStmt: public Statement
 
 /*!	
 	\brief   Evalúa PrintStmt
-	\return  double
 	\sa		   printAST
 */
   void evaluate();
@@ -2033,7 +2030,6 @@ class AST {
 
 /*!	
 	\brief Evalúa el AST
-	\return  double
 	\sa	   	 printAST
 */
   void evaluate();

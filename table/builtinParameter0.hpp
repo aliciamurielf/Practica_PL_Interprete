@@ -120,7 +120,6 @@ class BuiltinParameter0:public lp::Builtin
 	\param   function: new function of the BuiltinParameter0
 	\pre     None
 	\post    The function of the BuiltinParameter0 is equal to the parameter 
-	\return  void
 	\sa 	 setFunction
 */
 	inline void setFunction(const lp::TypePointerDoubleFunction_0 & function)

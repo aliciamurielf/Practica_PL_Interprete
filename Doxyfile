@@ -9,7 +9,7 @@ EXTRACT_PRIVATE        = YES
 # The C++ files are shown: "cpp" files
 SOURCE_BROWSER         = YES
 
-GENERATE_LATEX         = NO
+GENERATE_LATEX         = YES
 
 #Modified in examples 7, 16
 INPUT = interpreter.cpp parser error includes table ast
@@ -58,7 +58,8 @@ EXTENSION_MAPPING      = y=C l=C
 # doxygen will evaluate all C-preprocessor directives found in the sources and include files.
 # The default value is: YES.
 
-ENABLE_PREPROCESSING  = NO
+ENABLE_PREPROCESSING  = YES
+MACRO_EXPANSION = YES
 
 # If the UML_LOOK tag is set to YES, doxygen will generate inheritance and
 # collaboration diagrams in a style similar to the OMG's Unified Modeling
