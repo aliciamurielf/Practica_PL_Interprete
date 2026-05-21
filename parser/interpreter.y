@@ -352,6 +352,14 @@ stmt: SEMICOLON { $$ = new lp::EmptyStmt(); }
 		{ 
 			$$ = new lp::AssignmentStmt($1, new lp::MinusNode(new lp::VariableNode($1), $3)); 
 		}
+	| VARIABLE MULT_ASSIGN exp SEMICOLON
+		{
+			$$ = new lp::AssignmentStmt($1, new lp::MultiplicationNode(new lp::VariableNode($1), $3)); 
+		}
+	| VARIABLE DIV_ASSIGN exp SEMICOLON
+		{
+			$$ = new lp::AssignmentStmt($1, new lp::DivisionNode(new lp::VariableNode($1), $3)); 
+		}
 	| RED_TEXT SEMICOLON    
 		{ 
 			$$ = new lp::ColorStmt("\033[31m"); 
@@ -478,6 +486,17 @@ read:  READ LPAREN VARIABLE RPAREN
 	| READ LPAREN CONSTANT RPAREN  
 		{   
  			execerror("Semantic error in \"read statement\": it is not allowed to modify a constant ",$3);
+		}
+;
+
+read_string: READ_STRING LPAREN VARIABLE RPAREN
+    {
+        $$ = new lp::ReadStringStmt($3);
+    }
+
+	| READ_STRING LPAREN CONSTANT RPAREN
+		{
+			execerror("Semantic error in \"read statement\": it is not allowed to modify a constant ",$3);
 		}
 ;
 
@@ -696,13 +715,6 @@ clear_screen: CLEAR_SCREEN_CMD
 place: PLACE_CMD LPAREN exp COMMA exp RPAREN 
     { 
         $$ = new lp::PlaceStmt($3, $5); 
-    }
-;
-
-
-read_string: READ_STRING LPAREN VARIABLE RPAREN
-    {
-        $$ = new lp::ReadStringStmt($3);
     }
 ;
 

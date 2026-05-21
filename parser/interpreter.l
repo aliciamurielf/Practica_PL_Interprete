@@ -90,63 +90,6 @@ ERROR_ID_DOBLE {LETTER}({LETTER}|{DIGIT}|_)*__({LETTER}|{DIGIT}|_)*
 			/* PARA LOS CASOS DEL SWITCH */
 			return ':';
 		}
-"red_text"     { return RED_TEXT; }
-"green_text"   { return GREEN_TEXT; }
-"blue_text"    { return BLUE_TEXT; }
-"yellow_text"  { return YELLOW_TEXT; }
-"reset_text"   { return RESET_TEXT; }
-
-{ERROR_NUM}   {
-					warning("Lexical error: Numero mal formado (demasiados puntos)", yytext);
-                 }
-
-{ERROR_ID_FIN}   {
-					warning("Lexical error: Un identificador no puede terminar en guion bajo", yytext);
-                 }
-
-{ERROR_ID_DOBLE} {
-					warning("Lexical error: Un identificador no puede tener dos guiones bajos seguidos", yytext);
-                 }
-		
-{NUMBER1}|{NUMBER2}  {
-					  /* MODIFIED in example 4 */
-					  /* Conversion of type and sending of the numerical value to the parser */
-					   yylval.number = atof(yytext); 
-
-                       return NUMBER; 
-                      }
-
-
-
-{IDENTIFIER}   		 {
-						 std::string identifier(yytext);
-
-						for(int i = 0; identifier[i]; i++) 
-							identifier[i] = tolower(identifier[i]);
-
-						yylval.string = strdup(identifier.c_str());
-
-						// Buscamos en la tabla con el nombre en minúsculas
-						if (table.lookupSymbol(identifier) == false)
-						{
-							lp::NumericVariable *n = new lp::NumericVariable(identifier, VARIABLE, UNDEFINED, 0.0);
-							table.installSymbol(n);
-							return VARIABLE;
-						}
-						else 
-						{
-							return table.getSymbol(identifier)->getToken();
-						}
-                     }
-
-{CADENA}            {
-						yytext[yyleng-1] = '\0';
-						yytext++;
-						yyleng--;
-						yylval.string = strdup(yytext);
-						return STRING;
-					}
-
 "-"		{ return MINUS;  } 			
 "+"		{ return PLUS;   } 			
 
@@ -198,6 +141,51 @@ ERROR_ID_DOBLE {LETTER}({LETTER}|{DIGIT}|_)*__({LETTER}|{DIGIT}|_)*
 "%="    { return MOD_ASSIGN; }
 
 "?"     { return QUESTION; }
+"red_text"     { return RED_TEXT; }
+"green_text"   { return GREEN_TEXT; }
+"blue_text"    { return BLUE_TEXT; }
+"yellow_text"  { return YELLOW_TEXT; }
+"reset_text"   { return RESET_TEXT; }
+
+{ERROR_NUM}   { warning("Lexical error: Numero mal formado (demasiados puntos)", yytext); }
+
+{ERROR_ID_FIN}   { warning("Lexical error: Un identificador no puede terminar en guion bajo", yytext); }
+
+{ERROR_ID_DOBLE} { warning("Lexical error: Un identificador no puede tener dos guiones bajos seguidos", yytext); }
+		
+{NUMBER1}|{NUMBER2}  { 
+						yylval.number = atof(yytext); 
+						return NUMBER; 
+                      }
+
+{IDENTIFIER}   		 {
+						 std::string identifier(yytext);
+
+						for(int i = 0; identifier[i]; i++) 
+							identifier[i] = tolower(identifier[i]);
+
+						yylval.string = strdup(identifier.c_str());
+
+						// Buscamos en la tabla con el nombre en minúsculas
+						if (table.lookupSymbol(identifier) == false)
+						{
+							lp::NumericVariable *n = new lp::NumericVariable(identifier, VARIABLE, UNDEFINED, 0.0);
+							table.installSymbol(n);
+							return VARIABLE;
+						}
+						else 
+						{
+							return table.getSymbol(identifier)->getToken();
+						}
+                     }
+
+{CADENA}            {
+						yytext[yyleng-1] = '\0';
+						yytext++;
+						yyleng--;
+						yylval.string = strdup(yytext);
+						return STRING;
+					}
 
 "(*"    { BEGIN(COMENTARIO_BLOQUE); } 
 <COMENTARIO_BLOQUE>"*)" { BEGIN(INITIAL); }

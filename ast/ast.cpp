@@ -92,7 +92,6 @@ void lp::VariableNode::printAST()
  * @return double Valor numérico de la variable o 0.0 en caso de error de tipo.
  *
  */
-
 double lp::VariableNode::evaluateNumber() 
 { 
 	double result = 0.0;
@@ -1051,18 +1050,31 @@ void lp::GreaterThanNode::printAST()
 
 bool lp::GreaterThanNode::evaluateBool() 
 {
-	bool result = false;
-	if (this->getType() == BOOL) {
-        if (this->_left->getType() == NUMBER)
-		    result = (this->_left->evaluateNumber() > this->_right->evaluateNumber());
-        else if (this->_left->getType() == STRING)
-            result = (this->_left->evaluateString() > this->_right->evaluateString());
-	} else {
-		warning("Runtime error: incompatible types of parameters for ", "operator Greater than");
-	}
-	return result;
-}
+    bool result = false;
 
+    // Primero verificamos que la expresión completa deba devolver un booleano
+    if (this->getType() == BOOL) {
+        
+        // Comparamos números
+        if ((this->_left->getType() == NUMBER) && (this->_right->getType() == NUMBER)) {
+            double leftNumber = this->_left->evaluateNumber();
+            double rightNumber = this->_right->evaluateNumber();
+            
+            result = (leftNumber > rightNumber);
+        }
+        else if ((this->_left->getType() == STRING) && (this->_right->getType() == STRING)) {
+            std::string leftString = this->_left->evaluateString();
+            std::string rightString = this->_right->evaluateString();
+            
+            result = (leftString > rightString);
+        }
+        
+    } else {
+        warning("Runtime error: incompatible types of parameters for ", "operator Greater than");
+    }
+
+    return result;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1092,15 +1104,30 @@ void lp::GreaterOrEqualNode::printAST()
 bool lp::GreaterOrEqualNode::evaluateBool() 
 {
 	bool result = false;
-	if (this->getType() == BOOL) {
-        if (this->_left->getType() == NUMBER)
-		    result = (this->_left->evaluateNumber() >= this->_right->evaluateNumber());
-        else if (this->_left->getType() == STRING)
-            result = (this->_left->evaluateString() >= this->_right->evaluateString());
-	} else {
-		warning("Runtime error: incompatible types of parameters for ", "operator Greater or equal than");
-	}
-	return result;
+
+    // Primero verificamos que la expresión completa deba devolver un booleano
+    if (this->getType() == BOOL) {
+        
+        // Comparamos números
+        if ((this->_left->getType() == NUMBER) && (this->_right->getType() == NUMBER)) {
+            double leftNumber = this->_left->evaluateNumber();
+            double rightNumber = this->_right->evaluateNumber();
+            
+            result = (leftNumber >= rightNumber);
+        }
+        // Comparamos cadenas (lexicográficamente)
+        else if ((this->_left->getType() == STRING) && (this->_right->getType() == STRING)) {
+            std::string leftString = this->_left->evaluateString();
+            std::string rightString = this->_right->evaluateString();
+            
+            result = (leftString >= rightString);
+        }
+        
+    } else {
+        warning("Runtime error: incompatible types of parameters for ", "operator Greater or equal than");
+    }
+
+    return result;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1131,15 +1158,26 @@ void lp::LessThanNode::printAST()
 bool lp::LessThanNode::evaluateBool() 
 {
 	bool result = false;
-	if (this->getType() == BOOL) {
-        if (this->_left->getType() == NUMBER)
-		    result = (this->_left->evaluateNumber() < this->_right->evaluateNumber());
-        else if (this->_left->getType() == STRING)
+
+    if (this->getType() == BOOL) {
+        
+        // Comparamos números usando < directo, sin ERROR_BOUND
+        if ((this->_left->getType() == NUMBER) && (this->_right->getType() == NUMBER)) {
+            double leftNumber = this->_left->evaluateNumber();
+            double rightNumber = this->_right->evaluateNumber();
+            
+            result = (leftNumber < rightNumber);
+        }
+        // Comparamos cadenas 
+        else if ((this->_left->getType() == STRING) && (this->_right->getType() == STRING)) {
             result = (this->_left->evaluateString() < this->_right->evaluateString());
-	} else {
-		warning("Runtime error: incompatible types of parameters for ", "operator Less than");
-	}
-	return result;
+        }
+        
+    } else {
+        warning("Runtime error: incompatible types of parameters for ", "operator Less than");
+    }
+
+    return result;
 }
 
 
@@ -1171,15 +1209,30 @@ void lp::LessOrEqualNode::printAST()
 bool lp::LessOrEqualNode::evaluateBool() 
 {
 	bool result = false;
-	if (this->getType() == BOOL) {
-        if (this->_left->getType() == NUMBER)
-		    result = (this->_left->evaluateNumber() <= this->_right->evaluateNumber());
-        else if (this->_left->getType() == STRING)
-            result = (this->_left->evaluateString() <= this->_right->evaluateString());
-	} else {
-		warning("Runtime error: incompatible types of parameters for ", "operator Less or equal than");
-	}
-	return result;
+
+    // Primero verificamos que la expresión completa deba devolver un booleano
+    if (this->getType() == BOOL) {
+        
+        // Comparamos números
+        if ((this->_left->getType() == NUMBER) && (this->_right->getType() == NUMBER)) {
+            double leftNumber = this->_left->evaluateNumber();
+            double rightNumber = this->_right->evaluateNumber();
+            
+            result = (leftNumber <= rightNumber);
+        }
+        // Comparamos cadenas (lexicográficamente)
+        else if ((this->_left->getType() == STRING) && (this->_right->getType() == STRING)) {
+            std::string leftString = this->_left->evaluateString();
+            std::string rightString = this->_right->evaluateString();
+            
+            result = (leftString <= rightString);
+        }
+        
+    } else {
+        warning("Runtime error: incompatible types of parameters for ", "operator Less or equal than");
+    }
+
+    return result;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -1665,6 +1718,7 @@ void lp::ReadStmt::evaluate()
 	// std::cout << "Insert a numeric value --> " ;
 	// std::cout << RESET; 
 	std::cin >> value;
+    std::cin.ignore();
 
 	lp::Variable *var = (lp::Variable *) table.getSymbol(this->_id);
 

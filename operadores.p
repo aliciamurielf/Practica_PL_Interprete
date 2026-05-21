@@ -1,29 +1,53 @@
 clear_screen;
-print(bold_on || color_blue || '--- TEST DE OPERADORES DE AMPLIACION ---' || color_reset || '\n\n');
 
-print(color_yellow || '1. Operadores Unarios (++ y --):' || color_reset || '\n');
+blue_text;
+print('--- TEST DE OPERADORES DE AMPLIACION ---');
+reset_text;
+print('');
+
+yellow_text;
+print('1. Operadores Unarios (++ y --):');
+reset_text;
 a := 5;
 a++;
-print('\tEl valor 5 tras hacer a++ es: ' || a);
+print('El valor 5 tras hacer a++ es: ');
+print(a);
 a--;
-print('\tEl valor tras hacer a-- vuelve a ser: ' || a || '\n\n');
+print('El valor tras hacer a-- vuelve a ser: ');
+print(a);
+print('');
 
-print(color_yellow || '2. Asignaciones Compuestas (+=, -=, *=, /=):' || color_reset || '\n');
+yellow_text;
+print('2. Asignaciones Compuestas (+=, -=, *=, /=):');
+reset_text;
 b := 10;
 b += 5;
-print('\t10 += 5 es: ' || b);
+print('10 += 5 es: ');
+print(b);
 b /= 3;
-print('\t15 /= 3 es: ' || b || '\n\n');
+print('15 /= 3 es: ');
+print(b);
+print('');
 
-print(color_yellow || '3. Operador Factorial Posfijo (!):' || color_reset || '\n');
-print('\tEl factorial de 6! es: ' || 6! || '\n\n');
+yellow_text;
+print('3. Operador Factorial Posfijo (!):');
+reset_text;
+print('El factorial de 6! es: ');
+print(6!);
+print('');
 
-print(color_yellow || '4. Operador Ternario (? ,):' || color_reset || '\n');
+yellow_text;
+print('4. Operador Ternario (? ,):');
+reset_text;
 edad := 20;
 # condicion ? verdad , falso
 estado := (edad >= 18) ? 'Mayor de edad' , 'Menor de edad';
-print('\tCon 20 anos el estado es: ' || estado);
+print('Con 20 anos el estado es: ');
+print(estado);
+print('');
 
 edad2 := 15;
 estado2 := (edad2 >= 18) ? 'Mayor de edad' , 'Menor de edad';
-print('\tCon 15 anos el estado es: ' || estado2 || '\n');
+print('Con 15 anos el estado es: ');
+print(estado2);
+print('');
