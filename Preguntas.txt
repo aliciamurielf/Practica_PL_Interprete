@@ -1,4 +1,0 @@
-Alguna forma más fácil de hacer el for?
-El archivo ast.cpp tiene q ir con comentarios de Doxygen?
-En el examen q nos das el ejemplo17 de base y ya nos pides lo q sea?
-El Doxygen nos lo das?
