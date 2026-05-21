@@ -23,14 +23,14 @@ print('Introduce tu nombre --> ');
 read_string(nombre);
 
 clear_screen;
-place(10,10);
+place(5,10);
 print(' Bienvenido/a << ');
 print(nombre);
 print(' >> a \'interpreter.exe\'.');
 
 place(40,10);
 print('Pulsa una tecla para continuar');
-read_string( pausa);
+read_string(pausa);
 
 
 repeat 
@@ -71,18 +71,19 @@ repeat
 			print(' Introduce un numero entero ');
 			read(N);
 
-			factorial := 1;
+			fact := 1;
 
        		for i from 2 to N step 1 do
-	            factorial := factorial * i;
+	            fact := fact * i;
 	        end_for;
 
         	# Resultado
 			place(15,10);
 			print(' El factorial de ');
 			print(N);
+			place(16,10);
 			print(' es ');
-			print(factorial);
+			print(fact);
 
 	else 
 	   	# Máximo común divisor

@@ -10,4 +10,5 @@ repeat
         default: print('\n\t caso por defecto: ');     print(- dato);
      end_switch; #Fin de la sentencia "switch"
 
- until (dato = 0) # Fin del bucle "repeat"
+ until (dato = 0); 
+ # Fin del bucle "repeat"

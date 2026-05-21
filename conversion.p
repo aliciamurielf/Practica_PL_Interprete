@@ -13,6 +13,7 @@ read(dato);
 
 print('El número introducido es -> ');
 print(dato);
+print ('\n');
 
 print('Introduce una cadena de caracteres --> ');
 read_string(dato);
@@ -20,5 +21,5 @@ read_string(dato);
 print('La cadena introducida es -> ');
 print(dato);
 
-place(20,10);
+place(24,10);
 print(' Fin del ejemplo de cambio del tipo de valor \n');

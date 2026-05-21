@@ -364,11 +364,11 @@ stmt: SEMICOLON { $$ = new lp::EmptyStmt(); }
 		{ 
 			$$ = new lp::ColorStmt("\033[31m"); 
 		}
-    |  BLUE_TEXT SEMICOLON  
+    |  GREEN_TEXT SEMICOLON  
 		{ 
 			$$ = new lp::ColorStmt("\033[32m"); 
 		}
-    | GREEN_TEXT SEMICOLON   
+    |  BLUE_TEXT SEMICOLON   
 		{ 
 			$$ = new lp::ColorStmt("\033[34m"); 
 		}

@@ -1,7 +1,7 @@
 #  Programa que convierte un número entero a código binario.
 
 print('Programa que convierte un número entero a código binario \n');
-print('Introduce un número entero: \n');
+print('Introduce un número entero: ');
 read(n);
 
 r := ' ';
