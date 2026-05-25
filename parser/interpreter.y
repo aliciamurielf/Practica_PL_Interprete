@@ -282,7 +282,7 @@ stmtlist:  /* empty: epsilon rule */
 			 yyclearin; 
        } 
 ;
- 
+
 stmt: SEMICOLON { $$ = new lp::EmptyStmt(); }
     | asgn SEMICOLON 
 		{ 

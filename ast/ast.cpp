@@ -49,7 +49,6 @@ extern lp::Table table; //!< Reference to the Table of Symbols
 
 extern lp::AST *root; //!< Reference to the object at the base of the AST
 
-
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
 
